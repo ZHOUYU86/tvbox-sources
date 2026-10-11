@@ -520,60 +520,6 @@
                       "filterable":  1,
                       "timeout":  10
                   },
-                  {
-                      "key":  "丨黑木耳资源",
-                      "name":  "黑木耳资源",
-                      "type":  1,
-                      "api":  "https://json02.heimuer.xyz/api.php/provide/vod/",
-                      "searchable":  1,
-                      "quickSearch":  1,
-                      "changeable":  1,
-                      "filterable":  1,
-                      "timeout":  10
-                  },
-                  {
-                      "key":  "丨卧龙资源",
-                      "name":  "卧龙资源",
-                      "type":  1,
-                      "api":  "https://wolongzyw.com/api.php/provide/vod/",
-                      "searchable":  1,
-                      "quickSearch":  1,
-                      "changeable":  1,
-                      "filterable":  1,
-                      "timeout":  10
-                  },
-                  {
-                      "key":  "丨黄道长资源",
-                      "name":  "黄道长资源",
-                      "type":  1,
-                      "api":  "https://m766.com/api.php/provide/vod/at/json",
-                      "searchable":  1,
-                      "quickSearch":  1,
-                      "changeable":  1,
-                      "filterable":  1,
-                      "timeout":  10
-                  },
-                  {
-                      "key":  "丨都司资源",
-                      "name":  "都司资源",
-                      "type":  1,
-                      "api":  "http://y.ds05.cn/zyapi.php",
-                      "searchable":  1,
-                      "quickSearch":  1,
-                      "changeable":  1,
-                      "filterable":  1,
-                      "timeout":  10
-                  },
-                  {
-                      "key":  "555ys",
-                      "name":  "🎬555影视[秒开秒播]",
-                      "type":  3,
-                      "api":  "https://ghproxy.net/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/drpy2.min.js",
-                      "ext":  "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox/main/555ys.js",
-                      "searchable":  1,
-                      "quickSearch":  1,
-                      "filterable":  1
-                  }
               ],
     "parses":  [
                    {
