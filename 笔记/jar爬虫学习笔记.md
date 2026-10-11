@@ -248,7 +248,7 @@ for (Element e : items) {
 - 详情：`/detail/{id}.html`（h1标题、"导演:</div>…"、"主演:</div>…"、"简介:</div>…<p>正文</p>"、线路nav `#playlist1~4`）
 - 播放页：`/play/{id}-{线路}-{集数}.html`，HTML 内嵌 JSON `{"url":"https:\/\/svip.high22-playback.com\/…\/index.m3u8"}`
 - 搜索：`/vodsearch/wd/{关键词}.html`
-- **无分页**（page1/2/3 内容相同，一页约 86 条）→ categoryContent 用 `Result.page` 返回单页即可，不造假分页
+- **大分类 /vod/N.html 无分页**；**子分类页 /vodshow/id/{N}/page/{M}.html 有真实分页**（每页24条，详见第十三章）→ categoryContent 用 Result.page 返回子分类真实分页
 
 ### 爬虫设计要点
 - Cupfox.java 继承 Spider，解析全用字符串定位（indexOf/substring）或正则，稳过静态 HTML
@@ -274,4 +274,46 @@ for (Element e : items) {
 
 ### 收获
 茶杯狐 = **第一个"静态 HTML 苹果CMS"自研 jar 源完整打通**：无分页、多线路、内嵌 JSON 播放地址、镜像容错。打包链路（apktool 合并法）已固化，后续新站照此流程批量复制即可。
+
+---
+
+## 十三、茶杯狐翻页修复实录（2026-10-12，v2/v3，成功）
+
+### 翻页真相：子分类页才有真实分页
+- 大分类 `/vod/{1..4}.html`（电影/电视剧/综艺/动漫）：**无分页**，`/vod/1-2.html`、`/vod/1-3.html` 返回内容与第 1 页**完全相同**（236 条），页面无"下一页"导航 → 任何解析器都只能单页
+- **子分类页 `/vodshow/id/{N}.html`：有真实分页** `/vodshow/id/{N}/page/{M}.html`，每页 24 条，实测 p1/p2/p3 的 `/detail/xxx.html` 链接完全不同
+- 分页导航：`<div class="pages-box">` 里 `<a class="page" href=".../page/2.html">2</a>` 数字链接，取最大页码即总页数
+
+### 27 个子分类 id 表
+- 电影：6动作片 7喜剧片 8爱情片 9科幻片 10恐怖片 11剧情片 12战争片 31记录片 32动画片
+- 电视剧：13国产剧 14港剧 15日剧 16韩剧 29欧美剧 30泰剧 33台湾剧 34海外剧 36预告片
+- 综艺：20大陆综艺 21日韩综艺 22港台综艺 23欧美综艺
+- 动漫：24国产动漫 25日韩动漫 26欧美动漫 27海外动漫 35港台动漫
+- 首页 nav 还有地区/年份筛选（`/vodshow/area/{地区}/id/{N}.html`、`/vodshow/id/{N}/year/{年}.html`）——未采用，仅记录
+
+### 列表解析必须限定容器（新坑）
+页面顶部有"推荐区"（也含 `/detail/` 链接 + `class="title"`），全页正则会把推荐区混进列表（实测一页抓到 59 条，而真实列表只有 24 条）。
+**正解**：先 `html.indexOf("myui-vodbox-content")` 截取列表容器之后的子串再解析 → 每页正好 24 条、无推荐区干扰。
+
+### 分页总页数解析的坑（本次翻页失败的根因）
+pages-box 导航 HTML 是 **`class="page"` 写在 `href` 前面**：
+```html
+<div><a class="page active" href="/vodshow/id/6/page/1.html">1</a></div>
+<div><a class="page" href="/vodshow/id/6/page/2.html">2</a></div>
+```
+正则若按 `href="..." class="page">N</a>`（class 在后）写 → **一个都匹配不到 → pagecount=1 → OK影视 认为只有 1 页 → 不能翻页**（列表只有 24 条、无"下一页"）。
+**正解**：不依赖属性顺序，写成 `/vodshow/id/\d+/page/(\d+)\.html"[^>]*>(\d+)</a>`，取最大 M 为总页数。
+
+### OK影视 jar 加载机制坑（v2 失败根因）
+- 配置 json 的 `"spider": "clan://Download/custom_spider.jar"` 指定 jar **文件名**，OK影视 从该路径加载
+- 推送新 jar 时**必须覆盖配置引用的那个文件名**（本例 custom_spider.jar），否则 OK影视 还在用旧 jar → 分类没变化
+- 改完 jar 后要重启 OK影视（或重新加载配置）才生效
+
+### 最终产物（v3 翻页版）
+- 209,782B，md5 `DF3E77C64BCFA295347F782B047AB742`
+- 上线步骤同前：替换 `_edgeone_deploy/gqc_feikuai.jar` → b.json 更新 md5 → git push → Cloudflare 自动部署
+
+### 经验
+"不能翻页"先分清楚是**网站没分页**还是**解析器没把分页信息带出来**：网站没分页就去找子分类/筛选接口（大类没有就挖子分类）；有分页就重点检查两处——`Result.page` 的 pagecount 是否解析正确（正则别写死属性顺序）、jar 是否真的被替换加载（文件名要匹配配置）。
+
 
