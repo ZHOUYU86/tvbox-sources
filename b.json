@@ -499,17 +499,6 @@
                       "timeout":  10
                   },
                   {
-                      "key":  "丨艾旦资源",
-                      "name":  "艾旦资源",
-                      "type":  1,
-                      "api":  "https://www.lovedan.net/api.php/provide/vod/",
-                      "searchable":  1,
-                      "quickSearch":  1,
-                      "changeable":  1,
-                      "filterable":  1,
-                      "timeout":  10
-                  },
-                  {
                       "key":  "丨红牛资源3",
                       "name":  "红牛资源3",
                       "type":  1,
@@ -519,7 +508,7 @@
                       "changeable":  1,
                       "filterable":  1,
                       "timeout":  10
-                  },
+                  }
               ],
     "parses":  [
                    {
