@@ -508,6 +508,28 @@
                       "changeable":  1,
                       "filterable":  1,
                       "timeout":  10
+                  },
+                  {
+                      "key":  "丨天涯海角",
+                      "name":  "天涯海角",
+                      "type":  1,
+                      "api":  "https://tyyszyapi.com/api.php/provide/vod",
+                      "searchable":  1,
+                      "quickSearch":  1,
+                      "changeable":  1,
+                      "filterable":  1,
+                      "timeout":  10
+                  },
+                  {
+                      "key":  "丨非凡5",
+                      "name":  "非凡5",
+                      "type":  1,
+                      "api":  "http://ffzy5.tv/api.php/provide/vod",
+                      "searchable":  1,
+                      "quickSearch":  1,
+                      "changeable":  1,
+                      "filterable":  1,
+                      "timeout":  10
                   }
               ],
     "parses":  [
