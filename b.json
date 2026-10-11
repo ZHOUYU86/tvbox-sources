@@ -1,5 +1,5 @@
 ﻿{
-    "spider":  "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/gqc_feikuai.jar;md5;f0f649303ea998dd63a7b8e1c0079058",
+    "spider":  "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/gqc_feikuai.jar;md5;edc3cef004f5d971428af332d98d5a1c",
     "wallpaper":  "https://szyyds.cn/api.php",
     "logo":  "https://szyyds.cn/1.png",
     "sites":  [
@@ -17,6 +17,15 @@
                       "name":  "飞快TV[自写jar]",
                       "type":  3,
                       "api":  "csp_Feikuai",
+                      "searchable":  1,
+                      "quickSearch":  1,
+                      "changeable":  1
+                  },
+                  {
+                      "key":  "Cupfox",
+                      "name":  "茶杯狐[自写jar]",
+                      "type":  3,
+                      "api":  "csp_Cupfox",
                       "searchable":  1,
                       "quickSearch":  1,
                       "changeable":  1
