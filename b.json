@@ -1,5 +1,5 @@
-﻿{
-    "spider":  "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/gqc_feikuai.jar;md5;b98fed00e34a44569b1a40914fb8f7dc",
+{
+    "spider":  "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/gqc_feikuai.jar;md5;e5c10804e5cbf51cabf1a50f198bff8c",
     "wallpaper":  "https://szyyds.cn/api.php",
     "logo":  "https://szyyds.cn/1.png",
     "sites":  [
