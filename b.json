@@ -5,7 +5,7 @@
     "sites": [
         {
             "key": "Gqc",
-            "name": "共青春[自写jar]",
+            "name": "共青春",
             "type": 3,
             "api": "csp_Gqc",
             "searchable": 1,
@@ -14,7 +14,7 @@
         },
         {
             "key": "Feikuai",
-            "name": "飞快TV[自写jar]",
+            "name": "飞快TV",
             "type": 3,
             "api": "csp_Feikuai",
             "searchable": 1,
@@ -23,7 +23,7 @@
         },
         {
             "key": "Cupfox",
-            "name": "茶杯狐[自写jar]",
+            "name": "茶杯狐",
             "type": 3,
             "api": "csp_Cupfox",
             "searchable": 1,
@@ -32,7 +32,7 @@
         },
         {
             "key": "Www555",
-            "name": "555电影[自写jar]",
+            "name": "555电影",
             "type": 3,
             "api": "csp_Www555",
             "searchable": 1,
@@ -41,7 +41,7 @@
         },
         {
             "key": "Keke",
-            "name": "可可影视[自写jar]",
+            "name": "可可影视",
             "type": 3,
             "api": "csp_WwwKeke",
             "searchable": 1,
