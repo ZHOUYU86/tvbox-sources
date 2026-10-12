@@ -49,6 +49,15 @@
                       "changeable":  1
                   },
                   {
+                      "key":  "Qqys",
+                      "name":  "千千影视",
+                      "type":  3,
+                      "api":  "csp_WwwQqys",
+                      "searchable":  1,
+                      "quickSearch":  1,
+                      "changeable":  1
+                  },
+                  {
                       "api":  "https://360zy.com/api.php/provide/vod/",
                       "key":  "360",
                       "name":  "⚡360资源[综艺/电视剧专用]",
@@ -535,17 +544,7 @@
                       "changeable":  1,
                       "filterable":  1,
                       "timeout":  10
-                  },
-                  {
-                      "key":  "Qqys",
-                      "name":  "千千影视",
-                      "type":  3,
-                      "api":  "csp_WwwQqys",
-                      "searchable":  1,
-                      "quickSearch":  1,
-                      "changeable":  1
-                  }
-              ],
+                  }],
     "parses":  [
                    {
                        "name":  "yemu",
