@@ -1,11 +1,11 @@
 ﻿{
-    "spider":  "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/gqc_feikuai.jar;md5;94806ed3649df0331c65714a46e6fc16",
+    "spider":  "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/gqc_feikuai.jar;md5;b1af79d3dcee9e8294d5aa0ed49f3fe1",
     "wallpaper":  "https://szyyds.cn/api.php",
     "logo":  "https://szyyds.cn/1.png",
     "sites":  [
                   {
                       "key":  "Gqc",
-                      "name":  "共青春[自写jar]",
+                      "name":  "共青春",
                       "type":  3,
                       "api":  "csp_Gqc",
                       "searchable":  1,
@@ -14,7 +14,7 @@
                   },
                   {
                       "key":  "Feikuai",
-                      "name":  "飞快TV[自写jar]",
+                      "name":  "飞快TV",
                       "type":  3,
                       "api":  "csp_Feikuai",
                       "searchable":  1,
@@ -23,7 +23,7 @@
                   },
                   {
                       "key":  "Cupfox",
-                      "name":  "茶杯狐[自写jar]",
+                      "name":  "茶杯狐",
                       "type":  3,
                       "api":  "csp_Cupfox",
                       "searchable":  1,
@@ -32,7 +32,7 @@
                   },
                   {
                       "key":  "Www555",
-                      "name":  "555电影[自写jar]",
+                      "name":  "555电影",
                       "type":  3,
                       "api":  "csp_Www555",
                       "searchable":  1,
@@ -46,8 +46,7 @@
                       "api":  "csp_WwwDmxq",
                       "searchable":  1,
                       "quickSearch":  1,
-                      "changeable":  1,
-                      "spider":  "https://zhouyu86-bh1.pages.dev/dmxq2_feikuai.jar;md5;b1af79d3dcee9e8294d5aa0ed49f3fe1"
+                      "changeable":  1
                   },
                   {
                       "api":  "https://360zy.com/api.php/provide/vod/",
