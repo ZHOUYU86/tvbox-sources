@@ -1,5 +1,5 @@
 ﻿{
-    "spider":  "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/gqc_feikuai.jar;md5;b1af79d3dcee9e8294d5aa0ed49f3fe1",
+    "spider":  "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/gqc_feikuai.jar;md5;b98fed00e34a44569b1a40914fb8f7dc",
     "wallpaper":  "https://szyyds.cn/api.php",
     "logo":  "https://szyyds.cn/1.png",
     "sites":  [
@@ -535,6 +535,15 @@
                       "changeable":  1,
                       "filterable":  1,
                       "timeout":  10
+                  },
+                  {
+                      "key":  "Qqys",
+                      "name":  "千千影视",
+                      "type":  3,
+                      "api":  "csp_WwwQqys",
+                      "searchable":  1,
+                      "quickSearch":  1,
+                      "changeable":  1
                   }
               ],
     "parses":  [
