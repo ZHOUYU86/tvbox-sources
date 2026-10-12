@@ -326,6 +326,30 @@
             </div>
         </div>
 
+        <div class="source-card" id="card-b">
+            <div class="source-header">
+                <div class="source-name">555电影接口 (b)</div>
+                <div class="source-badge" id="badge-b">健康</div>
+            </div>
+            <div class="url-row" id="row-b-new">
+                <span class="url-label online1">新域名（推荐）</span>
+                <input type="text" class="url-input" value="https://zhouyu86-bh1.pages.dev/b.json">
+                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
+                <button class="delete-url-btn" onclick="deleteUrl('b', 'new', '555电影接口 (b)', '新域名（推荐）')" title="删除此地址">×</button>
+            </div>
+            <div class="url-row" id="row-b-online1">
+                <span class="url-label online1">在线1</span>
+                <input type="text" class="url-input" value="https://tvbox-bh1.pages.dev/b.json">
+                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
+                <button class="delete-url-btn" onclick="deleteUrl('b', 'online1', '555电影接口 (b)', '在线1')" title="删除此地址">×</button>
+            </div>
+            <div class="stats">
+                <span>📊 站点数：57</span>
+                <span>📁 路径：/b.json</span>
+                <span id="detect-b" style="color:#999;">⏳ 检测中...</span>
+            </div>
+        </div>
+
         <div style="text-align:center;margin:20px 0;">
             <a href="index.html" style="display:inline-block;padding:14px 30px;background:#1677ff;color:white;text-decoration:none;border-radius:10px;font-size:16px;font-weight:bold;box-shadow:0 4px 15px rgba(22,119,255,0.4);">
                 ← 返回导航主页
@@ -338,6 +362,18 @@
     </div>
 
     <script>
+        // 密码锁（密码：123456）
+        (function() {
+            if (localStorage.getItem('nav_unlocked') !== '1') {
+                var p = prompt('请输入访问密码：');
+                if (p !== '123456') {
+                    document.body.innerHTML = '<div style="text-align:center;padding:120px 20px;font-family:sans-serif;"><h2>🔒 密码错误，页面已锁定</h2><p style="color:#999;margin-top:10px;">请输入正确密码后重新打开页面</p></div>';
+                    throw new Error('locked');
+                }
+                localStorage.setItem('nav_unlocked', '1');
+            }
+        })();
+
         const sources = [
             { name: "小洒 (xs)", en: "xs", sites: 103, status: "健康" },
             { name: "FTY (fty)", en: "fty", sites: 52, status: "健康" },
@@ -354,6 +390,7 @@
         const ONLINE_NEW = "https://zhouyu86.de5.net";
         const ONLINE1 = "https://zhouyu365666.top";
         const ONLINE2 = "https://tvbox-bh1.pages.dev";
+        const ONLINE3 = "https://zhouyu86-bh1.pages.dev";
         const LOCAL = "http://10.144.194.238:8080";
 
         function createCard(src) {
@@ -370,6 +407,7 @@
                 { key: 'new', label: '新域名（推荐）', url: `${ONLINE_NEW}/${src.en}/api.json`, cls: 'online1' },
                 { key: 'online1', label: '在线1', url: `${ONLINE1}/${src.en}/api.json`, cls: 'online1' },
                 { key: 'online2', label: '在线2', url: `${ONLINE2}/${src.en}/api.json`, cls: 'online2' },
+                { key: 'zhouyu', label: '新站(zhouyu86)', url: `${ONLINE3}/${src.en}/api.json`, cls: 'online2' },
                 { key: 'local', label: '本地', url: `${LOCAL}/${src.en}/api.json`, cls: 'local' }
             ];
             
@@ -428,17 +466,17 @@
                 saveDeletedUrls(deleted);
             }
             
-            // 如果是tvbox18，直接隐藏对应的行
-            if (en === 'tvbox18') {
-                const row = document.getElementById(`row-tvbox18-${type}`);
+            // 如果是tvbox18或b，直接隐藏对应的行
+            if (en === 'tvbox18' || en === 'b') {
+                const row = document.getElementById(`row-${en}-${type}`);
                 if (row) {
                     row.style.display = 'none';
                 }
-                // 检查是否三个地址都删了，如果是就隐藏整个卡片
-                const allRows = ['online1', 'online2', 'local'];
-                const allDeleted = allRows.every(t => deleted.includes(`tvbox18_${t}`));
+                // 检查是否全部地址都删了，如果是就隐藏整个卡片
+                const allRows = ['new', 'online1', 'online2', 'local'];
+                const allDeleted = allRows.every(t => deleted.includes(`${en}_${t}`));
                 if (allDeleted) {
-                    const card = document.getElementById('card-tvbox18');
+                    const card = document.getElementById(`card-${en}`);
                     if (card) {
                         card.style.display = 'none';
                     }
@@ -455,17 +493,19 @@
             if (!confirm('确定要恢复所有已删除的地址吗？')) return;
             saveDeletedUrls([]);
             renderAll();
-            // 恢复tvbox18的所有行和卡片
-            ['online1', 'online2', 'local'].forEach(type => {
-                const row = document.getElementById(`row-tvbox18-${type}`);
-                if (row) {
-                    row.style.display = '';
+            // 恢复tvbox18和b的所有行和卡片
+            ['tvbox18', 'b'].forEach(en => {
+                ['new', 'online1', 'online2', 'local'].forEach(type => {
+                    const row = document.getElementById(`row-${en}-${type}`);
+                    if (row) {
+                        row.style.display = '';
+                    }
+                });
+                const card = document.getElementById(`card-${en}`);
+                if (card) {
+                    card.style.display = '';
                 }
             });
-            const card = document.getElementById('card-tvbox18');
-            if (card) {
-                card.style.display = '';
-            }
             updateCount();
         }
 
@@ -580,6 +620,47 @@
             }
         }
 
+        // 自动检测b.json状态
+        async function checkBStatus() {
+            const badge = document.getElementById('badge-b');
+            const detect = document.getElementById('detect-b');
+            if (!badge || !detect) return;
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+                await fetch('https://zhouyu86-bh1.pages.dev/b.json', {
+                    method: 'GET',
+                    mode: 'no-cors',
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                badge.textContent = '健康';
+                badge.classList.remove('warning');
+                detect.textContent = '✓ 在线正常';
+                detect.style.color = '#10b981';
+            } catch (err) {
+                try {
+                    const controller2 = new AbortController();
+                    const timeoutId2 = setTimeout(() => controller2.abort(), 8000);
+                    await fetch('https://tvbox-bh1.pages.dev/b.json', {
+                        method: 'GET',
+                        mode: 'no-cors',
+                        signal: controller2.signal
+                    });
+                    clearTimeout(timeoutId2);
+                    badge.textContent = '健康';
+                    badge.classList.remove('warning');
+                    detect.textContent = '✓ 在线2正常';
+                    detect.style.color = '#10b981';
+                } catch (err2) {
+                    badge.textContent = '待检测';
+                    badge.classList.add('warning');
+                    detect.textContent = '⚠ 网络受限';
+                    detect.style.color = '#f59e0b';
+                }
+            }
+        }
+
         // 重新检测所有源
         function recheckAll() {
             sources.forEach((src, index) => {
@@ -607,6 +688,7 @@
                 detect18.style.color = '#999';
             }
             setTimeout(() => checkTvbox18Status(), sources.length * 500);
+            setTimeout(() => checkBStatus(), sources.length * 500 + 500);
         }
 
         // 渲染所有源
@@ -622,27 +704,29 @@
                 }
             });
             
-            // 检查tvbox18的删除状态
-            ['online1', 'online2', 'local'].forEach(type => {
-                const row = document.getElementById(`row-tvbox18-${type}`);
-                if (row) {
-                    if (deleted.includes(`tvbox18_${type}`)) {
-                        row.style.display = 'none';
+            // 检查tvbox18和b的删除状态
+            ['tvbox18', 'b'].forEach(en => {
+                ['new', 'online1', 'online2', 'local'].forEach(type => {
+                    const row = document.getElementById(`row-${en}-${type}`);
+                    if (row) {
+                        if (deleted.includes(`${en}_${type}`)) {
+                            row.style.display = 'none';
+                        } else {
+                            row.style.display = '';
+                        }
+                    }
+                });
+                // 检查是否全部地址都删了
+                const allDeleted = ['new', 'online1', 'online2', 'local'].every(t => deleted.includes(`${en}_${t}`));
+                const card = document.getElementById(`card-${en}`);
+                if (card) {
+                    if (allDeleted) {
+                        card.style.display = 'none';
                     } else {
-                        row.style.display = '';
+                        card.style.display = '';
                     }
                 }
             });
-            // 检查是否三个地址都删了
-            const allDeleted = ['online1', 'online2', 'local'].every(t => deleted.includes(`tvbox18_${t}`));
-            const card18 = document.getElementById('card-tvbox18');
-            if (card18) {
-                if (allDeleted) {
-                    card18.style.display = 'none';
-                } else {
-                    card18.style.display = '';
-                }
-            }
             
             // 如果有已删除的地址，显示恢复按钮
             let restoreDiv = document.getElementById('restoreDiv');
@@ -666,8 +750,9 @@
                 sources.forEach((src, index) => {
                     setTimeout(() => checkSourceStatus(src.en), index * 500);
                 });
-                // 也检测tvbox18
+                // 也检测tvbox18和b
                 setTimeout(() => checkTvbox18Status(), sources.length * 500);
+                setTimeout(() => checkBStatus(), sources.length * 500 + 500);
             }, 1000);
         }
 
