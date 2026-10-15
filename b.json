@@ -1,5 +1,5 @@
 {
- "spider": "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/ddys_v2.jar;md5;b2d05d6a1471910a3c8b2ebd85e18786",
+ "spider": "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/czzy_v1.jar;md5;4273a98341d24097d92900f17d7d97e4",
  "wallpaper": "https://szyyds.cn/api.php",
  "logo": "https://szyyds.cn/1.png",
  "sites": [
@@ -559,11 +559,11 @@
    "key": "czzy",
    "name": "厂长资源",
    "type": 3,
-   "api": "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/lib/drpy2.min.js",
-   "ext": "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/js/czzy.js",
+   "api": "csp_WwwCzzy",
    "searchable": 0,
    "quickSearch": 0,
-   "filterable": 0
+   "filterable": 0,
+   "changeable": 1
   }
  ],
  "parses": [
