@@ -1,5 +1,5 @@
 {
- "spider": "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/czzy_v1.jar;md5;4273a98341d24097d92900f17d7d97e4",
+ "spider": "https://ghproxy.net/https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/czzy_v2.jar;md5;88d106d108b9a2dfaeca6991b03bee71",
  "wallpaper": "https://szyyds.cn/api.php",
  "logo": "https://szyyds.cn/1.png",
  "sites": [
@@ -560,8 +560,8 @@
    "name": "厂长资源",
    "type": 3,
    "api": "csp_WwwCzzy",
-   "searchable": 0,
-   "quickSearch": 0,
+   "searchable": 1,
+   "quickSearch": 1,
    "filterable": 0,
    "changeable": 1
   }
