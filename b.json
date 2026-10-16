@@ -100,6 +100,62 @@
       "filterable": 1
     },
     {
+      "key": "量子资源",
+      "name": "量子资源",
+      "type": 1,
+      "api": "https://cj.lziapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 1,
+      "filterable": 1,
+      "timeout": 10
+    },
+    {
+      "api": "https://cj.lziapi.com/api.php/provide/vod/",
+      "key": "量子",
+      "name": "影视 | 量子[直连]",
+      "type": 1
+    },
+    {
+      "api": "http://cj.lziapi.com/api.php/provide/vod/",
+      "key": "量子资源",
+      "name": "量子资源(切)",
+      "type": 1
+    },
+    {
+      "key": "丨红牛资源3",
+      "name": "红牛资源3",
+      "type": 1,
+      "api": "https://www.hongniuzy3.com/api.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 1,
+      "filterable": 1,
+      "timeout": 10
+    },
+    {
+      "key": "丨无尽资源",
+      "name": "无尽资源",
+      "type": 1,
+      "api": "https://api.wujinapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 1,
+      "filterable": 1,
+      "timeout": 10
+    },
+    {
+      "key": "暴风资源",
+      "name": "暴风资源",
+      "type": 1,
+      "api": "https://bfzyapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 1,
+      "filterable": 1,
+      "timeout": 10
+    },
+    {
       "api": "http://154.219.117.232:9981/jacloudapi.php/provide/vod",
       "key": "建安采集",
       "name": "影视 | 建安",
@@ -143,23 +199,6 @@
       "type": 1
     },
     {
-      "api": "http://cj.lziapi.com/api.php/provide/vod/",
-      "key": "量子资源",
-      "name": "量子资源(切)",
-      "type": 1
-    },
-    {
-      "key": "量子资源",
-      "name": "量子资源",
-      "type": 1,
-      "api": "https://cj.lziapi.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 1,
-      "filterable": 1,
-      "timeout": 10
-    },
-    {
       "key": "丨閃電资源",
       "name": "閃電资源",
       "type": 1,
@@ -193,77 +232,10 @@
       "timeout": 10
     },
     {
-      "key": "丨红牛资源3",
-      "name": "红牛资源3",
-      "type": 1,
-      "api": "https://www.hongniuzy3.com/api.php/provide/vod/",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 1,
-      "filterable": 1,
-      "timeout": 10
-    },
-    {
-      "key": "丨非凡资源",
-      "name": "非凡资源",
-      "type": 1,
-      "api": "https://cj.ffzyapi.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 1,
-      "filterable": 1,
-      "timeout": 10
-    },
-    {
-      "key": "丨wujinapi无尽",
-      "name": "wujinapi无尽",
-      "type": 1,
-      "api": "https://api.wujinapi.cc/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 1,
-      "filterable": 1,
-      "timeout": 10
-    },
-    {
-      "api": "https://cj.lziapi.com/api.php/provide/vod/",
-      "key": "量子",
-      "name": "影视 | 量子[直连]",
-      "type": 1
-    },
-    {
-      "api": "http://ffzy.tv/api.php/provide/vod/",
-      "key": "非凡",
-      "name": "影视 | 非凡[直连]",
-      "type": 1
-    },
-    {
-      "key": "丨无尽资源",
-      "name": "无尽资源",
-      "type": 1,
-      "api": "https://api.wujinapi.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 1,
-      "filterable": 1,
-      "timeout": 10
-    },
-    {
       "key": "丨丫丫点播",
       "name": "丫丫点播",
       "type": 1,
       "api": "https://cj.yayazy.net/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 1,
-      "filterable": 1,
-      "timeout": 10
-    },
-    {
-      "key": "暴风资源",
-      "name": "暴风资源",
-      "type": 1,
-      "api": "https://bfzyapi.com/api.php/provide/vod",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
@@ -291,6 +263,34 @@
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
+    },
+    {
+      "key": "丨wujinapi无尽",
+      "name": "wujinapi无尽",
+      "type": 1,
+      "api": "https://api.wujinapi.cc/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 1,
+      "filterable": 1,
+      "timeout": 10
+    },
+    {
+      "key": "丨非凡资源",
+      "name": "非凡资源",
+      "type": 1,
+      "api": "https://cj.ffzyapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 1,
+      "filterable": 1,
+      "timeout": 10
+    },
+    {
+      "api": "http://ffzy.tv/api.php/provide/vod/",
+      "key": "非凡",
+      "name": "影视 | 非凡[直连]",
+      "type": 1
     },
     {
       "key": "丨飘零资源",
