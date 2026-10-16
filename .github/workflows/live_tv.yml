@@ -1,0 +1,31 @@
+name: update-live-tv
+
+on:
+  schedule:
+    - cron: '20 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run live tv updater
+        run: python scripts/update_lives_tv.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "doubao-agent"
+          git config user.email "doubao-agent@users.noreply.github.com"
+          git add lives_tv.txt
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "auto update live tv sources $(date -u +%F)"
+            git push
+          fi
