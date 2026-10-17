@@ -598,6 +598,11 @@
   ],
   "parses": [
     {
+      "name": "解析1",
+      "type": 0,
+      "url": "https://bd.jx.cn/?url="
+    },
+    {
       "name": "yemu",
       "type": 0,
       "url": "https://www.yemu.xyz/?url="
@@ -651,11 +656,6 @@
           "User-Agent": "Mozilla/5.0"
         }
       }
-    },
-    {
-      "name": "解析1",
-      "type": 0,
-      "url": "https://bd.jx.cn/?url="
     },
     {
       "name": "解析2",
