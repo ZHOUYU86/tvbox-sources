@@ -598,6 +598,66 @@
   ],
   "parses": [
     {
+      "name": "盘古",
+      "type": 0,
+      "url": "https://www.playm3u8.cn/jiexi.php?url=",
+      "ext": {
+        "header": {
+          "user-agent": "Mozilla/5.0 (Linux; Android 13; V2049A Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/116.0.0.0 Mobile Safari/537.36"
+        }
+      }
+    },
+    {
+      "name": "解析2",
+      "type": 0,
+      "url": "https://jx.m3u8.tv/jiexi/?url="
+    },
+    {
+      "name": "CK",
+      "type": 0,
+      "url": "https://www.ckplayer.vip/jiexi/?url="
+    },
+    {
+      "name": "jx",
+      "type": 0,
+      "url": "https://jx.m3u8.tv/jx/jx.php?url="
+    },
+    {
+      "name": "wmxz",
+      "url": "http://www.wmxz.wang/video.php?url=",
+      "type": 0
+    },
+    {
+      "name": "pu.tn",
+      "url": "http://api.pu.tn/qq1/?url=",
+      "type": 0
+    },
+    {
+      "name": "xfsub",
+      "url": "http://api.xfsub.com/index.php?url=",
+      "type": 0
+    },
+    {
+      "name": "efunfilm",
+      "url": "http://www.efunfilm.com/yunparse/index.php?url=",
+      "type": 0
+    },
+    {
+      "name": "yydy8",
+      "url": "http://www.yydy8.com/common/?url=",
+      "type": 0
+    },
+    {
+      "name": "aikan",
+      "url": "http://aikan-tv.com/?url=",
+      "type": 0
+    },
+    {
+      "name": "vipjiexi",
+      "url": "http://www.vipjiexi.com/yun.php?url=",
+      "type": 0
+    },
+    {
       "name": "解析1",
       "type": 0,
       "url": "https://bd.jx.cn/?url="
@@ -616,11 +676,6 @@
       "name": "聚合0",
       "type": 3,
       "url": "Web"
-    },
-    {
-      "name": "jx",
-      "type": 0,
-      "url": "https://jx.m3u8.tv/jx/jx.php?url="
     },
     {
       "name": "羽路均沾",
@@ -656,11 +711,6 @@
           "User-Agent": "Mozilla/5.0"
         }
       }
-    },
-    {
-      "name": "解析2",
-      "type": 0,
-      "url": "https://jx.m3u8.tv/jiexi/?url="
     },
     {
       "name": "解析3",
@@ -735,11 +785,6 @@
           "User-Agent": "Mozilla/5.0"
         }
       }
-    },
-    {
-      "name": "m3u8",
-      "type": 0,
-      "url": "https://jx.m3u8.tv/jiexi/?url="
     },
     {
       "name": "8090",
@@ -957,16 +1002,6 @@
       }
     },
     {
-      "name": "盘古",
-      "type": 0,
-      "url": "https://www.playm3u8.cn/jiexi.php?url=",
-      "ext": {
-        "header": {
-          "user-agent": "Mozilla/5.0 (Linux; Android 13; V2049A Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/116.0.0.0 Mobile Safari/537.36"
-        }
-      }
-    },
-    {
       "name": "夜幕",
       "type": 0,
       "url": "https://yemu.xyz/?url=",
@@ -985,16 +1020,6 @@
       "name": "A6",
       "type": 0,
       "url": "https://pl.a6club.com/player/analysis.php?v="
-    },
-    {
-      "name": "M3u8TV",
-      "type": 0,
-      "url": "https://jx.m3u8.tv/jiexi/?url="
-    },
-    {
-      "name": "CK",
-      "type": 0,
-      "url": "https://www.ckplayer.vip/jiexi/?url="
     },
     {
       "name": "XY",
