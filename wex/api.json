@@ -1020,12 +1020,26 @@
       }
     },
     {
+      "name": "七哥",
+      "type": 0,
+      "ext": null,
+      "url": "https://jx.nnxv.cn/tv.php?url=",
+      "header": null
+    },
+    {
       "name": "J芒果4k",
       "type": 1,
       "url": "http://mg.itufm.top/mg.php?url=",
       "header": {
         "User-Agent": "Mozilla/5.0"
       }
+    },
+    {
+      "name": "8090",
+      "type": 0,
+      "ext": null,
+      "url": "https://www.8090g.cn/?url=",
+      "header": null
     },
     {
       "name": "七七",
