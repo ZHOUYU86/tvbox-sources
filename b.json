@@ -4,11 +4,6 @@
  "logo": "https://szyyds.cn/1.png",
  "sites": [
   {
-   "key": "Kuake",
-   "name": "夸克网盘",
-   "api": "http://10.27.112.238:8199/api.php/provide/vod/"
-  },
-  {
    "key": "WexAiGuaZi",
    "name": "💥瓜子┃秒播💥",
    "type": 3,
