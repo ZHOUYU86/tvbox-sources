@@ -623,41 +623,6 @@
       "url": "https://jx.m3u8.tv/jx/jx.php?url="
     },
     {
-      "name": "wmxz",
-      "url": "http://www.wmxz.wang/video.php?url=",
-      "type": 0
-    },
-    {
-      "name": "pu.tn",
-      "url": "http://api.pu.tn/qq1/?url=",
-      "type": 0
-    },
-    {
-      "name": "xfsub",
-      "url": "http://api.xfsub.com/index.php?url=",
-      "type": 0
-    },
-    {
-      "name": "efunfilm",
-      "url": "http://www.efunfilm.com/yunparse/index.php?url=",
-      "type": 0
-    },
-    {
-      "name": "yydy8",
-      "url": "http://www.yydy8.com/common/?url=",
-      "type": 0
-    },
-    {
-      "name": "aikan",
-      "url": "http://aikan-tv.com/?url=",
-      "type": 0
-    },
-    {
-      "name": "vipjiexi",
-      "url": "http://www.vipjiexi.com/yun.php?url=",
-      "type": 0
-    },
-    {
       "name": "解析1",
       "type": 0,
       "url": "https://bd.jx.cn/?url="
@@ -1040,6 +1005,41 @@
       "name": "优选",
       "type": 1,
       "url": "http://1.94.221.189:88/algorithm.php?url="
+    },
+    {
+      "name": "wmxz",
+      "url": "http://www.wmxz.wang/video.php?url=",
+      "type": 0
+    },
+    {
+      "name": "pu.tn",
+      "url": "http://api.pu.tn/qq1/?url=",
+      "type": 0
+    },
+    {
+      "name": "xfsub",
+      "url": "http://api.xfsub.com/index.php?url=",
+      "type": 0
+    },
+    {
+      "name": "efunfilm",
+      "url": "http://www.efunfilm.com/yunparse/index.php?url=",
+      "type": 0
+    },
+    {
+      "name": "yydy8",
+      "url": "http://www.yydy8.com/common/?url=",
+      "type": 0
+    },
+    {
+      "name": "aikan",
+      "url": "http://aikan-tv.com/?url=",
+      "type": 0
+    },
+    {
+      "name": "vipjiexi",
+      "url": "http://www.vipjiexi.com/yun.php?url=",
+      "type": 0
     }
   ],
   "doh": [
