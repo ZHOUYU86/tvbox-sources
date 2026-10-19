@@ -4,6 +4,10 @@ on:
     - cron: '0 16 * * *'  # 每天北京时间0点运行
   workflow_dispatch:  # 手动触发
 
+permissions:
+  contents: write
+
+
 jobs:
   sync:
     runs-on: ubuntu-latest
