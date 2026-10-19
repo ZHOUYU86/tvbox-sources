@@ -22,13 +22,13 @@ jobs:
           import json
 
           # 读取上游catcr.json，删掉量子
-          with open('catcr.json', 'r', encoding='utf-8') as f:
+          with open('catcr.json', 'r', encoding='utf-8-sig') as f:
               catcr = json.load(f)
           catcr['sites'] = [s for s in catcr['sites'] if '量子' not in s['name']]
           print(f"上游站点数（删量子后）: {len(catcr['sites'])}")
 
           # 读取我们的tvbox18.json
-          with open('assets/static/data/tvbox18.json', 'r', encoding='utf-8') as f:
+          with open('assets/static/data/tvbox18.json', 'r', encoding='utf-8-sig') as f:
               tvbox18 = json.load(f)
           print(f"我们的站点数: {len(tvbox18['sites'])}")
 
@@ -50,7 +50,7 @@ jobs:
           print(f"合并后总站点数: {len(merged)}")
 
           # 保存
-          with open('assets/static/data/tvbox18.json', 'w', encoding='utf-8') as f:
+          with open('assets/static/data/tvbox18.json', 'w', encoding='utf-8-sig') as f:
               json.dump(tvbox18, f, ensure_ascii=False, indent=2)
           print("保存成功！")
           EOF
