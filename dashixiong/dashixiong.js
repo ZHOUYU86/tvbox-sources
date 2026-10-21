@@ -16,18 +16,43 @@ var CATEGORIES = [
 ];
 
 function req(url) {
-    var resp = fetch(url, {
-        headers: { "User-Agent": UA, "Referer": BASE_URL + "/" }
-    });
-    // 兼容不同TVBox版本的fetch返回格式
-    var body = "";
-    if (resp) {
-        if (resp.body) body = resp.body;
-        else if (resp.result) body = resp.result;
-        else if (resp.content) body = resp.content;
-        else if (typeof resp === "string") body = resp;
+    try {
+        // TVBox JS环境用java函数发起HTTP请求
+        var resp = java.get(url, {
+            headers: {
+                "User-Agent": UA,
+                "Referer": BASE_URL + "/"
+            }
+        });
+        if (resp) {
+            if (typeof resp === "string") return resp;
+            if (resp.body) return resp.body;
+            if (resp.result) return resp.result;
+            if (resp.content) return resp.content;
+            return resp;
+        }
+        return "";
+    } catch(e) {
+        // 备用方式
+        try {
+            var resp2 = java.http(url, {
+                method: "GET",
+                headers: {
+                    "User-Agent": UA,
+                    "Referer": BASE_URL + "/"
+                }
+            });
+            if (resp2) {
+                if (typeof resp2 === "string") return resp2;
+                if (resp2.body) return resp2.body;
+                if (resp2.result) return resp2.result;
+                return resp2;
+            }
+            return "";
+        } catch(e2) {
+            return "";
+        }
     }
-    return body;
 }
 
 function decodeHtml(str) {
@@ -41,43 +66,37 @@ function parseList(html) {
     var items = [];
     if (!html) return items;
     
-    // 匹配视频列表项
     var blockPattern = /<li[^>]*>[\s\S]*?<\/li>/g;
     var blocks = html.match(blockPattern);
-    if (blocks) {
-        for (var i = 0; i < blocks.length; i++) {
-            var block = blocks[i];
-            // 提取详情页链接
-            var urlMatch = block.match(/href="(https?:\/\/www\.lzhuanqiu\.com\/q\/[^"]*)"/);
-            if (!urlMatch) continue;
-            var url = urlMatch[1];
-            var vod_id = url.replace(/\/$/, "").split("/").pop();
-            
-            // 提取图片
-            var picMatch = block.match(/data-original="([^"]*)"/);
-            var pic = picMatch ? picMatch[1] : "";
-            
-            // 提取标题
-            var titleMatch = block.match(/class="biaoti"[^>]*>[\s\S]*?<a[^>]*>([^<]*)<\/a>/);
-            if (!titleMatch) titleMatch = block.match(/title="([^"]*)"/);
-            var title = titleMatch ? decodeHtml(titleMatch[1]) : vod_id;
-            
-            // 提取状态/备注
-            var remarkMatch = block.match(/<span>([^<]*)<\/span>/);
-            var remark = remarkMatch ? decodeHtml(remarkMatch[1]) : "";
-            
-            // 提取演员
-            var actorMatch = block.match(/<p>([^<]*)<\/p>/);
-            var actor = actorMatch ? decodeHtml(actorMatch[1]) : "";
-            
-            items.push({
-                vod_id: vod_id,
-                vod_name: title,
-                vod_pic: pic,
-                vod_remarks: remark,
-                vod_actor: actor
-            });
-        }
+    if (!blocks) return items;
+    
+    for (var i = 0; i < blocks.length; i++) {
+        var block = blocks[i];
+        var urlMatch = block.match(/href="(https?:\/\/www\.lzhuanqiu\.com\/q\/[^"]*)"/);
+        if (!urlMatch) continue;
+        var url = urlMatch[1];
+        var vod_id = url.replace(/\/$/, "").split("/").pop();
+        
+        var picMatch = block.match(/data-original="([^"]*)"/);
+        var pic = picMatch ? picMatch[1] : "";
+        
+        var titleMatch = block.match(/class="biaoti"[^>]*>[\s\S]*?<a[^>]*>([^<]*)<\/a>/);
+        if (!titleMatch) titleMatch = block.match(/title="([^"]*)"/);
+        var title = titleMatch ? decodeHtml(titleMatch[1]) : vod_id;
+        
+        var remarkMatch = block.match(/<span>([^<]*)<\/span>/);
+        var remark = remarkMatch ? decodeHtml(remarkMatch[1]) : "";
+        
+        var actorMatch = block.match(/<p>([^<]*)<\/p>/);
+        var actor = actorMatch ? decodeHtml(actorMatch[1]) : "";
+        
+        items.push({
+            vod_id: vod_id,
+            vod_name: title,
+            vod_pic: pic,
+            vod_remarks: remark,
+            vod_actor: actor
+        });
     }
     
     return items;
@@ -106,7 +125,6 @@ function category(tid, pg, filter, extend) {
     var html = req(url);
     var items = parseList(html);
     
-    // 解析总页数
     var pageCount = 1;
     if (html) {
         var pagePattern = new RegExp("/" + tid + "/p(\\d+)/", "g");
@@ -129,7 +147,6 @@ function detail(ids) {
     var url = BASE_URL + "/q/" + id + "/";
     var html = req(url);
     
-    // 标题
     var title = id;
     if (html) {
         var titleMatch = html.match(/property="og:title" content="([^"]*)"/);
@@ -145,35 +162,30 @@ function detail(ids) {
         title = decodeHtml(title);
     }
     
-    // 封面
     var pic = "";
     if (html) {
         var picMatch = html.match(/property="og:image" content="([^"]*)"/);
         if (picMatch) pic = picMatch[1];
     }
     
-    // 简介
     var desc = "";
     if (html) {
         var descMatch = html.match(/property="og:description" content="([^"]*)"/);
         if (descMatch) desc = decodeHtml(descMatch[1]);
     }
     
-    // 演员
     var actor = "";
     if (html) {
         var actorMatch = html.match(/property="og:video:actor" content="([^"]*)"/);
         if (actorMatch) actor = decodeHtml(actorMatch[1]);
     }
     
-    // 导演
     var director = "";
     if (html) {
         var directorMatch = html.match(/property="og:video:director" content="([^"]*)"/);
         if (directorMatch) director = decodeHtml(directorMatch[1]);
     }
     
-    // 解析播放源
     var playSources = [];
     if (html) {
         var boxBlocks = html.split(/<div[^>]*class="box"[^>]*>/);
@@ -223,12 +235,10 @@ function play(flag, id, flags) {
     var playUrl = "";
     
     if (html) {
-        // 提取DPlayer的video url
         var urlMatch = html.match(/url:\s*['"]([^'"]+\.m3u8[^'"]*)['"]/);
         if (urlMatch) {
             playUrl = urlMatch[1];
         } else {
-            // 备用：提取任何m3u8链接
             var m3u8Match = html.match(/https?:\/\/[^\s"'<>]+\.m3u8[^\s"'<>]*/);
             if (m3u8Match) {
                 playUrl = m3u8Match[0];
