@@ -19,10 +19,13 @@ function req(url) {
     var resp = fetch(url, {
         headers: { "User-Agent": UA, "Referer": BASE_URL + "/" }
     });
-    var code = resp.code;
-    var body = resp.body;
-    if (code != 200) {
-        return "";
+    // 兼容不同TVBox版本的fetch返回格式
+    var body = "";
+    if (resp) {
+        if (resp.body) body = resp.body;
+        else if (resp.result) body = resp.result;
+        else if (resp.content) body = resp.content;
+        else if (typeof resp === "string") body = resp;
     }
     return body;
 }
@@ -36,23 +39,47 @@ function decodeHtml(str) {
 
 function parseList(html) {
     var items = [];
-    var pattern = /<div class="pic"><a href="(https?:\/\/www\.lzhuanqiu\.com\/q\/[^"]*)"><img[^>]*data-original="([^"]*)"[^>]*><\/a><span>([^<]*)<\/span><\/div>\s*<div class="biaoti"><a[^>]*>([^<]*)<\/a><\/div>\s*<p>([^<]*)<\/p>/g;
-    var m;
-    while ((m = pattern.exec(html)) !== null) {
-        var url = m[1];
-        var pic = m[2];
-        var status = decodeHtml(m[3]);
-        var title = decodeHtml(m[4]);
-        var actors = decodeHtml(m[5]);
-        var vod_id = url.replace(/\/$/, "").split("/").pop();
-        items.push({
-            vod_id: vod_id,
-            vod_name: title,
-            vod_pic: pic,
-            vod_remarks: status,
-            vod_actor: actors
-        });
+    if (!html) return items;
+    
+    // 匹配视频列表项
+    var blockPattern = /<li[^>]*>[\s\S]*?<\/li>/g;
+    var blocks = html.match(blockPattern);
+    if (blocks) {
+        for (var i = 0; i < blocks.length; i++) {
+            var block = blocks[i];
+            // 提取详情页链接
+            var urlMatch = block.match(/href="(https?:\/\/www\.lzhuanqiu\.com\/q\/[^"]*)"/);
+            if (!urlMatch) continue;
+            var url = urlMatch[1];
+            var vod_id = url.replace(/\/$/, "").split("/").pop();
+            
+            // 提取图片
+            var picMatch = block.match(/data-original="([^"]*)"/);
+            var pic = picMatch ? picMatch[1] : "";
+            
+            // 提取标题
+            var titleMatch = block.match(/class="biaoti"[^>]*>[\s\S]*?<a[^>]*>([^<]*)<\/a>/);
+            if (!titleMatch) titleMatch = block.match(/title="([^"]*)"/);
+            var title = titleMatch ? decodeHtml(titleMatch[1]) : vod_id;
+            
+            // 提取状态/备注
+            var remarkMatch = block.match(/<span>([^<]*)<\/span>/);
+            var remark = remarkMatch ? decodeHtml(remarkMatch[1]) : "";
+            
+            // 提取演员
+            var actorMatch = block.match(/<p>([^<]*)<\/p>/);
+            var actor = actorMatch ? decodeHtml(actorMatch[1]) : "";
+            
+            items.push({
+                vod_id: vod_id,
+                vod_name: title,
+                vod_pic: pic,
+                vod_remarks: remark,
+                vod_actor: actor
+            });
+        }
     }
+    
     return items;
 }
 
@@ -71,7 +98,7 @@ function homeVod() {
 
 function category(tid, pg, filter, extend) {
     var url;
-    if (pg == 1) {
+    if (!pg || pg == "1" || pg == 1) {
         url = BASE_URL + "/" + tid + "/";
     } else {
         url = BASE_URL + "/" + tid + "/p" + pg + "/";
@@ -81,15 +108,17 @@ function category(tid, pg, filter, extend) {
     
     // 解析总页数
     var pageCount = 1;
-    var pagePattern = new RegExp("/" + tid + "/p(\\d+)/", "g");
-    var pm;
-    while ((pm = pagePattern.exec(html)) !== null) {
-        var p = parseInt(pm[1]);
-        if (p > pageCount) pageCount = p;
+    if (html) {
+        var pagePattern = new RegExp("/" + tid + "/p(\\d+)/", "g");
+        var pm;
+        while ((pm = pagePattern.exec(html)) !== null) {
+            var p = parseInt(pm[1]);
+            if (p > pageCount) pageCount = p;
+        }
     }
     
     return JSON.stringify({
-        page: parseInt(pg),
+        page: parseInt(pg) || 1,
         pagecount: pageCount,
         list: items
     });
@@ -102,84 +131,79 @@ function detail(ids) {
     
     // 标题
     var title = id;
-    var titleMatch = html.match(/property="og:title" content="([^"]*)"/);
-    if (titleMatch) {
-        title = titleMatch[1];
-        var bookMatch = title.match(/《([^》]*)》/);
-        if (bookMatch) {
-            title = bookMatch[1];
-        } else {
-            title = title.replace(/[_\-].*$/, "");
+    if (html) {
+        var titleMatch = html.match(/property="og:title" content="([^"]*)"/);
+        if (titleMatch) {
+            title = titleMatch[1];
+            var bookMatch = title.match(/《([^》]*)》/);
+            if (bookMatch) {
+                title = bookMatch[1];
+            } else {
+                title = title.replace(/[_\-].*$/, "");
+            }
         }
+        title = decodeHtml(title);
     }
-    title = decodeHtml(title);
     
     // 封面
     var pic = "";
-    var picMatch = html.match(/property="og:image" content="([^"]*)"/);
-    if (picMatch) pic = picMatch[1];
+    if (html) {
+        var picMatch = html.match(/property="og:image" content="([^"]*)"/);
+        if (picMatch) pic = picMatch[1];
+    }
     
     // 简介
     var desc = "";
-    var descMatch = html.match(/property="og:description" content="([^"]*)"/);
-    if (descMatch) desc = decodeHtml(descMatch[1]);
+    if (html) {
+        var descMatch = html.match(/property="og:description" content="([^"]*)"/);
+        if (descMatch) desc = decodeHtml(descMatch[1]);
+    }
     
     // 演员
     var actor = "";
-    var actorMatch = html.match(/property="og:video:actor" content="([^"]*)"/);
-    if (actorMatch) actor = decodeHtml(actorMatch[1]);
+    if (html) {
+        var actorMatch = html.match(/property="og:video:actor" content="([^"]*)"/);
+        if (actorMatch) actor = decodeHtml(actorMatch[1]);
+    }
     
     // 导演
     var director = "";
-    var directorMatch = html.match(/property="og:video:director" content="([^"]*)"/);
-    if (directorMatch) director = decodeHtml(directorMatch[1]);
+    if (html) {
+        var directorMatch = html.match(/property="og:video:director" content="([^"]*)"/);
+        if (directorMatch) director = decodeHtml(directorMatch[1]);
+    }
     
     // 解析播放源
     var playSources = [];
-    var boxBlocks = html.split(/<div[^>]*class="box"[^>]*>/);
-    for (var i = 1; i < boxBlocks.length; i++) {
-        var block = boxBlocks[i];
-        var nameMatch = block.match(/<b>([^<]*)<\/b>/);
-        if (!nameMatch) continue;
-        var sourceName = decodeHtml(nameMatch[1].trim());
-        
-        var bofangMatch = block.match(/<div class="bofang">([\s\S]*?)<\/div>/);
-        if (!bofangMatch) continue;
-        var epHtml = bofangMatch[1];
-        
-        var episodes = [];
-        var epPattern = /<a[^>]*title="([^"]*)"[^>]*href="([^"]*)"[^>]*>/g;
-        var em;
-        while ((em = epPattern.exec(epHtml)) !== null) {
-            var epTitle = decodeHtml(em[1]);
-            var epUrl = em[2];
-            if (epUrl.indexOf("/") === 0) epUrl = BASE_URL + epUrl;
-            episodes.push(epTitle + "$" + epUrl);
-        }
-        
-        if (episodes.length > 0) {
-            playSources.push(sourceName + "$" + episodes.join("#"));
+    if (html) {
+        var boxBlocks = html.split(/<div[^>]*class="box"[^>]*>/);
+        for (var i = 1; i < boxBlocks.length; i++) {
+            var block = boxBlocks[i];
+            var nameMatch = block.match(/<b>([^<]*)<\/b>/);
+            if (!nameMatch) continue;
+            var sourceName = decodeHtml(nameMatch[1].trim());
+            
+            var bofangMatch = block.match(/<div class="bofang">([\s\S]*?)<\/div>/);
+            if (!bofangMatch) continue;
+            var epHtml = bofangMatch[1];
+            
+            var episodes = [];
+            var epPattern = /<a[^>]*title="([^"]*)"[^>]*href="([^"]*)"[^>]*>/g;
+            var em;
+            while ((em = epPattern.exec(epHtml)) !== null) {
+                var epTitle = decodeHtml(em[1]);
+                var epUrl = em[2];
+                if (epUrl.indexOf("/") === 0) epUrl = BASE_URL + epUrl;
+                episodes.push(epTitle + "$" + epUrl);
+            }
+            
+            if (episodes.length > 0) {
+                playSources.push(sourceName + "$" + episodes.join("#"));
+            }
         }
     }
     
     var vodPlayUrl = playSources.join("$$");
-    
-    // 备用：如果没解析到播放源
-    if (!vodPlayUrl) {
-        var allLinks = html.match(/<a[^>]*href="(https?:\/\/www\.lzhuanqiu\.com\/vh\/[^"]*)"[^>]*>([^<]*)<\/a>/g);
-        if (allLinks) {
-            var eps = [];
-            for (var j = 0; j < allLinks.length; j++) {
-                var lm = allLinks[j].match(/href="([^"]*)"[^>]*>([^<]*)</);
-                if (lm) {
-                    eps.push(decodeHtml(lm[2]) + "$" + lm[1]);
-                }
-            }
-            if (eps.length > 0) {
-                vodPlayUrl = "默认$" + eps.join("#");
-            }
-        }
-    }
     
     var detail = {
         vod_id: id,
@@ -198,15 +222,17 @@ function play(flag, id, flags) {
     var html = req(id);
     var playUrl = "";
     
-    // 提取DPlayer的video url
-    var urlMatch = html.match(/url:\s*['"]([^'"]+\.m3u8[^'"]*)['"]/);
-    if (urlMatch) {
-        playUrl = urlMatch[1];
-    } else {
-        // 备用：提取任何m3u8链接
-        var m3u8Match = html.match(/https?:\/\/[^\s"'<>]+\.m3u8[^\s"'<>]*/);
-        if (m3u8Match) {
-            playUrl = m3u8Match[0];
+    if (html) {
+        // 提取DPlayer的video url
+        var urlMatch = html.match(/url:\s*['"]([^'"]+\.m3u8[^'"]*)['"]/);
+        if (urlMatch) {
+            playUrl = urlMatch[1];
+        } else {
+            // 备用：提取任何m3u8链接
+            var m3u8Match = html.match(/https?:\/\/[^\s"'<>]+\.m3u8[^\s"'<>]*/);
+            if (m3u8Match) {
+                playUrl = m3u8Match[0];
+            }
         }
     }
     
