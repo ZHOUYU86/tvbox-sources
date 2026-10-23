@@ -24,7 +24,7 @@ jobs:
 
       - name: 修正 FongMi.json spider 为完整网址
         run: |
-          sed -i 's|"spider":"[^"]*"|"spider":"https://zhouyu365666.top/zhenxin/custom_spider.jar;md5;af245844582db5e0635810a2263aff9d"|' zhenxin/FongMi.json
+          sed -i 's|"spider":"[^"]*"|"spider":"./custom_spider.jar;md5;af245844582db5e0635810a2263aff9d"|' zhenxin/FongMi.json
 
       - name: 剥除 FongMi 扩展字段（兼容老版OK影视，防闪退）
         run: |
