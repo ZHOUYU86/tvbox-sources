@@ -27,5 +27,6 @@ jobs:
             echo "No changes"
           else
             git commit -m "auto update live tv sources $(date -u +%F)"
+            git pull --rebase origin main || true
             git push
           fi
