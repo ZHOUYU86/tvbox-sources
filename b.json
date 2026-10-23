@@ -4,20 +4,10 @@
   "logo": "https://szyyds.cn/1.png",
   "sites": [
     {
-      "key": "WexAiGuaZi",
-      "name": "💥瓜子┃秒播💥",
-      "type": 3,
-      "api": "csp_WexAiGuaZiGuard",
-      "jar": "http://oss4liview.moji.com/thd_file/2026/10/17/5e08f8d3205a77afbac8474bb5982bfe.jpg;md5;734e79fc08ba6a11ade5b620a828e991",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 0
-    },
-    {
       "key": "dashixiong",
       "name": "大师兄影视",
       "type": 1,
-      "api": "http://192.168.0.26:8899/api.php/provide/vod",
+      "api": "https://zhouyu86-bh1.pages.dev/api.php/provide/vod",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
