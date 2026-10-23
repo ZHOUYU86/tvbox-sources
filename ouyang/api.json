@@ -1,8 +1,7 @@
-
 {
-    "wallpaper": "https://picsum.photos/1280/720/?blur=2",
-    "spider": "./jar/XYQ.jar",
-    "lives": [
+"wallpaper": "https://picsum.photos/1280/720/?blur=2",
+"spider": "./jar/XYQ.jar",
+"lives": [
         {
           "name": "Yoursmile7",
           "type":"0",
@@ -33,7 +32,7 @@
           "logo": "https://epg.112114.xyz/logo/{name}.png"
         }
     ],
-    "sites": [
+"sites": [
         {"key":"csp_LocalFile","name":"💻本地视频","type":3,"api":"csp_LocalFile","searchable":0,"quickSearch":0,"filterable":0,"type_flag":0},
         {"key":"drpy_js_豆瓣","name":"豆瓣[js]","type":3,"api":"https://mirror.ghproxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/lib/drpy2.min.js","ext":"https://mirror.ghproxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/js/drpy.js"},
         {"key":"drpy_js_奇珍异兽","name":"奇珍异兽[js]","type":3,"api":"https://mirror.ghproxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/lib/drpy2.min.js","ext":"https://mirror.ghproxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/js/奇珍异兽.js"},

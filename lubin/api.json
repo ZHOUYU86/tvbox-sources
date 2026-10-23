@@ -1,14 +1,14 @@
 {
-  "spider": "./p.jar",
-  "logo": "https://0.12yue.de5.net/5/lib/jueson.jpg",
-  "lives": [
+"spider": "./p.jar",
+"logo": "https://0.12yue.de5.net/5/lib/jueson.jpg",
+"lives": [
     {
       "name": "Guovin",
       "type": 0,
       "url": "https://cdn.jsdelivr.net/gh/Guovin/iptv-api@gd/output/result.m3u"
     }
   ],
-  "sites": [
+"sites": [
     {
       "key": "jueson",
       "name": "🏠主页┃豆瓣",
@@ -4370,76 +4370,6 @@
       "searchable": 0,
       "filterable": 0,
       "changeable": 0
-    }
-  ],
-  "parses": [
-    {
-      "name": "解析聚合",
-      "type": 3,
-      "url": "https://0.12yue.de5.net/5/Demo"
-    },
-    {
-      "name": "xy4k",
-      "type": 1,
-      "url": "https://183933.xyz/xiaye.php?url="
-    }
-  ],
-  "rules": [
-    {
-      "name": "农民",
-      "hosts": [
-        "toutiaovod.com"
-      ],
-      "regex": [
-        "video/tos/cn"
-      ]
-    },
-    {
-      "name": "火山",
-      "hosts": [
-        "huoshan.com"
-      ],
-      "regex": [
-        "item_id="
-      ]
-    },
-    {
-      "name": "抖音",
-      "hosts": [
-        "douyin.com"
-      ],
-      "regex": [
-        "is_play_url="
-      ]
-    },
-    {
-      "name": "饭团点击",
-      "hosts": [
-        "dadagui",
-        "freeok",
-        "dadagui"
-      ],
-      "script": [
-        "document.querySelector(\"#playleft iframe\").contentWindow.document.querySelector(\"#start\").click();"
-      ]
-    },
-    {
-      "name": "毛驴点击",
-      "hosts": [
-        "www.maolvys.com"
-      ],
-      "script": [
-        "document.getElementsByClassName('swal-button swal-button--confirm')[0].click()"
-      ]
-    },
-    {
-      "name": "ofiii",
-      "hosts": [
-        "www.ofiii.com"
-      ],
-      "script": [
-        "const play=document.getElementsByClassName('play_icon')[0],event=new MouseEvent('click',{bubbles:!0,cancelable:!0,view:window,screenX:100,screenY:100,clientX:50,clientY:50,button:0,shiftKey:!1,ctrlKey:!1,altKey:!1,metaKey:!1,modifierState:0});play.dispatchEvent(event);"
-      ]
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
-    "spider": "./spider.jar;md5;fc8f993c9297d38139363cd0e3db9853",
-    "wallpaper": "https://www.loliapi.com/acg/",
-    "logo": "https://storage.7x24cc.com/storage-server/presigned/ss1/a6-online-fileupload/newMediaFile/3CEAE9E_773_wexfnw_20250911190012684newMediaFile.gif",
-    "sites": [
+"spider": "./spider.jar;md5;12e821fd4c608270b019feb736c469dd",
+"wallpaper": "https://www.loliapi.com/acg/",
+"logo": "https://storage.7x24cc.com/storage-server/presigned/ss1/a6-online-fileupload/newMediaFile/3CEAE9E_773_wexfnw_20250911190012684newMediaFile.gif",
+"sites": [
         {
             "key": "Douban",
             "name": "🐮【免费分享】🐮",
@@ -15,7 +15,7 @@
             "ext": "https://cdn.waimaimingtang.com/file/images/bwc/20260414181247-ae51abfbfe.txt"
         }, {
             "key": "Doubanaaaa",
-            "name": "🐮【更新日期:20260923】🐮",
+            "name": "🐮【更新日期:20261020】🐮",
             "type": 3,
             "api": "csp_NewDouBanGuard",
             "indexs": 1,
@@ -106,6 +106,30 @@
             "name": "💓多多┃4K💓",
             "type": 3,
             "api": "csp_AiNewDuoDuoGuard",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 0
+        },  {
+            "key": "AiNewKuaiYing",
+            "name": "💓快影┃4K💓",
+            "type": 3,
+            "api": "csp_AiNewKuaiYingGuard",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 0
+        },  {
+            "key": "AiNewLaBi",
+            "name": "💓蜡笔┃4K💓",
+            "type": 3,
+            "api": "csp_AiNewLaBiGuard",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 0
+        },  {
+            "key": "AiNewShanDian",
+            "name": "💓闪电┃4K💓",
+            "type": 3,
+            "api": "csp_AiNewShanDianGuard",
             "searchable": 1,
             "quickSearch": 1,
             "changeable": 0
@@ -885,7 +909,7 @@
             "changeable": 0
         }
     ],
-    "lives": [{
+"lives": [{
             "name": "Kimentanm",
             "type": 0,
             "url": "https://down.nigx.cn/raw.githubusercontent.com/Kimentanm/aptv/master/m3u/iptv.m3u",
