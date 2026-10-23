@@ -17,6 +17,16 @@ jobs:
         run: |
           python3 scripts/sync_legacy.py
 
+      - name: 剥除 FongMi 扩展字段（兼容老版OK影视，防闪退）
+        run: |
+          python3 - <<'EOF'
+          import glob, subprocess, sys
+          for f in sorted(glob.glob("*/api.json")):
+              r = subprocess.run([sys.executable, "scripts/strip_fongmi_extra.py", f])
+              if r.returncode != 0:
+                  print("跳过(无扩展字段或异常):", f)
+          EOF
+
       - name: 有变化则提交（并发安全）
         run: |
           git config user.name "zhouyu86-bot"
