@@ -1,0 +1,31 @@
+name: lmw-sync
+
+on:
+  schedule:
+    # 每天 10:00 和 22:00（北京时间），GitHub Actions 按 UTC 计算
+    - cron: '0 2,14 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 运行同步脚本
+        run: python .github/scripts/lmw_sync.py
+
+      - name: 有变化则提交推送
+        run: |
+          if git diff --quiet; then
+            echo "接口无变化，跳过提交"
+          else
+            git config user.name "zhouyu-bot"
+            git config user.email "zhouyu-bot@users.noreply.github.com"
+            git add cl/lmw_new.json
+            git commit -m "auto: 同步肥猫聚合源新接口 $(date +%F)"
+            git push
+          fi
