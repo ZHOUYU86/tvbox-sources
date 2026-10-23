@@ -51,8 +51,15 @@ jobs:
             echo "无变化"
           else
             git commit -m "sync zhenxin (DodgeZhang/tvbox) $(date -u +%Y%m%d%H%M)"
-            git pull --rebase origin main || true
-            git push
+            for i in 1 2 3; do
+              git pull --rebase origin main || true
+              if git push; then
+                echo "push 成功 (attempt $i)"
+                break
+              fi
+              echo "push 冲突重试 (attempt $i)"
+              sleep 10
+            done
           fi
 
       - name: 失败通知邮箱
