@@ -54,3 +54,11 @@ jobs:
             git pull --rebase origin main || true
             git push
           fi
+
+      - name: 失败通知邮箱
+        if: failure()
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_TO: 863904696@qq.com
+        run: python3 .github/scripts/notify_failure.py
