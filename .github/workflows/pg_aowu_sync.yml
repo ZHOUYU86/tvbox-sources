@@ -82,9 +82,9 @@ jobs:
           finalize("aowu/aowu.json", "aowu/custom_spider.jar", aowu_jar)
           EOF
 
-      - name: 剥除 PG 扩展字段（兼容老版OK影视，防闪退）
+      - name: 剥除 PG/嗷呜扩展字段（兼容老版OK影视，防闪退）
         run: |
-          python3 scripts/strip_fongmi_extra.py pg/pg.json
+          python3 scripts/strip_fongmi_extra.py pg/pg.json aowu/aowu.json
 
       - name: 有变化则提交（并发安全）
         run: |
