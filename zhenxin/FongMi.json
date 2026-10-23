@@ -1,8 +1,8 @@
-{
-  "spider": "https://zhouyu365666.top/zhenxin/custom_spider.jar;md5;af245844582db5e0635810a2263aff9d",
-  "wallpaper": "https://bing.img.run/rand.php",
-  "lives": [],
-  "sites": [
+{
+"spider": "https://zhouyu365666.top/zhenxin/custom_spider.jar;md5;af245844582db5e0635810a2263aff9d",
+"wallpaper": "https://bing.img.run/rand.php",
+"lives": [],
+"sites": [
     {
       "key": "Tg | 豆瓣",
       "name": "Tg | 豆瓣",
@@ -650,30 +650,5 @@
         "体育", "足球", "篮球", "网球", "斯诺克"
       ]
     }
-  ],
-  "rules": [
-    {
-      "name": "proxy",
-      "hosts": [
-        "raw.githubusercontent.com",
-        "googlevideo.com",
-        "cdn.v82u1l.com",
-        "cdn.iz8qkg.com",
-        "cdn.kin6c1.com",
-        "stream-link.org",
-        "hinet.net",
-        "koyeb.app",
-        "c.biggggg.com",
-        "c.olddddd.com",
-        "haiwaikan.com",
-        "www.histar.tv",
-        "youtube.com",
-        "uhibo.com",
-        ".*boku.*",
-        ".*nivod.*",
-        "*.t4tv.hz.cz",
-        ".*ulivetv.*"
-      ]
-    }
-  ]
-}
+  ]
+}
