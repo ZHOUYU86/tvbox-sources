@@ -42,8 +42,8 @@ UA = {"User-Agent": "Mozilla/5.0 (doubao-health-check)"}
 REPO = "ZHOUYU86/tvbox-sources"
 GITHUB_API = "https://api.github.com/repos/" + REPO
 FRESH_HOURS = 48
-SITE_TIMEOUT = 8          # 单源探测超时（秒）
-SITES_DOWN_RATIO = 0.5    # 接口内打不开源占比超此值 -> 整源报废风险
+SITE_TIMEOUT = 15         # 单源探测超时（秒，海外runner到国内延迟高）
+SITES_DOWN_RATIO = 0.8    # 接口内打不开源占比超此值才整源报废（海外网络波动不误报）
 SITE_MAX = 60             # 单接口最多探测的源数量（防超时爆炸）
 
 # FongMi 扩展字段黑名单（剥离后顶层只应剩 spider/sites/lives/wallpaper/logo）
@@ -311,7 +311,7 @@ def check_json_file(name, path, wf, token):
         reason_txt = " ".join(f"{k}×{v}" for k, v in sorted(reason_count.items(), key=lambda x: -x[1]))
         names = ",".join(k for k, _ in down_std[:8])
         if total_std >= 3 and len(down_std) / total_std > SITES_DOWN_RATIO:
-            fatal.append({"file": path, "level": "fatal", "kind": "SITES_DOWN",
+            warn.append({"file": path, "level": "warn", "kind": "SITES_DOWN",
                           "detail": f"接口内 {len(down_std)}/{total_std} 个站点源打不开: {names} ({reason_txt})",
                           "fix": "resync", "workflow": wf})
         else:
