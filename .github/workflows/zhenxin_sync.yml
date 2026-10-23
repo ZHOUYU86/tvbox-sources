@@ -26,6 +26,10 @@ jobs:
         run: |
           sed -i 's|"spider":"[^"]*"|"spider":"https://zhouyu365666.top/zhenxin/custom_spider.jar;md5;af245844582db5e0635810a2263aff9d"|' zhenxin/FongMi.json
 
+      - name: 剥除 FongMi 扩展字段（兼容老版OK影视，防闪退）
+        run: |
+          python3 scripts/strip_fongmi_extra.py zhenxin/FongMi.json
+
       - name: 有变化则提交
         run: |
           if git diff --quiet; then
