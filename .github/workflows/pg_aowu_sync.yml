@@ -23,6 +23,30 @@ jobs:
         run: |
           curl -L --max-time 120 -o aowu/aowu.json "https://9763.kstore.vip/aowu.json"
 
+      - name: 同步上游 lib 配置文件（pg/lib）
+        run: |
+          mkdir -p pg/lib
+          python3 - <<'EOF'
+          import os, re, urllib.request
+          need = [
+            "123share.txt","189share.txt","115share.txt","alishare.ebook.txt","alishare.txt",
+            "alist.min.js","biptv.txt","douban.json","feimaolive.json","live2vod.js",
+            "moli.json","pikpakclass.json","pushshare.txt","quarkshare.txt","tgsearch.json",
+            "thundershare.txt","ucshare.txt","wogg.json","yo21.txt",
+          ]
+          ok = fail = 0
+          for f in need:
+              try:
+                  req = urllib.request.Request("https://www.252035.xyz/p/lib/" + f, headers={"User-Agent": "Mozilla/5.0"})
+                  with urllib.request.urlopen(req, timeout=40) as r:
+                      b = r.read()
+                  open("pg/lib/" + f, "wb").write(b)
+                  ok += 1
+              except Exception:
+                  fail += 1
+          print(f"lib 同步: ok={ok} fail={fail}")
+          EOF
+
       - name: 剥注释、下载 jar、动态 md5、spider 改相对路径
         run: |
           python3 - <<'EOF'
