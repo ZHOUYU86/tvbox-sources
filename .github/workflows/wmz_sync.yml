@@ -21,6 +21,10 @@ jobs:
           mkdir -p wmz
           python .github/scripts/wmz_sync.py
 
+      - name: 剥除 WMZ 扩展字段（兼容老版OK影视，防闪退）
+        run: |
+          python3 scripts/strip_fongmi_extra.py wmz/wmz.json || true
+
       - name: 有变化则提交（并发安全）
         run: |
           git config user.name "zhouyu86-bot"
