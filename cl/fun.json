@@ -32,6 +32,13 @@
    "ext": ""
   },
   {
+   "key": "py_huangguo2",
+   "name": "黄果剧场[py]",
+   "type": 3,
+   "api": "./js/ss/黄果剧场.py",
+   "ext": ""
+  },
+  {
    "key": "py_huangdou",
    "name": "黄豆短剧[py]",
    "type": 3,
@@ -71,6 +78,20 @@
    "name": "玉蚌含珠[py]",
    "type": 3,
    "api": "./js/ss/ybhz51.py",
+   "ext": ""
+  },
+  {
+   "key": "py_花都",
+   "name": "花都影院[py]",
+   "type": 3,
+   "api": "./js/ss/花都影院.py",
+   "ext": ""
+  },
+  {
+   "key": "py_redtube",
+   "name": "RedTube[py]",
+   "type": 3,
+   "api": "./js/ss/redtube.py",
    "ext": ""
   },
   {
