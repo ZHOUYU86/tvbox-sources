@@ -22,6 +22,10 @@ jobs:
           mv /tmp/zhenxin_x/*/zhenxin zhenxin
           rm -rf /tmp/zhenxin_x /tmp/zhenxin.zip
 
+      - name: 修正 FongMi.json spider 为完整网址
+        run: |
+          sed -i 's|"spider":"[^"]*"|"spider":"https://zhouyu365666.top/zhenxin/custom_spider.jar;md5;af245844582db5e0635810a2263aff9d"|' zhenxin/FongMi.json
+
       - name: 有变化则提交
         run: |
           if git diff --quiet; then
