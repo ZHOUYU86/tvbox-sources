@@ -22,22 +22,35 @@ jobs:
           mv /tmp/zhenxin_x/*/zhenxin zhenxin
           rm -rf /tmp/zhenxin_x /tmp/zhenxin.zip
 
-      - name: 修正 FongMi.json spider 为完整网址
+      - name: 修正 FongMi.json spider 为相对路径
         run: |
-          sed -i 's|"spider":"[^"]*"|"spider":"./custom_spider.jar;md5;af245844582db5e0635810a2263aff9d"|' zhenxin/FongMi.json
+          sed -i 's|"spider":"[^"]*"|"spider":"./custom_spider.jar"|' zhenxin/FongMi.json
+
+      - name: 动态计算 jar md5 写入 spider
+        run: |
+          python3 - <<'EOF'
+          import hashlib, re
+          b = open("zhenxin/custom_spider.jar", "rb").read()
+          md5 = hashlib.md5(b).hexdigest()
+          s = open("zhenxin/FongMi.json", encoding="utf-8").read()
+          s = re.sub(r'"spider"\s*:\s*"\./[^"]*"', f'"spider":"./custom_spider.jar;md5;{md5}"', s, count=1)
+          open("zhenxin/FongMi.json", "w", encoding="utf-8").write(s)
+          print("zhenxin spider md5:", md5)
+          EOF
 
       - name: 剥除 FongMi 扩展字段（兼容老版OK影视，防闪退）
         run: |
           python3 scripts/strip_fongmi_extra.py zhenxin/FongMi.json
 
-      - name: 有变化则提交
+      - name: 有变化则提交（并发安全）
         run: |
-          if git diff --quiet; then
+          git config user.name "zhouyu86-bot"
+          git config user.email "863904696@qq.com"
+          git add zhenxin
+          if git diff --cached --quiet; then
             echo "无变化"
           else
-            git config user.name "zhouyu86-bot"
-            git config user.email "863904696@qq.com"
-            git add zhenxin
             git commit -m "sync zhenxin (DodgeZhang/tvbox) $(date -u +%Y%m%d%H%M)"
+            git pull --rebase origin main || true
             git push
           fi
