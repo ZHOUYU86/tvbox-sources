@@ -51,11 +51,11 @@ PROV = {
     'zouping':'邹平','zunhua':'遵化','kunming':'昆明','lincang':'临沧','lijiang':'丽江','nujiang':'怒江',
     'dehong':'德宏','wenshan':'文山','honghe':'红河','xishuangbanna':'西双版纳','chuxiong':'楚雄','diqing':'迪庆',
     'baoshan':'保山','shangri-la':'香格里拉','zhaotong':'昭通','qujing':'曲靖','chuzhou':'滁州','chizhou':'池州',
-    "lu'an"':'六安','liuan':'六安','bozhou':'亳州','fuyang':'阜阳','huainan':'淮南','bengbu':'蚌埠','maanshan':'马鞍山',
+    "lu'an": "六安",'liuan':'六安','bozhou':'亳州','fuyang':'阜阳','huainan':'淮南','bengbu':'蚌埠','maanshan':'马鞍山',
     'wuhu':'芜湖','tongling':'铜陵','anqing':'安庆','huangshan':'黄山','xuancheng':'宣城','hefei':'合肥',
 }
 
-CCT"_CN " {
+CCTV_CN = {
     'cctv1':'CCTV-1 综合','cctv-1':'CCTV-1 综合','cctv2':'CCTV-2 财经','cctv-2':'CCTV-2 财经',
     'cctv3':'CCTV-3 综艺','cctv-3':'CCTV-3 综艺','cctv4':'CCTV-4 中文国际','cctv-4':'CCTV-4 中文国际',
     'cctv5':'CCTV-5 体育','cctv-5':'CCTV-5 体育','cctv5+':'CCTV-5+ 体育赛事','cctv-5+':'CCTV-5+ 体育赛事',
