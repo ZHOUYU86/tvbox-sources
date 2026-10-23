@@ -5,7 +5,7 @@
 文本级提取 KEEP 字段原始片段拼接，绝不用 json.dump 重排；先剥 // 注释行。"""
 import json, re, sys
 
-KEEP = {"spider", "sites", "lives", "wallpaper"}
+KEEP = {"spider", "sites", "lives", "wallpaper", "logo"}
 
 
 def top_fields(text):
@@ -66,7 +66,7 @@ def strip(path):
     s = open(path, encoding="utf-8").read()
     s = re.sub(r'^\s*//.*$', '', s, flags=re.M)  # 剥注释
     keep = [(k, v) for k, v in top_fields(s) if k in KEEP]
-    assert len(keep) == len(KEEP), f"{path}: KEEP 字段缺失 {[k for k, _ in keep]}"
+    assert any(k in ("spider", "sites") for k, _ in keep), f"{path}: 缺核心字段 spider/sites"
     new = "{\r\n" + ",\r\n".join(v for _, v in keep) + "\r\n}"
     json.loads(new)  # 严格校验
     open(path, "w", encoding="utf-8").write(new)
