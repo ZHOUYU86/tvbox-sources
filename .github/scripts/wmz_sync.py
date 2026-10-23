@@ -92,6 +92,80 @@ def parse_sites(text):
     return out
 
 
+def find_struct_end(text, start, open_ch, close_ch):
+    """从 start 位置开始找匹配的 close_ch（正确处理字符串内部，跳过 \\ 转义）"""
+    i = start
+    cnt = 0
+    in_str = False
+    while i < len(text):
+        c = text[i]
+        if in_str:
+            if c == '\\':
+                i += 2
+                continue
+            if c == '"':
+                in_str = False
+            i += 1
+            continue
+        if c == '"':
+            in_str = True
+            i += 1
+            continue
+        if c == open_ch:
+            cnt += 1
+        elif c == close_ch:
+            cnt -= 1
+            if cnt == 0:
+                return i
+        i += 1
+    return -1
+
+
+def build_raw_subset(raw_text, unique_keys):
+    """
+    从上游原始文本中按"字节级原样"提取子集：
+    - 只替换 sites 数组内容为选中的源块（原始文本，紧凑格式保留）
+    - 其余（spider/wallpaper/logo/warningText/parses/rules/lives...）全部原样保留
+    - 绝不用 json.dumps 重新格式化（会改变格式导致 OK影视解析失败）
+    """
+    # 用正则精确定位 "sites": [ （避免误命中字符串值里的 "sites"）
+    m = re.search(r'"sites"\s*:\s*\[', raw_text)
+    if not m:
+        raise RuntimeError("上游没有 sites 数组！")
+    sb = m.end() - 1                             # [ 的位置
+    arr_end = find_struct_end(raw_text, sb, '[', ']')  # ] 的位置
+    se = arr_end                                 # tail 从 ] 开始（保留闭合括号）
+
+    # 在 [ .. ] 内切出每个顶层对象块（花括号平衡扫描，跳过字符串）
+    blocks, keys = [], []
+    i = sb + 1
+    while i < se - 1:
+        while i < se - 1 and raw_text[i] in ' \t\r\n,':
+            i += 1
+        if i >= se - 1:
+            break
+        if raw_text[i] != '{':
+            i += 1
+            continue
+        j = find_struct_end(raw_text, i, '{', '}')
+        blk = raw_text[i:j + 1]
+        try:
+            obj = json.loads(blk)
+            keys.append(obj.get("key", ""))
+        except Exception:
+            keys.append("")
+        blocks.append(blk)
+        i = j + 1
+
+    # 按 key 选独有源块（保持上游原顺序）
+    sel = [blk for blk, k in zip(blocks, keys) if k in unique_keys]
+
+    head = raw_text[:sb + 1]   # "sites":[ 之前（含 [ 本身）
+    tail = raw_text[se:]       # ] 之后（lives/parses/rules 等原样）
+    mid = ",".join(sel)        # 原始紧凑逗号分隔
+    return head + mid + tail
+
+
 def main():
     print("=== wmz 独有源自动同步 ===")
 
@@ -136,15 +210,19 @@ def main():
     for s in unique:
         print(f"  - {s.get('key')} | {s.get('name')}")
 
-    # 4. 生成新接口
-    new_api = {
-        "spider": wmz.get("spider"),
-        "wallpaper": wmz.get("wallpaper"),
-        "logo": wmz.get("logo"),
-        "sites": unique,
-        "lives": wmz.get("lives") or [],
-    }
-    new_text = json.dumps(new_api, ensure_ascii=False, indent=2) + "\n"
+    # 4. 生成新接口：文本级原样提取（保持上游紧凑格式，禁止 json.dumps 重排）
+    #    同时把顶层 spider 改为咱们仓库的相对路径 jar（OK影视添加时从 Pages 下载，不会崩）
+    unique_keys = set()
+    for s in unique:
+        unique_keys.add(s.get("key", ""))
+    new_text = build_raw_subset(wmz_text, unique_keys)
+    new_text = re.sub(
+        r'"spider"\s*:\s*"[^"]*"',
+        '"spider":"./lmw.jar;md5;62cd1dd7cf867a100d8613907d69b665"',
+        new_text,
+        count=1,
+    )
+    new_text = new_text.rstrip() + "\n"
 
     # 5. 对比旧文件
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
