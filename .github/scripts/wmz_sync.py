@@ -218,7 +218,7 @@ def main():
     new_text = build_raw_subset(wmz_text, unique_keys)
     new_text = re.sub(
         r'"spider"\s*:\s*"[^"]*"',
-        '"spider":"https://zhouyu365666.top/wmz/lmw.jar;md5;62cd1dd7cf867a100d8613907d69b665"',
+        '"spider":"./lmw.jar;md5;62cd1dd7cf867a100d8613907d69b665"',
         new_text,
         count=1,
     )
