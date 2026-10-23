@@ -37,6 +37,10 @@ jobs:
               open(f, "w", encoding="utf-8").write(s)
           EOF
 
+      - name: 剥除 PG 扩展字段（兼容老版OK影视，防闪退）
+        run: |
+          python3 scripts/strip_fongmi_extra.py pg/pg.json
+
       - name: 有变化则提交
         run: |
           if git diff --quiet; then
