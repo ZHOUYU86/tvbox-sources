@@ -1,0 +1,294 @@
+{
+  "spider": "https://raw.gitcode.com/2501_90909032/oooo/blobs/4ce11434656bc1a8001647e3d42cf17b42392ef1/lmw.jar;md5;62cd1dd7cf867a100d8613907d69b665",
+  "wallpaper": "https://t.alcy.cc/fj",
+  "logo": "https://img.meituan.net/poiugc/018d4112d5aaf3d0982bb6bbc2bf71b2292451.gif",
+  "sites": [
+    {
+      "key": "网盘分享",
+      "name": "🌐网盘丨资源库",
+      "type": 3,
+      "api": "csp_PanShare",
+      "searchable": 0,
+      "filterable": 0,
+      "changeable": 0,
+      "style": {
+        "type": "list",
+        "ratio": 1.433
+      },
+      "ext": "https://wget.la/raw.githubusercontent.com/tushen6/Tomorrow/refs/heads/master/json/share.json"
+    },
+    {
+      "key": "玩耦",
+      "name": "💯玩耦｜4K臻享",
+      "type": 3,
+      "api": "csp_Wogg",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "changeable": 1,
+      "ext": {
+        "site": [
+          "https://wogg.xxooo.cf",
+          "http://www.wogg.live",
+          "https://www.wogg.net",
+          "https://woggpan.xxooo.cf"
+        ]
+      },
+      "timeout": 60
+    },
+    {
+      "key": "花卷真彩",
+      "name": "💯花卷丨4K臻彩",
+      "api": "csp_HJZhenCai",
+      "type": 3,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": {
+        "site": [
+          "https://www.hjzhencai.top"
+        ]
+      }
+    },
+    {
+      "key": "小丑",
+      "name": "🤡小丑丨4K网盘",
+      "type": 3,
+      "api": "csp_4KZhinan",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": {
+        "site": [
+          "https://4kxc.com"
+        ]
+      },
+      "timeout": 60
+    },
+    {
+      "key": "hdmoli",
+      "name": "🅾️HDmoli丨网盘资源",
+      "type": 3,
+      "api": "csp_HDMoli",
+      "searchable": 1,
+      "quickSearch": 1
+    },
+    {
+      "key": "sou4k",
+      "name": "💯搜4K丨网盘资源",
+      "api": "csp_Sou4K",
+      "type": 3,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "Juying",
+      "name": "💯聚影丨4K网盘",
+      "type": 3,
+      "api": "csp_Juying",
+      "searchable": 1,
+      "filterable": 1,
+      "changeable": 1,
+      "timeout": 60
+    },
+    {
+      "key": "Wn4k",
+      "name": "🐌蜗牛丨4K网盘",
+      "type": 3,
+      "api": "csp_Wn4k",
+      "searchable": 1,
+      "filterable": 1,
+      "changeable": 1,
+      "timeout": 60
+    },
+    {
+      "key": "guanying",
+      "name": "🌀观影丨4K网盘",
+      "type": 3,
+      "api": "csp_GuanYing",
+      "searchable": 1,
+      "filterable": 1,
+      "changeable": 1,
+      "timeout": 60
+    },
+    {
+      "key": "音海",
+      "name": "🔍音海丨网盘搜索",
+      "type": 3,
+      "api": "csp_Yinhai",
+      "searchable": 1,
+      "quickSearch": 0,
+      "filterable": 0,
+      "timeout": 60
+    },
+    {
+      "key": "聚合",
+      "name": "🔍聚合丨网盘搜索",
+      "type": 3,
+      "api": "csp_JuheSo",
+      "searchable": 1,
+      "quickSearch": 0,
+      "filterable": 0,
+      "timeout": 60
+    },
+    {
+      "key": "搜剧AI",
+      "name": "🎈看剧AI丨蓝光秒播",
+      "api": "csp_SouJu",
+      "type": 3,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
+    },
+    {
+      "key": "北斗",
+      "name": "🛸北斗丨蓝光秒播",
+      "api": "csp_Bdjmcc",
+      "type": 3,
+      "searchable": 0,
+      "quickSearch": 0,
+      "filterable": 1
+    },
+    {
+      "key": "天堂1",
+      "name": "🎬电影天堂丨蓝光",
+      "type": 3,
+      "api": "csp_AppYsV2",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "playerType": 2,
+      "ext": "http://39.105.18.5:5565/api.php/app/"
+    },
+    {
+      "key": "Sao火",
+      "name": "🔥Sao火丨蓝光影视",
+      "type": 3,
+      "api": "csp_SaoHuo",
+      "ext": "https://shdy5.us"
+    },
+    {
+      "key": "一起",
+      "name": "👀一起看丨蓝光影视",
+      "type": 3,
+      "api": "csp_AppYQK",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
+    },
+    {
+      "key": "红果短剧",
+      "name": "🍎红果丨短剧爽看",
+      "type": 3,
+      "api": "https://wget.la/raw.githubusercontent.com/tushen6/Tomorrow/master/py/红果短剧.py",
+      "genre": "shortdrama"
+    },
+    {
+      "key": "咖啡",
+      "name": "⚽咖啡丨体育直播",
+      "type": 3,
+      "api": "csp_SportsKafei",
+      "style": {
+        "type": "rect",
+        "ratio": 1.0009
+      }
+    },
+    {
+      "key": "枫叶音乐",
+      "name": "🍁枫叶丨音乐合集",
+      "type": 3,
+      "api": "https://mpimg.cn/down.php/2090fedb67387ea1a1ad908a94eb0aa6.py",
+      "searchable": 1,
+      "changeable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "kwms",
+      "name": "🎶裤硪丨音乐合集",
+      "type": 3,
+      "api": "https://wget.la/raw.githubusercontent.com/tushen6/Tomorrow/master/py/kuwo.py"
+    },
+    {
+      "key": "音乐",
+      "name": "🎶听海丨音乐合集",
+      "type": 3,
+      "api": "https://wget.la/raw.githubusercontent.com/tushen6/Tomorrow/master/JS/tinghai.js",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "jin夏听书",
+      "name": "📚jin夏丨听书资源",
+      "type": 3,
+      "api": "csp_TingJinxia",
+      "searchable": 1,
+      "quickSearch": 0,
+      "changeable": 0,
+      "ext": "https://m.ting15.com"
+    },
+    {
+      "key": "275听书",
+      "name": "📖275听书｜小说听书",
+      "type": 3,
+      "api": "https://wget.la/raw.githubusercontent.com/tushen6/Tomorrow/master/py/275听书.py"
+    },
+    {
+      "key": "光鸭网盘",
+      "name": "🗂️我的丨光鸭网盘",
+      "type": 3,
+      "api": "csp_PanGuangya",
+      "searchable": 0,
+      "filterable": 0,
+      "changeable": 0,
+      "style": {
+        "type": "list",
+        "ratio": 1.433
+      }
+    },
+    {
+      "key": "115网盘",
+      "name": "🗂️我的丨115网盘",
+      "type": 3,
+      "api": "csp_Pan115",
+      "searchable": 0,
+      "filterable": 0,
+      "changeable": 0,
+      "style": {
+        "type": "list",
+        "ratio": 1.433
+      }
+    }
+  ],
+  "lives": [
+    {
+      "name": "📺简单TV(EXO)",
+      "type": 0,
+      "url": "http://iptv.ruyitv.cc/m3u/tv.txt",
+      "timeout": 10,
+      "playerType": 2,
+      "epg": "https://gitee.com/taksssss/tv/raw/main/epg/112114.xml.gz,http://epg.51zmt.top:8000/e.xml,https://gitee.com/taksssss/tv/raw/main/epg/epgpw_tw.xml.gz",
+      "logo": "https://gitee.com/mytv-android/myTVlogo/raw/main/img/{name}.png",
+      "ua": "okhttp/3.15,AptvPlayer/1.4.1,Mozilla/5.0"
+    },
+    {
+      "name": "央视TV直播",
+      "type": 1,
+      "url": "https://gh-proxy.org/raw.githubusercontent.com/vinkerq/iptv-api/refs/heads/master/iptv.txt"
+    },
+    {
+      "name": "咪咕TV直播",
+      "type": 1,
+      "url": "http://www.52top.com.cn:678/downloads/migu.txt"
+    },
+    {
+      "name": "☁️风云直播☁️",
+      "url": "http://iptv.4666888.xyz/FYTV.m3u",
+      "header": {
+        "User-Agent": "okhttp/5.1.0"
+      }
+    }
+  ]
+}

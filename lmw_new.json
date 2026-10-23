@@ -1,0 +1,20 @@
+{
+  "urls": [
+    {
+      "url": "https://tvbox-bh1.pages.dev/zhenxin/FongMi.json",
+      "name": "真心"
+    },
+    {
+      "url": "https://tvbox-bh1.pages.dev/pg/pg.json",
+      "name": "PG"
+    },
+    {
+      "url": "https://tvbox-bh1.pages.dev/aowu/aowu.json",
+      "name": "嗷呜"
+    },
+    {
+      "url": "https://tvbox-bh1.pages.dev/wmz/wmz.json",
+      "name": "wmz新源"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+name: zhenxin-sync
+on:
+  schedule:
+    - cron: "0 1,13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 拉取上游并更新 zhenxin/
+        run: |
+          rm -rf zhenxin
+          curl -L --max-time 300 -o /tmp/zhenxin.zip \
+            "https://gh-proxy.com/https://github.com/DodgeZhang/tvbox/archive/refs/heads/main.zip"
+          unzip -o -q /tmp/zhenxin.zip -d /tmp/zhenxin_x
+          mv /tmp/zhenxin_x/*/zhenxin zhenxin
+          rm -rf /tmp/zhenxin_x /tmp/zhenxin.zip
+
+      - name: 有变化则提交
+        run: |
+          if git diff --quiet; then
+            echo "无变化"
+          else
+            git config user.name "zhouyu86-bot"
+            git config user.email "863904696@qq.com"
+            git add zhenxin
+            git commit -m "sync zhenxin (DodgeZhang/tvbox) $(date -u +%Y%m%d%H%M)"
+            git push
+          fi

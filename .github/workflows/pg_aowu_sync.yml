@@ -1,0 +1,36 @@
+name: pg-aowu-sync
+on:
+  schedule:
+    - cron: "0 2,14 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 拉取 PG 接口内容（pg/pg.json + pg/pg.jar）
+        run: |
+          mkdir -p pg aowu
+          curl -L --max-time 120 -o pg/pg.json "https://www.252035.xyz/p/jsm.json"
+          curl -L --max-time 300 -o pg/pg.jar "https://www.252035.xyz/p/pg.jar"
+
+      - name: 拉取嗷呜接口内容（aowu/aowu.json）
+        run: |
+          curl -L --max-time 120 -o aowu/aowu.json "https://9763.kstore.vip/aowu.json"
+
+      - name: 有变化则提交
+        run: |
+          if git diff --quiet; then
+            echo "无变化"
+          else
+            git config user.name "zhouyu86-bot"
+            git config user.email "863904696@qq.com"
+            git add pg aowu
+            git commit -m "sync pg/aowu content $(date -u +%Y%m%d%H%M)"
+            git push
+          fi
