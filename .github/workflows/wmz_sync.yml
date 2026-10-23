@@ -21,14 +21,15 @@ jobs:
           mkdir -p wmz
           python .github/scripts/wmz_sync.py
 
-      - name: 有变化则提交
+      - name: 有变化则提交（并发安全）
         run: |
-          if git diff --quiet; then
+          git config user.name "zhouyu86-bot"
+          git config user.email "863904696@qq.com"
+          git add wmz
+          if git diff --cached --quiet; then
             echo "无变化"
           else
-            git config user.name "zhouyu86-bot"
-            git config user.email "863904696@qq.com"
-            git add wmz
             git commit -m "sync wmz unique sources $(date -u +%Y%m%d%H%M)"
+            git pull --rebase origin main || true
             git push
           fi
