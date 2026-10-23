@@ -1,5 +1,5 @@
 {
-"spider":"https://zhouyu365666.top/pg/pg.jar",
+"spider":"./pg.jar;md5;562b836d6f3251ee108a34f91987f3e4",
 "sites":[
                 {
            		"key": "Nostr",
