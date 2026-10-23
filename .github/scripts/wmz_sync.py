@@ -211,14 +211,14 @@ def main():
         print(f"  - {s.get('key')} | {s.get('name')}")
 
     # 4. 生成新接口：文本级原样提取（保持上游紧凑格式，禁止 json.dumps 重排）
-    #    同时把顶层 spider 改为咱们仓库的相对路径 jar（OK影视添加时从 Pages 下载，不会崩）
+    #    同时把顶层 spider 改为咱们仓库的完整网址 jar（OK影视添加时从 Pages 下载，不会崩）
     unique_keys = set()
     for s in unique:
         unique_keys.add(s.get("key", ""))
     new_text = build_raw_subset(wmz_text, unique_keys)
     new_text = re.sub(
         r'"spider"\s*:\s*"[^"]*"',
-        '"spider":"./lmw.jar;md5;62cd1dd7cf867a100d8613907d69b665"',
+        '"spider":"https://zhouyu365666.top/wmz/lmw.jar;md5;62cd1dd7cf867a100d8613907d69b665"',
         new_text,
         count=1,
     )
