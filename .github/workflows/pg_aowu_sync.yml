@@ -23,6 +23,20 @@ jobs:
         run: |
           curl -L --max-time 120 -o aowu/aowu.json "https://9763.kstore.vip/aowu.json"
 
+      - name: 剥注释并修正 spider 为完整网址
+        run: |
+          python3 - <<'EOF'
+          import re
+          for f, url in [
+              ("pg/pg.json", "https://zhouyu365666.top/pg/pg.jar"),
+              ("aowu/aowu.json", "https://zhouyu365666.top/aowu/custom_spider.jar;md5;a37b5c22b56c4dce38b519ee92256a8e"),
+          ]:
+              s = open(f, encoding="utf-8").read()
+              s = re.sub(r'^\s*//.*$', '', s, flags=re.M)
+              s = re.sub(r'"spider"\s*:\s*"[^"]*"', '"spider":"' + url + '"', s, count=1)
+              open(f, "w", encoding="utf-8").write(s)
+          EOF
+
       - name: 有变化则提交
         run: |
           if git diff --quiet; then
