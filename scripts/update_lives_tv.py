@@ -3,7 +3,7 @@
 拉取: epg.pw(freetv.fun 反代, 央视卫视地方) + iptv-org 港澳台
 输出: lives_tv.txt (全中文台名, 分类: 央视/卫视/地方台/港澳台/其他)
 """
-import urllib.request, re, io, sys
+import urllib.request, re, io, sys, time
 
 URLS = {
     'cn': 'https://m3u.ibert.me/txt/cn.txt',
@@ -71,11 +71,19 @@ CCTV_CN = {
     'cgtn_arabic':'CGTN 阿语','cgtn_français':'CGTN 法语','cgtn_русский':'CGTN 俄语',
 }
 
-def fetch(url, timeout=30):
-    req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0 (doubao-agent)'})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        data = r.read()
-    return data.decode('utf-8', errors='ignore')
+def fetch(url, timeout=30, tries=3):
+    last = None
+    for i in range(tries):
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0 (doubao-agent)'})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                data = r.read()
+            return data.decode('utf-8', errors='ignore')
+        except Exception as e:
+            last = e
+            sys.stderr.write('fetch retry %d for %s: %s\n' % (i + 1, url, e))
+            time.sleep(8 * (i + 1))
+    raise last
 
 def cn_name(name):
     n = name.strip()
