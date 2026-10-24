@@ -4,6 +4,16 @@
   "logo": "https://szyyds.cn/1.png",
   "sites": [
     {
+      "key": "Guazi",
+      "name": "瓜子影视[自研jar]",
+      "type": 3,
+      "api": "csp_Guazi",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 1,
+      "jar": "https://tvbox-bh1.pages.dev/gua_spider.jar"
+    },
+    {
       "key": "WexAiGuaZi",
       "name": "💥瓜子┃秒播💥",
       "type": 3,
