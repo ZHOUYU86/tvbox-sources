@@ -234,6 +234,54 @@ def main():
 
     with open(OUT, "w", encoding="utf-8") as f:
         f.write(new_text)
+
+    # 6. 防闪退固化：远程 jar 源强制关闭聚合搜索（站点保留，避免 OK影视 下载远程 jar 崩溃）
+    REMOTE_JAR_NAMES = ["红果", "裤硪", "275听书", "枫叶", "听海"]
+    def apply_search_off(text):
+        m = re.search(r'"sites"\s*:\s*\[', text)
+        if not m:
+            return text
+        sb = m.end() - 1
+        se = find_struct_end(text, sb, '[', ']')
+        blocks = []
+        i = sb + 1
+        while i < se - 1:
+            while i < se - 1 and text[i] in ' \t\r\n,':
+                i += 1
+            if i >= se - 1:
+                break
+            if text[i] != '{':
+                i += 1
+                continue
+            j = find_struct_end(text, i, '{', '}')
+            blk = text[i:j + 1]
+            try:
+                obj = json.loads(blk)
+            except Exception:
+                blocks.append(blk)
+                i = j + 1
+                continue
+            nm = obj.get("name", "")
+            if any(x in nm for x in REMOTE_JAR_NAMES):
+                nb = blk
+                if re.search(r'"searchable"\s*:\s*1', nb):
+                    nb = re.sub(r'"searchable"\s*:\s*1', '"searchable":0', nb)
+                elif not re.search(r'"searchable"\s*:', nb):
+                    nb = nb[:-1] + ',"searchable":0}'
+                if re.search(r'"quickSearch"\s*:\s*1', nb):
+                    nb = re.sub(r'"quickSearch"\s*:\s*1', '"quickSearch":0', nb)
+                elif not re.search(r'"quickSearch"\s*:', nb):
+                    nb = nb[:-1] + ',"quickSearch":0}'
+                blocks.append(nb)
+            else:
+                blocks.append(blk)
+            i = j + 1
+        head = text[:sb + 1]
+        tail = text[se:]
+        return head + ",".join(blocks) + tail
+
+    new_text = apply_search_off(new_text)
+
     print(f"写入 {OUT}: {len(new_text)} 字节, {'有变化' if changed else '无变化'}")
 
 
