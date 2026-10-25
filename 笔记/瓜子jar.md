@@ -103,3 +103,51 @@ sdapi.gkfun2x.com 会不定期长时间无响应（曾连续 40+ 分钟），导
 - 原代码用 vod_id 而非 vod_d_id 拼 body，导致 65 组合全 {}——必须用 vod_d_id
 - OK影视 3.7.3 的 Result 类无 string(IIII,List) 方法 → 手写 JSON 分类
 - 播放 FOUND/调试 dump 用 gua_play_* 前缀，禁止写 gua_search.json（会污染点播源配置）
+
+## 十一、播放链路最终突破（2026-10-25 下午，核心转折）
+
+### 域名切换（最关键发现）
+App 实际使用的 API 域名是 **api.anctjd.com**，不是之前试的 sdapi.gkfun2x.com 也不是 api.nstpsw.com。
+- 旧域名返回的是 20 秒预览流（index0.ts/index1.ts，瓜子 logo 宣传片），在 OK影视里只走画面不出正片
+- 新域名 api.anctjd.com 调 VurlDetail/showOne 返回的顶层 url 直接就是正版 m3u8（连续分片）
+
+### 防盗链真相：是 Referer，不是 Cookie
+之前花了大量时间做 302 预解析 + cookie 预取逻辑，全部被证伪：
+- 从 logcat 抓瓜子 App 真实播放流量：IJK 播放器（IJKMEDIA tag）直接请求 vd.wmvbo.com 的 ts 分片
+- 请求头只带 `Referer: http://WJiZxLXA2.com/` 和 `User-Agent: okhttp/3.12.0`
+- **没有 Cookie、没有 302 跳转**，全部返回 200
+- 不带 Referer 会 302 跳转，带了就直接 200
+
+### 抓包方法（IJK logcat）
+```
+adb -s emulator-5554 logcat -d | findstr /i "okhttp VurlDetail sdapi wmvbo IJKMEDIA" > gua_play_log.txt
+```
+清空 logcat 后在瓜子 App 点播放，抓到 IJK 播放器真实请求的 ts URL 和请求头。
+
+### jar 修改要点
+- HOST 常量改成 `https://api.anctjd.com`
+- playerContent 大幅简化：删掉 CDN 302 预解析、cookie 预取、二次请求，直接返回 API 给的 m3u8 URL + header
+- 请求头：`User-Agent: okhttp/3.12.0, Referer: http://WJiZxLXA2.com/`
+
+### 接口链（已验证）
+1. Vod/showOne {d_id} → vurl_clouds[0].id
+2. Vurl/show {vurl_cloud_id:2, vod_d_id} → list[0].id = vurl_id
+3. VurlDetail/showOne {vod_d_id, vurl_id, domain_type:8, resolution:1080, type:play} → 顶层 url（正版 m3u8）
+
+## 十二、UI 修复（2026-10-25 晚）
+1. **分类顺序**：推荐→电影→国产剧→海外剧→动漫→漫剧→综艺→短剧→玄幻→少儿（按 PID_NAMES 数组顺序手动构建，不再从 API JSON 遍历）
+2. **推荐页封面图**：homeContent 单独调 `/App/IndexList/index` 传 `{"pid":"1"}` 获取带 c_pic/vod_pic 的数据
+3. **名称标签清理**：pickName() 方法优先用 vod_name，c_name 遇到 emoji（code point > 0xFFFF）截断，去掉"🔥重磅开播""🌸更新"等后缀
+4. **站点名**：从"瓜子影视[自研jar]"改成"瓜子影视"
+
+## 十三、B 接口替换（2026-10-25 晚）
+- b.json 里旧的 WexAiGuaZi 源（wex.jar）已替换成自研 Guazi 源
+- 新源配置：key=Guazi, api=csp_Guazi, jar=https://tvbox-bh1.pages.dev/gua_spider.jar
+- 已推送到 GitHub ZHOUYU86/tvbox-sources
+- 注意：b.json 是 UTF-8 无 BOM 编码，修改时不能用 json.dump 重新格式化，只能文本替换
+
+## 十四、关键教训
+1. **域名是根因**：同一个 App 的不同 API 域名返回完全不同的内容（预览流 vs 正片），抓包必须用 App 真实域名
+2. **防盗链先抓真实流量**：不要猜是 cookie 还是 token，直接 logcat 抓播放器请求头
+3. **OK影视 ExoPlayer 限制**：jar 返回的 Cookie header 不会被 ExoPlayer 带到 ts 分片请求，所以 cookie 防盗链在 OK影视里走不通
+4. **IJK 播放器比 ExoPlayer 更灵活**：瓜子 App 用 IJK，直接带 Referer 就能播
