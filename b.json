@@ -1,5 +1,5 @@
 {
-  "spider": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc",
+  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
   "wallpaper": "https://szyyds.cn/api.php",
   "logo": "https://szyyds.cn/1.png",
   "sites": [
@@ -7,11 +7,11 @@
       "key": "WexAiGuaZi",
       "name": "💥瓜子┃秒播💥",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WexAiGuaZiGuard",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 0,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/wex.jar;md5;fc8f993c9297d38139363cd0e3db9853"
     },
     {
       "key": "dashixiong",
@@ -27,72 +27,72 @@
       "key": "Ddys",
       "name": "低端影视",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WwwDdys",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
       "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "Gqc",
       "name": "共青春",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_Gqc",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "Feikuai",
       "name": "飞快TV",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_Feikuai",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "Cupfox",
       "name": "茶杯狐",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_Cupfox",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "Www555",
       "name": "555电影",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_Www555",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "Dmxq",
       "name": "大米星球",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WwwDmxq",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "Qqys",
       "name": "千千影视",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WwwQqys",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "厂长",
@@ -104,40 +104,40 @@
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "Keke",
       "name": "可可影视",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WwwKeke",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
       "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "Fdz",
       "name": "饭搭子影视",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WwwFdz",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
       "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "tuxiaobei_js",
       "name": "🎬兔小贝儿童",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/drpy2.min.js",
       "ext": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/兔小贝.js",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "量子资源",
