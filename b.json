@@ -1,5 +1,5 @@
 {
-  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
+  "spider": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc",
   "wallpaper": "https://szyyds.cn/api.php",
   "logo": "https://szyyds.cn/1.png",
   "sites": [
@@ -11,7 +11,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 0,
-      "jar": "https://zhouyu86-bh1.pages.dev/wex.jar;md5;fc8f993c9297d38139363cd0e3db9853"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "dashixiong",
@@ -31,7 +31,8 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "ext": ""
+      "ext": "",
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "Gqc",
@@ -40,7 +41,8 @@
       "api": "csp_Gqc",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1
+      "changeable": 1,
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "Feikuai",
@@ -49,7 +51,8 @@
       "api": "csp_Feikuai",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1
+      "changeable": 1,
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "Cupfox",
@@ -58,7 +61,8 @@
       "api": "csp_Cupfox",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1
+      "changeable": 1,
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "Www555",
@@ -67,7 +71,8 @@
       "api": "csp_Www555",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1
+      "changeable": 1,
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "Dmxq",
@@ -76,7 +81,8 @@
       "api": "csp_WwwDmxq",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1
+      "changeable": 1,
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "Qqys",
@@ -85,7 +91,8 @@
       "api": "csp_WwwQqys",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1
+      "changeable": 1,
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "厂长",
@@ -97,7 +104,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "Keke",
@@ -107,7 +114,8 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "ext": ""
+      "ext": "",
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "Fdz",
@@ -117,7 +125,8 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "ext": ""
+      "ext": "",
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "tuxiaobei_js",
@@ -127,7 +136,8 @@
       "ext": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/兔小贝.js",
       "searchable": 1,
       "quickSearch": 1,
-      "filterable": 1
+      "filterable": 1,
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all_with_init.jar;md5;9a41cf4d6b49ef0961ce6ff90b02ffbc"
     },
     {
       "key": "量子资源",
