@@ -151,3 +151,66 @@ adb -s emulator-5554 logcat -d | findstr /i "okhttp VurlDetail sdapi wmvbo IJKME
 2. **防盗链先抓真实流量**：不要猜是 cookie 还是 token，直接 logcat 抓播放器请求头
 3. **OK影视 ExoPlayer 限制**：jar 返回的 Cookie header 不会被 ExoPlayer 带到 ts 分片请求，所以 cookie 防盗链在 OK影视里走不通
 4. **IJK 播放器比 ExoPlayer 更灵活**：瓜子 App 用 IJK，直接带 Referer 就能播
+
+## 十五、搜索功能修复（2026-10-25 深夜）
+
+### 问题现象
+瓜子影视源在 OK影视里搜索返回空，搜任何词都显示"没有找到相关内容"。
+
+### 排查过程
+1. 先测服务器搜索接口 `/App/Index/backThinkVod`，传 `{"words":"庆余年"}`
+   - 返回 `{"list":[]}`，接口存在但不返回数据
+2. 试了各种参数组合（page、limit、type、pid、keyword、wd），全部返回空
+3. 试了旧域名 sdapi.gkfun2x.com 的搜索接口，同样返回空
+4. 试了其他可能的搜索路径（/App/Vod/search、/App/Search/index 等），全部返回 `{}`（路径不存在）
+5. 结论：backThinkVod 只是搜索联想接口（输入时的自动补全建议），不是完整搜索接口；完整搜索接口路径未知，可能需要反编译 APK 才能找到
+
+### 解决方案：双保险搜索
+searchContent 方法改成两级：
+1. **第一级**：先试服务器搜索 backThinkVod，如果有结果就返回
+2. **第二级（兜底）**：如果服务器返回空，自动遍历7个主要分类（推荐/电影/国产剧/海外剧/动漫/综艺/短剧），调 IndexList/index 获取每个分类的第一页数据，然后在本地用关键词匹配（不区分大小写）
+
+### 性能影响
+- 服务器搜索：快（1次请求）
+- 本地搜索：慢（7次请求，约5-10秒），因为要遍历多个分类
+- 用户体验：有时候秒出（服务器有结果），有时候慢（走本地兜底）
+
+### 已知限制
+- 本地搜索只能搜到每个分类第一页的影片（约20-30部/分类），不是全库搜索
+- 如果影片不在第一页，搜不到
+- 以后如果抓到完整搜索接口路径，可以替换掉本地兜底
+
+## 十六、完整攻坚时间线（2026-10-25 全天）
+
+### 上午
+1. 瓜子App加固检测导致崩溃，mitmproxy抓包路线放弃
+2. 改用 logcat 抓 IJK 播放器真实流量
+3. 发现播放链路关键：域名是 api.anctjd.com，防盗链是 Referer 不是 Cookie
+4. 简化 playerContent，直接返回 m3u8 URL + Referer header
+
+### 下午
+1. 分类顺序修复：从API JSON遍历改成按PID_NAMES数组手动构建
+2. 推荐页封面图修复：单独调 IndexList/index 获取带封面数据
+3. 名称标签清理：pickName() 方法去掉emoji后缀
+
+### 晚上
+1. B接口替换：旧WexAiGuaZi换成自研Guazi源
+2. 搜索功能修复：双保险（服务器搜索+本地兜底）
+3. 笔记完整更新并推送到GitHub
+
+## 十七、最终文件清单
+| 文件 | 位置 | 用途 |
+|---|---|---|
+| Guazi.java | D:\tvbox\spider_dev\...\spider\Guazi.java | jar源码 |
+| gua_spider.jar | D:\tvbox\gua_spider.jar | 编译好的jar |
+| gua.json | D:\tvbox\gua.json | 独立测试配置 |
+| b.json | D:\tvbox\b.json | B接口总配置（已替换瓜子源） |
+| build_and_push.ps1 | D:\tvbox\_tools\gua_android\ | 一键构建推送脚本 |
+| 笔记_瓜子jar.md | D:\tvbox\_tools\gua_android\ | 本笔记 |
+| cur_token.txt | D:\tvbox\_tools\gua_android\ | 当前TOKEN |
+
+## 十八、线上地址
+- jar: https://tvbox-bh1.pages.dev/gua_spider.jar
+- 独立配置: https://tvbox-bh1.pages.dev/gua.json
+- B接口: https://tvbox-bh1.pages.dev/b.json
+- GitHub: https://github.com/ZHOUYU86/tvbox-sources
