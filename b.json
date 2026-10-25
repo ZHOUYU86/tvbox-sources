@@ -1,16 +1,17 @@
 {
-"wallpaper": "https://szyyds.cn/api.php",
-"logo": "https://szyyds.cn/1.png",
-"sites": [
+  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
+  "wallpaper": "https://szyyds.cn/api.php",
+  "logo": "https://szyyds.cn/1.png",
+  "sites": [
     {
-      "key": "Guazi",
-      "name": "瓜子影视",
+      "key": "WexAiGuaZi",
+      "name": "💥瓜子┃秒播💥",
       "type": 3,
-      "api": "csp_Guazi",
+      "api": "csp_WexAiGuaZiGuard",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/gua_test.jar;md5;9edb7b08aa3e3dda246235ae830445b3"
+      "changeable": 0,
+      "jar": "https://zhouyu86-bh1.pages.dev/wex.jar;md5;fc8f993c9297d38139363cd0e3db9853"
     },
     {
       "key": "dashixiong",
@@ -26,7 +27,6 @@
       "key": "Ddys",
       "name": "低端影视",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/ddys_single_dex.jar;md5;11963f8383cee04f5b9e2bf98f1c1acf",
       "api": "csp_WwwDdys",
       "searchable": 1,
       "quickSearch": 1,
@@ -37,7 +37,6 @@
       "key": "Gqc",
       "name": "共青春",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
       "api": "csp_Gqc",
       "searchable": 1,
       "quickSearch": 1,
@@ -47,7 +46,6 @@
       "key": "Feikuai",
       "name": "飞快TV",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
       "api": "csp_Feikuai",
       "searchable": 1,
       "quickSearch": 1,
@@ -57,7 +55,6 @@
       "key": "Cupfox",
       "name": "茶杯狐",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
       "api": "csp_Cupfox",
       "searchable": 1,
       "quickSearch": 1,
@@ -67,7 +64,6 @@
       "key": "Www555",
       "name": "555电影",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
       "api": "csp_Www555",
       "searchable": 1,
       "quickSearch": 1,
@@ -77,7 +73,6 @@
       "key": "Dmxq",
       "name": "大米星球",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
       "api": "csp_WwwDmxq",
       "searchable": 1,
       "quickSearch": 1,
@@ -87,7 +82,6 @@
       "key": "Qqys",
       "name": "千千影视",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
       "api": "csp_WwwQqys",
       "searchable": 1,
       "quickSearch": 1,
@@ -109,7 +103,6 @@
       "key": "Keke",
       "name": "可可影视",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
       "api": "csp_WwwKeke",
       "searchable": 1,
       "quickSearch": 1,
@@ -120,7 +113,6 @@
       "key": "Fdz",
       "name": "饭搭子影视",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
       "api": "csp_WwwFdz",
       "searchable": 1,
       "quickSearch": 1,
@@ -131,7 +123,6 @@
       "key": "tuxiaobei_js",
       "name": "🎬兔小贝儿童",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
       "api": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/drpy2.min.js",
       "ext": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/兔小贝.js",
       "searchable": 1,
@@ -187,7 +178,7 @@
       "key": "建安采集",
       "name": "影视 | 建安",
       "type": 1
-    ,"searchable":0,"quickSearch":0},
+    },
     {
       "key": "dyttzy",
       "name": "电影天堂",
@@ -213,8 +204,8 @@
       "name": "牛牛点播",
       "type": 1,
       "api": "https://api.niuniuzy.me/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -224,8 +215,8 @@
       "name": "閃電资源",
       "type": 1,
       "api": "https://sdzyapi.com/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -235,8 +226,8 @@
       "name": "索尼资源",
       "type": 1,
       "api": "https://suoniapi.com/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -257,8 +248,8 @@
       "name": "丫丫点播",
       "type": 1,
       "api": "https://cj.yayazy.net/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -268,8 +259,8 @@
       "name": "樱花资源",
       "type": 1,
       "api": "https://m3u8.apiyhzy.com/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -312,8 +303,8 @@
       "name": "金鹰点播",
       "type": 1,
       "api": "https://jinyingzy.com/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -356,8 +347,8 @@
       "name": "金鹰资源",
       "type": 1,
       "api": "https://jyzyapi.com/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -367,8 +358,8 @@
       "name": "天涯资源",
       "type": 1,
       "api": "https://tyyszy.com/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -378,7 +369,7 @@
       "key": "shandian2",
       "name": "⚡闪电资源2",
       "type": 1
-    ,"searchable":0,"quickSearch":0},
+    },
     {
       "key": "huohuo",
       "name": "🦊火狐资源",
@@ -393,8 +384,8 @@
       "name": "无尽资源3",
       "type": 1,
       "api": "https://api.wujinapi.net/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -404,8 +395,8 @@
       "name": "虎牙资源",
       "type": 1,
       "api": "https://www.huyaapi.com/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -415,8 +406,8 @@
       "name": "豆瓣资源3",
       "type": 1,
       "api": "https://caiji.dbzy5.com/api.php/provide/vod/from/dbm3u8/at/josn",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -437,8 +428,8 @@
       "name": "光速资源",
       "type": 1,
       "api": "https://api.guangsuapi.com/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -448,8 +439,8 @@
       "name": "步步高资源",
       "type": 1,
       "api": "https://api.yparse.com/api/json",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -465,8 +456,8 @@
       "name": "豆瓣资源2",
       "type": 1,
       "api": "https://dbzy.tv/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
@@ -482,14 +473,14 @@
       "name": "茅台资源",
       "type": 1,
       "api": "https://caiji.maotaizy.cc/api.php/provide/vod",
-      "searchable":0,
-      "quickSearch":0,
+      "searchable": 1,
+      "quickSearch": 1,
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
     }
   ],
-"lives": [
+  "lives": [
     {
       "name": "央视卫视地方港澳台·自动更新",
       "type": 0,
@@ -536,7 +527,6 @@
     {
       "name": "一起看",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
       "api": "csp_AweSomeGuard",
       "url": "yqk",
       "playerType": 2,
