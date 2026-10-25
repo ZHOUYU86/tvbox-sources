@@ -229,6 +229,20 @@ Java.perform(function() {
 3. 然后就能自己用RSA公钥加密明文值，构造正确的请求头
 4. 然后就能写jar了
 
+## 补充进展（2026-10-25 晚）
+
+### 新发现
+1. **点"添加歌曲"不会提示VIP，点"立即唱"才会提示**
+2. **点VIP歌曲之后，之前点的歌库会被全部清空**
+3. **找到了清空歌库的函数：`eventCleanPlayList(null)`**（在MainActivity里）
+4. **VIP歌曲服务器返回：`{"status":-1,"msg":"VIP已过期","data":null}`**
+5. **免费歌曲服务器返回：`{"status":1,"msg":"成功","data":{"url":"http://vodtx-lb.cdthunder.com/media/7027347.ts?auth_key=..."}}`**
+
+### 下一步要做的
+1. hook `eventCleanPlayList` 方法，让它什么都不做，这样点VIP歌曲就不会清空歌库了
+2. 绕过VIP校验，让VIP歌曲也能播放
+3. 写jar源，在OK影视里使用
+
 ---
 **记录时间：** 2026-10-25
 **状态：** 暂时搁置，以后继续
