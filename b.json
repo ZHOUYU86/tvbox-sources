@@ -7,7 +7,7 @@
       "key": "WexAiGuaZi",
       "name": "💥瓜子┃秒播💥",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WexAiGuaZiGuard",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 0,
@@ -27,72 +27,72 @@
       "key": "Ddys",
       "name": "低端影视",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WwwDdys",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
       "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609"
     },
     {
       "key": "Gqc",
       "name": "共青春",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_Gqc",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609"
     },
     {
       "key": "Feikuai",
       "name": "飞快TV",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_Feikuai",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609"
     },
     {
       "key": "Cupfox",
       "name": "茶杯狐",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_Cupfox",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609"
     },
     {
       "key": "Www555",
       "name": "555电影",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_Www555",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609"
     },
     {
       "key": "Dmxq",
       "name": "大米星球",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WwwDmxq",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609"
     },
     {
       "key": "Qqys",
       "name": "千千影视",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WwwQqys",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609"
     },
     {
       "key": "厂长",
@@ -110,34 +110,34 @@
       "key": "Keke",
       "name": "可可影视",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WwwKeke",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
       "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609"
     },
     {
       "key": "Fdz",
       "name": "饭搭子影视",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "csp_WwwFdz",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
       "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609"
     },
     {
       "key": "tuxiaobei_js",
       "name": "🎬兔小贝儿童",
       "type": 3,
-      "api": "csp_NewCzGuard",
+      "api": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/drpy2.min.js",
       "ext": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/兔小贝.js",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609"
     },
     {
       "key": "量子资源",
@@ -544,24 +544,6 @@
         "sp": "Huya"
       },
       "timeout": 10
-    }
-  ],
-  "classes": [
-    {
-      "type_id": "1",
-      "type_name": "电影"
-    },
-    {
-      "type_id": "2",
-      "type_name": "电视剧"
-    },
-    {
-      "type_id": "3",
-      "type_name": "综艺"
-    },
-    {
-      "type_id": "4",
-      "type_name": "动漫"
     }
   ]
 }
