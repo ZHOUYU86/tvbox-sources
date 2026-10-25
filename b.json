@@ -26,7 +26,7 @@
       "key": "Ddys",
       "name": "低端影视",
       "type": 3,
-      "jar": "https://zhouyu86-bh1.pages.dev/ddys_test.jar;md5;4ee34bc007fc485178ea741b6afaecff",
+      "jar": "https://zhouyu86-bh1.pages.dev/ddys_single_dex.jar;md5;11963f8383cee04f5b9e2bf98f1c1acf",
       "api": "csp_WwwDdys",
       "searchable": 1,
       "quickSearch": 1,
