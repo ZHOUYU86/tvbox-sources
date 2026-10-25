@@ -5,23 +5,13 @@
   "sites": [
     {
       "key": "Guazi",
-      "name": "瓜子影视[自研jar]",
+      "name": "瓜子影视",
       "type": 3,
       "api": "csp_Guazi",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
       "jar": "https://tvbox-bh1.pages.dev/gua_spider.jar"
-    },
-    {
-      "key": "WexAiGuaZi",
-      "name": "💥瓜子┃秒播💥",
-      "type": 3,
-      "api": "csp_WexAiGuaZiGuard",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 0,
-      "jar": "https://zhouyu86-bh1.pages.dev/wex.jar;md5;fc8f993c9297d38139363cd0e3db9853"
     },
     {
       "key": "dashixiong",
