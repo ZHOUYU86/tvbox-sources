@@ -1,17 +1,17 @@
 {
-  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;9aaf5c114698ce364096ae213bd7d645",
+  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
   "wallpaper": "https://szyyds.cn/api.php",
   "logo": "https://szyyds.cn/1.png",
   "sites": [
     {
-      "key": "WexAiGuaZi",
-      "name": "💥瓜子┃秒播💥",
+      "key": "Guazi",
+      "name": "瓜子影视",
       "type": 3,
-      "api": "csp_WexAiGuaZiGuard",
+      "api": "csp_Guazi",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 0,
-      "jar": "https://zhouyu86-bh1.pages.dev/wex.jar;md5;fc8f993c9297d38139363cd0e3db9853"
+      "changeable": 1,
+      "jar": "https://zhouyu86-bh1.pages.dev/gua_spider.jar"
     },
     {
       "key": "dashixiong",
