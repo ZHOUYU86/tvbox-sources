@@ -110,17 +110,6 @@
       "ext": ""
     },
     {
-      "key": "Fdz_disabled",
-      "name": "饭搭子影视（暂时停用）",
-      "type": 3,
-      "api": "csp_WwwFdz",
-      "searchable": 0,
-      "quickSearch": 0,
-      "filterable": 0,
-      "ext": "",
-      "jar": ""
-    },
-    {
       "key": "tuxiaobei_js",
       "name": "🎬兔小贝儿童",
       "type": 3,
