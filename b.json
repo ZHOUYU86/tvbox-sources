@@ -7,7 +7,7 @@
       "key": "WexAiGuaZi",
       "name": "💥瓜子┃秒播💥",
       "type": 3,
-      "api": "csp_WexAiGuaZiGuard",
+      "api": "csp_WexAiGuaZi",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 0,
