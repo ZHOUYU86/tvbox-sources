@@ -1,5 +1,5 @@
 {
-  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;e5796e2930e4c14772370f8763aa30e5",
+  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;1184f64a012626be51d9b62468ee9c1e",
   "wallpaper": "https://szyyds.cn/api.php",
   "logo": "https://szyyds.cn/1.png",
   "sites": [
@@ -30,8 +30,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/ddys_feikuai.jar;md5;7c5d15ad62c151eaf5d630b4321522be"
+      "ext": ""
     },
     {
       "key": "Gqc",
@@ -40,8 +39,7 @@
       "api": "csp_Gqc",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4"
+      "changeable": 1
     },
     {
       "key": "Feikuai",
@@ -50,8 +48,7 @@
       "api": "csp_Feikuai",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4"
+      "changeable": 1
     },
     {
       "key": "Cupfox",
@@ -60,8 +57,7 @@
       "api": "csp_Cupfox",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4"
+      "changeable": 1
     },
     {
       "key": "Www555",
@@ -70,8 +66,7 @@
       "api": "csp_Www555",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4"
+      "changeable": 1
     },
     {
       "key": "Dmxq",
@@ -80,8 +75,7 @@
       "api": "csp_WwwDmxq",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4"
+      "changeable": 1
     },
     {
       "key": "Qqys",
@@ -90,8 +84,7 @@
       "api": "csp_WwwQqys",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4"
+      "changeable": 1
     },
     {
       "key": "厂长",
@@ -102,8 +95,7 @@
       "playerType": 2,
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
+      "changeable": 1
     },
     {
       "key": "Keke",
@@ -113,8 +105,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4"
+      "ext": ""
     },
     {
       "key": "Fdz",
@@ -124,8 +115,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4"
+      "ext": ""
     },
     {
       "key": "tuxiaobei_js",
@@ -135,8 +125,7 @@
       "ext": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/兔小贝.js",
       "searchable": 1,
       "quickSearch": 1,
-      "filterable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4"
+      "filterable": 1
     },
     {
       "key": "量子资源",
