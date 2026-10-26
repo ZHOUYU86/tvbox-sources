@@ -1,5 +1,5 @@
 {
-"spider": "./spider.jar;md5;3c264c629e02273b9ad61e769218c508",
+"spider": "./spider.jar;md5;722d5c1bdcb1b38fc62874941e060d6b",
 "wallpaper": "https://www.loliapi.com/acg/",
 "logo": "https://storage.7x24cc.com/storage-server/presigned/ss1/a6-online-fileupload/newMediaFile/3CEAE9E_773_wexfnw_20250911190012684newMediaFile.gif",
 "sites": [
@@ -15,7 +15,7 @@
             "ext": "https://cdn.waimaimingtang.com/file/images/bwc/20260414181247-ae51abfbfe.txt"
         }, {
             "key": "Doubanaaaa",
-            "name": "🐮【更新日期:20261023】🐮",
+            "name": "🐮【更新日期:20261026】🐮",
             "type": 3,
             "api": "csp_NewDouBanGuard",
             "indexs": 1,
