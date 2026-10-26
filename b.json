@@ -1,5 +1,5 @@
 {
-  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;ebf295a6bfa370e35ebd524f588caab2",
+  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4",
   "wallpaper": "https://szyyds.cn/api.php",
   "logo": "https://szyyds.cn/1.png",
   "sites": [
@@ -10,7 +10,8 @@
       "api": "csp_Guazi",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1
+      "changeable": 1,
+      "jar": "https://zhouyu86-bh1.pages.dev/gua_spider.jar"
     },
     {
       "key": "dashixiong",
