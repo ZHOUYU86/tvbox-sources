@@ -91,13 +91,13 @@
       "key": "厂长",
       "name": "厂长资源",
       "type": 3,
-      "api": "csp_WwwCzzy",
+      "api": "csp_NewCzGuard",
       "timeout": 10,
       "playerType": 2,
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar"
+      "jar": "https://zhouyu86-bh1.pages.dev/czzy_guard.jar;md5;1ac25ccd1b5ac56fd19eb91c6f7daf4d"
     },
     {
       "key": "Keke",
