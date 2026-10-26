@@ -4,14 +4,14 @@
   "logo": "https://szyyds.cn/1.png",
   "sites": [
     {
-      "key": "WexAiGuaZi",
-      "name": "💥瓜子┃秒播💥",
+      "key": "Guazi",
+      "name": "瓜子影视",
       "type": 3,
-      "api": "csp_WexAiGuaZi",
+      "api": "csp_Guazi",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 0,
-      "jar": "https://zhouyu86-bh1.pages.dev/wex.jar;md5;fc8f993c9297d38139363cd0e3db9853"
+      "changeable": 1,
+      "jar": "https://zhouyu86-bh1.pages.dev/gua_spider.jar"
     },
     {
       "key": "dashixiong",
