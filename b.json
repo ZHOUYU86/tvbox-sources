@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿{
   "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4",
   "wallpaper": "https://szyyds.cn/api.php",
@@ -546,4 +547,43 @@
       "timeout": 10
     }
   ]
+=======
+{
+    "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
+    "wallpaper": "https://szyyds.cn/api.php",
+    "logo": "https://szyyds.cn/1.png",
+    "sites": [
+          {
+                  "key": "WexAiGuaZi",
+                  "name": "💥瓜子┃秒播💥",
+                  "type": 3,
+                  "api": "csp_WexAiGuaZiGuard",
+                  "searchable": 1,
+                  "quickSearch": 1,
+                  "changeable": 0,
+                  "jar": "https://zhouyu86-bh1.pages.dev/wex.jar;md5;fc8f993c9297d38139363cd0e3db9853"
+          },
+          {
+                  "key": "dashixiong",
+                  "name": "大师兄影视",
+                  "type": 1,
+                  "api": "https://zhouyu86-bh1.pages.dev/api.php/provide/vod",
+                  "searchable": 1,
+                  "quickSearch": 1,
+                  "filterable": 1,
+                  "timeout": 10
+          },
+          {
+                  "key": "Ddys",
+                  "name": "低端影视",
+                  "type": 3,
+                  "api": "csp_WwwDdys",
+                  "searchable": 1,
+                  "quickSearch": 1,
+                  "filterable": 0,
+                  "ext": "",
+                  "jar": "https://zhouyu86-bh1.pages.dev/ddys_feikuai.jar;md5;7c5d15ad62c151eaf5d630b4321522be"
+          }
+    ]
+>>>>>>> 4ae2359907375fc2202f6d3e045f079846fee987
 }
