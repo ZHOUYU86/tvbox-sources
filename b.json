@@ -1,11 +1,11 @@
-{
-  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;54f0b429d37747d15cb437ce8c3765d4",
+﻿{
+  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
   "wallpaper": "https://szyyds.cn/api.php",
   "logo": "https://szyyds.cn/1.png",
   "sites": [
     {
       "key": "Guazi",
-      "name": "瓜子影视",
+      "name": "鐡滃瓙褰辫",
       "type": 3,
       "api": "csp_Guazi",
       "searchable": 1,
@@ -15,7 +15,7 @@
     },
     {
       "key": "dashixiong",
-      "name": "大师兄影视",
+      "name": "澶у笀鍏勫奖瑙?,
       "type": 1,
       "api": "https://zhouyu86-bh1.pages.dev/api.php/provide/vod",
       "searchable": 1,
@@ -25,7 +25,7 @@
     },
     {
       "key": "Ddys",
-      "name": "低端影视",
+      "name": "浣庣褰辫",
       "type": 3,
       "api": "csp_WwwDdys",
       "searchable": 1,
@@ -35,7 +35,7 @@
     },
     {
       "key": "Gqc",
-      "name": "共青春",
+      "name": "鍏遍潚鏄?,
       "type": 3,
       "api": "csp_Gqc",
       "searchable": 1,
@@ -44,7 +44,7 @@
     },
     {
       "key": "Feikuai",
-      "name": "飞快TV",
+      "name": "椋炲揩TV",
       "type": 3,
       "api": "csp_Feikuai",
       "searchable": 1,
@@ -53,7 +53,7 @@
     },
     {
       "key": "Cupfox",
-      "name": "茶杯狐",
+      "name": "鑼舵澂鐙?,
       "type": 3,
       "api": "csp_Cupfox",
       "searchable": 1,
@@ -62,7 +62,7 @@
     },
     {
       "key": "Www555",
-      "name": "555电影",
+      "name": "555鐢靛奖",
       "type": 3,
       "api": "csp_Www555",
       "searchable": 1,
@@ -71,7 +71,7 @@
     },
     {
       "key": "Dmxq",
-      "name": "大米星球",
+      "name": "澶х背鏄熺悆",
       "type": 3,
       "api": "csp_WwwDmxq",
       "searchable": 1,
@@ -80,7 +80,7 @@
     },
     {
       "key": "Qqys",
-      "name": "千千影视",
+      "name": "鍗冨崈褰辫",
       "type": 3,
       "api": "csp_WwwQqys",
       "searchable": 1,
@@ -88,8 +88,8 @@
       "changeable": 1
     },
     {
-      "key": "厂长",
-      "name": "厂长资源",
+      "key": "鍘傞暱",
+      "name": "鍘傞暱璧勬簮",
       "type": 3,
       "api": "csp_NewCzGuard",
       "timeout": 10,
@@ -101,7 +101,7 @@
     },
     {
       "key": "Keke",
-      "name": "可可影视",
+      "name": "鍙彲褰辫",
       "type": 3,
       "api": "csp_WwwKeke",
       "searchable": 1,
@@ -111,17 +111,17 @@
     },
     {
       "key": "tuxiaobei_js",
-      "name": "🎬兔小贝儿童",
+      "name": "馃幀鍏斿皬璐濆効绔?,
       "type": 3,
       "api": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/drpy2.min.js",
-      "ext": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/兔小贝.js",
+      "ext": "https://gh-proxy.com/https://raw.githubusercontent.com/liu673cn/box/main/libs/js/鍏斿皬璐?js",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1
     },
     {
-      "key": "量子资源",
-      "name": "量子资源",
+      "key": "閲忓瓙璧勬簮",
+      "name": "閲忓瓙璧勬簮",
       "type": 1,
       "api": "https://cj.lziapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -131,8 +131,8 @@
       "timeout": 10
     },
     {
-      "key": "丨红牛资源3",
-      "name": "红牛资源3",
+      "key": "涓ㄧ孩鐗涜祫婧?",
+      "name": "绾㈢墰璧勬簮3",
       "type": 1,
       "api": "https://www.hongniuzy3.com/api.php/provide/vod/",
       "searchable": 1,
@@ -142,8 +142,8 @@
       "timeout": 10
     },
     {
-      "key": "丨无尽资源",
-      "name": "无尽资源",
+      "key": "涓ㄦ棤灏借祫婧?,
+      "name": "鏃犲敖璧勬簮",
       "type": 1,
       "api": "https://api.wujinapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -153,8 +153,8 @@
       "timeout": 10
     },
     {
-      "key": "暴风资源",
-      "name": "暴风资源",
+      "key": "鏆撮璧勬簮",
+      "name": "鏆撮璧勬簮",
       "type": 1,
       "api": "https://bfzyapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -165,13 +165,13 @@
     },
     {
       "api": "http://154.219.117.232:9981/jacloudapi.php/provide/vod",
-      "key": "建安采集",
-      "name": "影视 | 建安",
+      "key": "寤哄畨閲囬泦",
+      "name": "褰辫 | 寤哄畨",
       "type": 1
     },
     {
       "key": "dyttzy",
-      "name": "电影天堂",
+      "name": "鐢靛奖澶╁爞",
       "type": 1,
       "api": "http://caiji.dyttzyapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -179,8 +179,8 @@
       "filterable": 1
     },
     {
-      "key": "丨最大资源",
-      "name": "最大资源",
+      "key": "涓ㄦ渶澶ц祫婧?,
+      "name": "鏈€澶ц祫婧?,
       "type": 1,
       "api": "https://api.zuidapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -190,8 +190,8 @@
       "timeout": 10
     },
     {
-      "key": "丨牛牛点播",
-      "name": "牛牛点播",
+      "key": "涓ㄧ墰鐗涚偣鎾?,
+      "name": "鐗涚墰鐐规挱",
       "type": 1,
       "api": "https://api.niuniuzy.me/api.php/provide/vod",
       "searchable": 1,
@@ -201,8 +201,8 @@
       "timeout": 10
     },
     {
-      "key": "丨閃電资源",
-      "name": "閃電资源",
+      "key": "涓ㄩ杻闆昏祫婧?,
+      "name": "闁冮浕璧勬簮",
       "type": 1,
       "api": "https://sdzyapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -212,8 +212,8 @@
       "timeout": 10
     },
     {
-      "key": "丨索尼资源",
-      "name": "索尼资源",
+      "key": "涓ㄧ储灏艰祫婧?,
+      "name": "绱㈠凹璧勬簮",
       "type": 1,
       "api": "https://suoniapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -223,8 +223,8 @@
       "timeout": 10
     },
     {
-      "key": "丨新浪点播",
-      "name": "新浪点播",
+      "key": "涓ㄦ柊娴偣鎾?,
+      "name": "鏂版氮鐐规挱",
       "type": 1,
       "api": "https://api.xinlangapi.com/xinlangapi.php/provide/vod",
       "searchable": 1,
@@ -234,8 +234,8 @@
       "timeout": 10
     },
     {
-      "key": "丨丫丫点播",
-      "name": "丫丫点播",
+      "key": "涓ㄤ斧涓偣鎾?,
+      "name": "涓斧鐐规挱",
       "type": 1,
       "api": "https://cj.yayazy.net/api.php/provide/vod",
       "searchable": 1,
@@ -245,8 +245,8 @@
       "timeout": 10
     },
     {
-      "key": "丨樱花资源",
-      "name": "樱花资源",
+      "key": "涓ㄦū鑺辫祫婧?,
+      "name": "妯辫姳璧勬簮",
       "type": 1,
       "api": "https://m3u8.apiyhzy.com/api.php/provide/vod",
       "searchable": 1,
@@ -256,8 +256,8 @@
       "timeout": 10
     },
     {
-      "key": "丨魔都资源",
-      "name": "魔都资源",
+      "key": "涓ㄩ瓟閮借祫婧?,
+      "name": "榄旈兘璧勬簮",
       "type": 1,
       "api": "https://www.mdzyapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -267,8 +267,8 @@
       "timeout": 10
     },
     {
-      "key": "丨非凡资源",
-      "name": "非凡资源",
+      "key": "涓ㄩ潪鍑¤祫婧?,
+      "name": "闈炲嚒璧勬簮",
       "type": 1,
       "api": "https://cj.ffzyapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -278,8 +278,8 @@
       "timeout": 10
     },
     {
-      "key": "丨飘零资源",
-      "name": "飘零资源",
+      "key": "涓ㄩ闆惰祫婧?,
+      "name": "椋橀浂璧勬簮",
       "type": 1,
       "api": "https://p2100.net/api.php/provide/vod",
       "searchable": 1,
@@ -289,8 +289,8 @@
       "timeout": 10
     },
     {
-      "key": "丨金鹰点播",
-      "name": "金鹰点播",
+      "key": "涓ㄩ噾楣扮偣鎾?,
+      "name": "閲戦拱鐐规挱",
       "type": 1,
       "api": "https://jinyingzy.com/api.php/provide/vod",
       "searchable": 1,
@@ -300,8 +300,8 @@
       "timeout": 10
     },
     {
-      "key": "丨U酷资源2",
-      "name": "U酷资源2",
+      "key": "涓║閰疯祫婧?",
+      "name": "U閰疯祫婧?",
       "type": 1,
       "api": "https://api.ukuapi88.com/api.php/provide/vod",
       "searchable": 1,
@@ -311,8 +311,8 @@
       "timeout": 10
     },
     {
-      "key": "丨速博资源",
-      "name": "速博资源",
+      "key": "涓ㄩ€熷崥璧勬簮",
+      "name": "閫熷崥璧勬簮",
       "type": 1,
       "api": "https://subocaiji.com/api.php/provide/vod",
       "searchable": 1,
@@ -322,8 +322,8 @@
       "timeout": 10
     },
     {
-      "key": "丨百度云资源",
-      "name": "百度云资源",
+      "key": "涓ㄧ櫨搴︿簯璧勬簮",
+      "name": "鐧惧害浜戣祫婧?,
       "type": 1,
       "api": "https://api.apibdzy.com/api.php/provide/vod",
       "searchable": 1,
@@ -333,8 +333,8 @@
       "timeout": 10
     },
     {
-      "key": "丨金鹰资源",
-      "name": "金鹰资源",
+      "key": "涓ㄩ噾楣拌祫婧?,
+      "name": "閲戦拱璧勬簮",
       "type": 1,
       "api": "https://jyzyapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -344,8 +344,8 @@
       "timeout": 10
     },
     {
-      "key": "天涯资源",
-      "name": "天涯资源",
+      "key": "澶╂动璧勬簮",
+      "name": "澶╂动璧勬簮",
       "type": 1,
       "api": "https://tyyszy.com/api.php/provide/vod",
       "searchable": 1,
@@ -357,12 +357,12 @@
     {
       "api": "https://shandianzy.com/api.php/provide/vod/",
       "key": "shandian2",
-      "name": "⚡闪电资源2",
+      "name": "鈿￠棯鐢佃祫婧?",
       "type": 1
     },
     {
       "key": "huohuo",
-      "name": "🦊火狐资源",
+      "name": "馃鐏嫄璧勬簮",
       "type": 0,
       "api": "https://hhzyapi.com/api.php/provide/vod/at/xml/from/hhm3u8",
       "searchable": 1,
@@ -370,8 +370,8 @@
       "filterable": 1
     },
     {
-      "key": "丨无尽资源3",
-      "name": "无尽资源3",
+      "key": "涓ㄦ棤灏借祫婧?",
+      "name": "鏃犲敖璧勬簮3",
       "type": 1,
       "api": "https://api.wujinapi.net/api.php/provide/vod",
       "searchable": 1,
@@ -381,8 +381,8 @@
       "timeout": 10
     },
     {
-      "key": "丨虎牙资源",
-      "name": "虎牙资源",
+      "key": "涓ㄨ檸鐗欒祫婧?,
+      "name": "铏庣墮璧勬簮",
       "type": 1,
       "api": "https://www.huyaapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -392,8 +392,8 @@
       "timeout": 10
     },
     {
-      "key": "丨豆瓣资源3",
-      "name": "豆瓣资源3",
+      "key": "涓ㄨ眴鐡ｈ祫婧?",
+      "name": "璞嗙摚璧勬簮3",
       "type": 1,
       "api": "https://caiji.dbzy5.com/api.php/provide/vod/from/dbm3u8/at/josn",
       "searchable": 1,
@@ -403,8 +403,8 @@
       "timeout": 10
     },
     {
-      "key": "360资源",
-      "name": "360资源",
+      "key": "360璧勬簮",
+      "name": "360璧勬簮",
       "type": 1,
       "api": "https://360zy.com/api.php/provide/vod",
       "searchable": 1,
@@ -414,8 +414,8 @@
       "timeout": 10
     },
     {
-      "key": "丨光速资源",
-      "name": "光速资源",
+      "key": "涓ㄥ厜閫熻祫婧?,
+      "name": "鍏夐€熻祫婧?,
       "type": 1,
       "api": "https://api.guangsuapi.com/api.php/provide/vod",
       "searchable": 1,
@@ -425,8 +425,8 @@
       "timeout": 10
     },
     {
-      "key": "丨步步高资源",
-      "name": "步步高资源",
+      "key": "涓ㄦ姝ラ珮璧勬簮",
+      "name": "姝ユ楂樿祫婧?,
       "type": 1,
       "api": "https://api.yparse.com/api/json",
       "searchable": 1,
@@ -438,12 +438,12 @@
     {
       "api": "https://jisuzy.tv/api.php/provide/vod/",
       "key": "jisu2",
-      "name": "⚡极速资源2",
+      "name": "鈿℃瀬閫熻祫婧?",
       "type": 1
     },
     {
-      "key": "丨豆瓣资源2",
-      "name": "豆瓣资源2",
+      "key": "涓ㄨ眴鐡ｈ祫婧?",
+      "name": "璞嗙摚璧勬簮2",
       "type": 1,
       "api": "https://dbzy.tv/api.php/provide/vod",
       "searchable": 1,
@@ -454,13 +454,13 @@
     },
     {
       "api": "https://jszyapi.com/api.php/provide/vod/?ac=list",
-      "key": "极速资源",
-      "name": "影视 | 极速[直连]",
+      "key": "鏋侀€熻祫婧?,
+      "name": "褰辫 | 鏋侀€焄鐩磋繛]",
       "type": 1
     },
     {
-      "key": "丨茅台资源",
-      "name": "茅台资源",
+      "key": "涓ㄨ寘鍙拌祫婧?,
+      "name": "鑼呭彴璧勬簮",
       "type": 1,
       "api": "https://caiji.maotaizy.cc/api.php/provide/vod",
       "searchable": 1,
@@ -472,7 +472,7 @@
   ],
   "lives": [
     {
-      "name": "央视卫视地方港澳台·自动更新",
+      "name": "澶鍗鍦版柟娓境鍙奥疯嚜鍔ㄦ洿鏂?,
       "type": 0,
       "url": "https://zhouyu86-bh1.pages.dev/lives_tv.txt",
       "playerType": 2,
@@ -480,42 +480,42 @@
       "epg": ""
     },
     {
-      "name": "咪咕",
+      "name": "鍜挄",
       "type": 0,
       "url": "https://develop202.github.io/migu_video/interface.txt",
       "playerType": 2,
       "timeout": 10
     },
     {
-      "name": "手动不知何时更新",
+      "name": "鎵嬪姩涓嶇煡浣曟椂鏇存柊",
       "type": 0,
       "url": "https://szyyds.cn/tv/live/x.txt",
       "playerType": 2,
       "timeout": 10
     },
     {
-      "name": "有效期27年7月",
+      "name": "鏈夋晥鏈?7骞?鏈?,
       "type": 0,
       "url": "http://m.szyyds.cn/api.php?token=8664f352657e8b13585bcf0f84fc3512",
       "playerType": 2,
       "timeout": 10
     },
     {
-      "name": "自动更新",
+      "name": "鑷姩鏇存柊",
       "type": 0,
       "url": "https://z.szyyds.cn/iptv",
       "playerType": 2,
       "timeout": 10
     },
     {
-      "name": "音乐所",
+      "name": "闊充箰鎵€",
       "type": 0,
       "url": "https://szyyds.cn/tv/live/yy.txt",
       "playerType": 2,
       "timeout": 10
     },
     {
-      "name": "一起看",
+      "name": "涓€璧风湅",
       "type": 3,
       "api": "csp_AweSomeGuard",
       "url": "yqk",
