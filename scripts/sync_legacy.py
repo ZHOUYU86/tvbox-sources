@@ -302,12 +302,75 @@ def sync_tvurl():
     print(f"[tvurl] OK ({n} files)")
 
 
+def sync_zhenxin():
+    """正兴: DodgeZhang/tvbox main.zip 整仓拉取"""
+    data = dl("https://github.com/DodgeZhang/tvbox/archive/refs/heads/main.zip", 240)
+    tmp = tempfile.mkdtemp(prefix="zx_")
+    try:
+        unzip_to_mem(data, tmp, strip_root=True)
+        replace_dir(tmp, "zhenxin")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    print("[zhenxin] OK")
+
+
+def sync_pg():
+    """PG: 完整拉取配置+jar+所有lib文件"""
+    base = "https://www.252035.xyz/p"
+    os.makedirs("pg", exist_ok=True)
+    txt = dl_text(base + "/jsm.json")
+    replace_file(txt, "pg/pg.json")
+    jar = dl(base + "/pg.jar", 120)
+    replace_file(jar, "pg/pg.jar")
+    lib_files = ["lib/aes.js", "lib/crypto-js.js", "lib/danmu.js", "lib/douban.js", "lib/drpy2.js"]
+    for f in lib_files:
+        try:
+            b = dl(base + "/" + f, 60)
+            replace_file(b, "pg/" + f)
+        except Exception as e:
+            print(f"[pg] lib 下载失败 {f}: {e}")
+    print("[pg] OK")
+
+
+def sync_aowu():
+    """奥五: 完整拉取配置+专属jar"""
+    txt = dl_text("https://9763.kstore.vip/aowu.json")
+    replace_file(txt, "aowu/aowu.json")
+    m = re.search(r'"spider"\s*:\s*"([^"]*)"', txt)
+    if m:
+        sp = m.group(1)
+        url = sp.split(";")[0]
+        md5 = sp.split(";", 1)[1] if ";" in sp else ""
+        b = dl(url, 120)
+        replace_file(b, "aowu/custom_spider.jar")
+        txt = txt.replace(sp, "./custom_spider.jar;" + md5)
+        replace_file(txt, "aowu/aowu.json")
+    print("[aowu] OK")
+
+
+def sync_wmz():
+    """WMC: 完整拉取配置+专属jar"""
+    txt = dl_text("https://8815.kstore.vip/tvbox/wmz")
+    replace_file(txt, "wmz/wmz.json")
+    m = re.search(r'"spider"\s*:\s*"([^"]*)"', txt)
+    if m:
+        sp = m.group(1)
+        url = sp.split(";")[0]
+        md5 = sp.split(";", 1)[1] if ";" in sp else ""
+        b = dl(url, 120)
+        replace_file(b, "wmz/lmw.jar")
+        txt = txt.replace(sp, "./lmw.jar;" + md5)
+        replace_file(txt, "wmz/wmz.json")
+    print("[wmz] OK")
+
+
 def main():
     ok = 0
     funcs = [
         ("fty", sync_fty), ("wex", sync_wex), ("nf", sync_nf), ("feimao", sync_feimao),
         ("cl", sync_cl), ("ouyang", sync_ouyang), ("lubin", sync_lubin),
         ("dl", sync_dl), ("tvurl", sync_tvurl), ("xs", sync_xs),
+        ("zhenxin", sync_zhenxin), ("pg", sync_pg), ("aowu", sync_aowu), ("wmz", sync_wmz),
     ]
     for name, fn in funcs:
         try:

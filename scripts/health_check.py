@@ -62,6 +62,14 @@ FILES = [
     ("zhenxin", "zhenxin/FongMi.json", "zhenxin-sync",      None),
     ("wex",     "wex/api.json",        "sync-legacy-sources", None),
     ("ouyang",  "ouyang/api.json",     "sync-legacy-sources", None),
+    ("fty",     "fty/api.json",        "sync-legacy-sources", None),
+    ("nf",      "nf/api.json",         "sync-legacy-sources", None),
+    ("feimao",  "feimao/api.json",     "sync-legacy-sources", None),
+    ("cl",      "cl/api.json",         "sync-legacy-sources", None),
+    ("lubin",   "lubin/api.json",      "sync-legacy-sources", None),
+    ("dl",      "dl/api.json",         "sync-legacy-sources", None),
+    ("xs",      "xs/api.json",         "sync-legacy-sources", None),
+    ("tvurl",   "tvurl/api.json",      "sync-legacy-sources", None),
     ("b",       "b.json",              None,                 None),  # 用户手动维护，只检不修
 ]
 TXT = ("lives_tv", "lives_tv.txt", "update-live-tv", None)
