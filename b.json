@@ -40,7 +40,8 @@
                       "api":  "csp_Gqc",
                       "searchable":  1,
                       "quickSearch":  1,
-                      "changeable":  1
+                      "changeable":  1,
+                      "jar":  "https://zhouyu86-bh1.pages.dev/gqc.jar"
                   },
                   {
                       "key":  "Feikuai",
@@ -49,7 +50,8 @@
                       "api":  "csp_Feikuai",
                       "searchable":  1,
                       "quickSearch":  1,
-                      "changeable":  1
+                      "changeable":  1,
+                      "jar":  "https://zhouyu86-bh1.pages.dev/feikuai.jar"
                   },
                   {
                       "key":  "Cupfox",
@@ -76,7 +78,8 @@
                       "api":  "csp_WwwDmxq",
                       "searchable":  1,
                       "quickSearch":  1,
-                      "changeable":  1
+                      "changeable":  1,
+                      "jar":  "https://zhouyu86-bh1.pages.dev/dmxq.jar"
                   },
                   {
                       "key":  "Qqys",
@@ -107,7 +110,8 @@
                       "searchable":  1,
                       "quickSearch":  1,
                       "filterable":  0,
-                      "ext":  ""
+                      "ext":  "",
+                      "jar":  "https://zhouyu86-bh1.pages.dev/keke.jar"
                   },
                   {
                       "key":  "Fdz",
