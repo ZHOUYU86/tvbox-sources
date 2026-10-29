@@ -1,5 +1,5 @@
 {
-  "spider": "https://zhouyu86-bh1.pages.dev/bili_guard.jar",
+  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
   "wallpaper": "https://szyyds.cn/api.php",
   "logo": "https://szyyds.cn/1.png",
   "sites": [
@@ -12,16 +12,6 @@
       "quickSearch": 1,
       "changeable": 1,
       "jar": "https://zhouyu86-bh1.pages.dev/gua_spider.jar"
-    },
-    {
-      "key": "xifan",
-      "name": "稀饭影视",
-      "type": 1,
-      "api": "https://www.xifanys.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "timeout": 10
     },
     {
       "key": "dashixiong",
@@ -490,14 +480,6 @@
       "timeout": 10
     },
     {
-      "key": "AnimeXiFan",
-      "name": "🤡稀饭┃动漫",
-      "type": 3,
-      "api": "csp_AnimeXiFanGuard",
-      "searchable": 1,
-      "changeable": 0
-    },
-    {
       "key": "BiliAll",
       "name": "🅱B站全品类合集",
       "type": 3,
@@ -506,7 +488,7 @@
       "searchable": 1,
       "quickSearch": 0,
       "changeable": 0,
-      "ext": {"json": "https://nos.netease.com/ysf/0075389dca9afadd4614e9713765ff17.txt"}
+      "ext": {"json": "https://zhouyu86-bh1.pages.dev/bili_all.txt"}
     },
     {
       "key": "FirstAid",
@@ -527,7 +509,7 @@
       "searchable": 0,
       "quickSearch": 0,
       "changeable": 0,
-      "ext": {"json": "https://nos.netease.com/ysf/6496356286589c68f52c2f99c0c674c7.txt"}
+      "ext": {"json": "https://zhouyu86-bh1.pages.dev/bili_music.txt"}
     },
     {
       "key": "BiliStarMV",
@@ -538,7 +520,7 @@
       "searchable": 0,
       "quickSearch": 0,
       "changeable": 0,
-      "ext": {"json": "https://nos.netease.com/ysf/5af5fbe12a88b7c45aa1c21e6551826c.txt"}
+      "ext": {"json": "https://zhouyu86-bh1.pages.dev/bili_star.txt"}
     },
     {
       "key": "BiliQimeng",
@@ -549,7 +531,7 @@
       "searchable": 0,
       "quickSearch": 0,
       "changeable": 0,
-      "ext": {"json": "https://nos.netease.com/ysf/89370c8ddf36b5e1beb4d71adb921bda.txt"}
+      "ext": {"json": "https://zhouyu86-bh1.pages.dev/bili_kids.txt"}
     },
     {
       "key": "BiliXiaoxue",
@@ -560,7 +542,7 @@
       "searchable": 0,
       "quickSearch": 0,
       "changeable": 0,
-      "ext": {"json": "https://nos.netease.com/ysf/d7a21cf34ede56f5c686ecfba5fc7e3f.txt"}
+      "ext": {"json": "https://zhouyu86-bh1.pages.dev/bili_primary.txt"}
     },
     {
       "key": "BiliChuzhong",
@@ -571,7 +553,7 @@
       "searchable": 0,
       "quickSearch": 0,
       "changeable": 0,
-      "ext": {"json": "https://nos.netease.com/ysf/8f55d520f8d70056695740ef151744a7.txt"}
+      "ext": {"json": "https://zhouyu86-bh1.pages.dev/bili_junior.txt"}
     },
     {
       "key": "BiliGaozhong",
@@ -582,7 +564,7 @@
       "searchable": 0,
       "quickSearch": 0,
       "changeable": 0,
-      "ext": {"json": "https://nos.netease.com/ysf/c66a4b5356141c49fd45ec51568017b4.txt"}
+      "ext": {"json": "https://zhouyu86-bh1.pages.dev/bili_senior.txt"}
     }
   ],
   "parses": [
