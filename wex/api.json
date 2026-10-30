@@ -1,5 +1,5 @@
 {
-"spider": "./spider.jar;md5;722d5c1bdcb1b38fc62874941e060d6b",
+"spider": "./spider.jar;md5;8605fb93b9d2ba66e702fdbfcc496159",
 "wallpaper": "https://www.loliapi.com/acg/",
 "logo": "https://storage.7x24cc.com/storage-server/presigned/ss1/a6-online-fileupload/newMediaFile/3CEAE9E_773_wexfnw_20250911190012684newMediaFile.gif",
 "sites": [
@@ -15,7 +15,7 @@
             "ext": "https://cdn.waimaimingtang.com/file/images/bwc/20260414181247-ae51abfbfe.txt"
         }, {
             "key": "Doubanaaaa",
-            "name": "🐮【更新日期:20261026】🐮",
+            "name": "🐮【更新日期:20261031】🐮",
             "type": 3,
             "api": "csp_NewDouBanGuard",
             "indexs": 1,
@@ -482,6 +482,13 @@
             "api": "csp_DuanJuAiWeiGuanGuard",
             "searchable": 1,
             "changeable": 0
+        },{
+            "key": "AnimeAiGongHeGuo",
+            "name": "🤡共和┃动漫🤡",
+            "type": 3,
+            "api": "csp_AnimeAiGongHeGuoGuard",
+            "searchable": 1,
+            "changeable": 0
         }, {
             "key": "AnimeXiFan",
             "name": "🤡稀饭┃动漫🤡",
@@ -879,14 +886,7 @@
             "api": "csp_SoAiPanSooGuard",
             "searchable": 1,
             "changeable": 0
-        }, {
-            "key": "SoAiQuPanShe",
-            "name": "🎠趣搜┃百度🎠",
-            "type": 3,
-            "api": "csp_SoAiQuPanSheGuard",
-            "searchable": 1,
-            "changeable": 0
-        }, {
+        },  {
             "key": "SoAiAiPanSo",
             "name": "🎠爱盘┃综合🎠",
             "type": 3,
