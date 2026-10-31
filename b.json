@@ -120,9 +120,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/keke.jar"
-    },
+      "ext": ""},
     {
       "key": "Fdz",
       "name": "饭搭子影视",
