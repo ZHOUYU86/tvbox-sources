@@ -315,21 +315,45 @@ def sync_zhenxin():
 
 
 def sync_pg():
-    """PG: 完整拉取配置+jar+所有lib文件"""
-    base = "https://www.252035.xyz/p"
+    """PG: 从上游官方总仓 cnb.cool/fish2035/pg 拉取配置+jar+全量lib/js（镜像站252035.xyz是旧版不可用）"""
+    import hashlib
+    base = "https://cnb.cool/fish2035/pg/-/git/raw/main"
     os.makedirs("pg", exist_ok=True)
+    # 1. 配置(官方 jsm.json -> 本地 pg.json)
     txt = dl_text(base + "/jsm.json")
-    replace_file(txt, "pg/pg.json")
-    jar = dl(base + "/pg.jar", 120)
+    # 2. 官方最新 jar
+    jar = dl(base + "/pg.jar", 180)
     replace_file(jar, "pg/pg.jar")
-    lib_files = ["lib/aes.js", "lib/crypto-js.js", "lib/danmu.js", "lib/douban.js", "lib/drpy2.js"]
-    for f in lib_files:
+    md5 = hashlib.md5(jar).hexdigest()
+    # 3. 用官方pg.jar.md5文件校验（存在则比对，不存在用实测md5）
+    try:
+        official_md5 = dl_text(base + "/pg.jar.md5", 30).strip().lower()
+        if official_md5 != md5:
+            print(f"[pg] 警告: 官方md5={official_md5} 实测md5={md5}，以实测为准")
+    except Exception:
+        pass
+    # 4. 全量同步 lib/js（从官方总仓拉取，404的跳过）
+    lib_refs = sorted(set(re.findall(r'\./lib/([A-Za-z0-9_\-\.]+)', txt)))
+    js_refs  = sorted(set(re.findall(r'\./js/([A-Za-z0-9_\-\.]+)', txt)))
+    n = 0
+    for f in lib_refs:
         try:
-            b = dl(base + "/" + f, 60)
-            replace_file(b, "pg/" + f)
+            b = dl(base + "/lib/" + f, 60)
+            replace_file(b, "pg/lib/" + f)
+            n += 1
         except Exception as e:
-            print(f"[pg] lib 下载失败 {f}: {e}")
-    print("[pg] OK")
+            print(f"[pg] lib 失败 {f}: {e}")
+    for f in js_refs:
+        try:
+            b = dl(base + "/js/" + f, 60)
+            replace_file(b, "pg/js/" + f)
+            n += 1
+        except Exception as e:
+            print(f"[pg] js 失败 {f}: {e}")
+    # 5. spider 改相对路径并写实测 md5
+    txt = re.sub(r'"spider"\s*:\s*"[^"]*"', f'"./pg.jar;md5;{md5}"', txt, count=1)
+    replace_file(txt, "pg/pg.json")
+    print(f"[pg] OK (lib/js 共 {n} 个, jar md5={md5})")
 
 
 def sync_aowu():
@@ -364,6 +388,18 @@ def sync_wmz():
     print("[wmz] OK")
 
 
+def sync_np_manager():
+    """NP管理器: 自动同步用户fork的开源逆向工具仓库"""
+    data = dl("https://github.com/ZHOUYU86/NP-Manager/archive/refs/heads/master.zip", 240)
+    tmp = tempfile.mkdtemp(prefix="np_")
+    try:
+        unzip_to_mem(data, tmp, strip_root=True)
+        replace_dir(tmp, "tools/NP-Manager")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    print("[np_manager] OK")
+
+
 def main():
     ok = 0
     funcs = [
@@ -371,6 +407,7 @@ def main():
         ("cl", sync_cl), ("ouyang", sync_ouyang), ("lubin", sync_lubin),
         ("dl", sync_dl), ("tvurl", sync_tvurl), ("xs", sync_xs),
         ("zhenxin", sync_zhenxin), ("pg", sync_pg), ("aowu", sync_aowu), ("wmz", sync_wmz),
+        ("np_manager", sync_np_manager),
     ]
     for name, fn in funcs:
         try:
