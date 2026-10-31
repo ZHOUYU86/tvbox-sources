@@ -476,6 +476,37 @@
             </div>
         </div>
 
+        <!-- OK影视接口 -->
+        <div class="source-card" id="card-ok">
+            <div class="source-header">
+                <div class="source-name">🔴 OK影视接口 (ok)</div>
+                <div class="source-badge">健康</div>
+            </div>
+            <div class="url-row" id="row-ok-online2">
+                <span class="url-label online2">在线2</span>
+                <input type="text" class="url-input" value="https://tvbox-bh1.pages.dev/ok/m.json">
+                <button class="copy-btn online2" onclick="copyUrl(this)">复制</button>
+                <button class="delete-url-btn" onclick="deleteUrl('ok', 'online2', 'OK影视接口 (ok)', '在线2')" title="删除此地址">×</button>
+            </div>
+            <div class="url-row" id="row-ok-zhouyu">
+                <span class="url-label online2">新站(zhouyu86)</span>
+                <input type="text" class="url-input" value="https://zhouyu86-bh1.pages.dev/ok/m.json">
+                <button class="copy-btn online2" onclick="copyUrl(this)">复制</button>
+                <button class="delete-url-btn" onclick="deleteUrl('ok', 'zhouyu', 'OK影视接口 (ok)', '新站(zhouyu86)')" title="删除此地址">×</button>
+            </div>
+            <div class="url-row" id="row-ok-local">
+                <span class="url-label local">本地</span>
+                <input type="text" class="url-input" value="http://10.144.194.238:8080/ok/m.json">
+                <button class="copy-btn local" onclick="copyUrl(this)">复制</button>
+                <button class="delete-url-btn" onclick="deleteUrl('ok', 'local', 'OK影视接口 (ok)', '本地')" title="删除此地址">×</button>
+            </div>
+            <div class="stats">
+                <span>📊 站点数：139（+直播，OK大佬自用源）</span>
+                <span>📁 路径：/ok/m.json</span>
+                <span style="color:#10b981;">🔄 自动同步上游</span>
+            </div>
+        </div>
+
         <div style="text-align:center;margin:20px 0;">
             <a href="index.html" style="display:inline-block;padding:14px 30px;background:#1677ff;color:white;text-decoration:none;border-radius:10px;font-size:16px;font-weight:bold;box-shadow:0 4px 15px rgba(22,119,255,0.4);">
                 ← 返回导航主页
@@ -483,7 +514,7 @@
         </div>
 
         <div class="footer">
-            TVBox 源地址管理工具 | 共 11 个源 | 检测时间：<span id="time"></span>
+            TVBox 源地址管理工具 | 共 12 个源 | 检测时间：<span id="time"></span>
         </div>
     </div>
 
