@@ -400,6 +400,61 @@ def sync_np_manager():
     print("[np_manager] OK")
 
 
+
+def sync_ok():
+    """OK影视: 从上游 liu673cn/box 全量拉取（m.json + fty.jar + libs/），
+    修正 m.json 中上游自身的坏路径后写回 ok/ 目录。
+    上游 m.json 混用 ./lib/ 与 ./libs/ 两种路径（149个libs/正确，8个lib/死链）：
+    - ./lib/TVB云播.js -> ./libs/js/TVB云播.js
+    - ./lib/dr/kuba.js -> ./libs/js/kuba.js
+    - ./lib/drpy2.min.js -> ./libs/js/drpy2.min.js
+    - ./lib/jp.js -> ./libs/js/jp.js
+    - ./lib/tv/ipv6.m3u -> ./libs/tv/ipv6.m3u
+    - ./lib/有声小说吧.js -> ./libs/js/有声小说吧.js
+    - ./lib/虎虎.json -> ./libs/虎虎.json
+    - ./lib/短视频.js 上游缺失（保持原样与上游一致）
+    其余上游自身缺失（4k剧院/兄弟/美食合集/lf_p2p1_min/短视频.js）保持原样。
+    """
+    import hashlib
+    data = dl("https://github.com/liu673cn/box/archive/refs/heads/main.zip", 240)
+    tmp = tempfile.mkdtemp(prefix="ok_")
+    try:
+        unzip_to_mem(data, tmp, strip_root=True)
+        # 清理上游空目录 lib/（历史遗留）
+        lib_dir = os.path.join(tmp, "lib")
+        if os.path.exists(lib_dir) and not os.listdir(lib_dir):
+            os.rmdir(lib_dir)
+        replace_dir(tmp, "ok")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    # 修正 m.json 路径
+    mpath = "ok/m.json"
+    txt = open(mpath, encoding="utf-8").read()
+    # 1) 通用: ./lib/ -> ./libs/（文件实际都在 libs 或 libs/js 下）
+    txt = txt.replace('"./lib/', '"./libs/')
+    # 2) 特殊: 实际在 libs/js/ 下的（含 dr/ 前缀冗余）
+    for js_f in ["TVB云播.js", "有声小说吧.js", "哔哩直播.js"]:
+        txt = txt.replace(f'"./libs/{js_f}"', f'"./libs/js/{js_f}"')
+    txt = txt.replace('"./libs/dr/kuba.js"', '"./libs/js/kuba.js"')
+    txt = txt.replace('"./libs/drpy2.min.js"', '"./libs/js/drpy2.min.js"')
+    txt = txt.replace('"./libs/jp.js"', '"./libs/js/jp.js"')
+    open(mpath, "w", encoding="utf-8").write(txt)
+    # jar 实测 md5 写入 spider
+    jarpath = "ok/fty.jar"
+    md5 = hashlib.md5(open(jarpath, "rb").read()).hexdigest()
+    # 1) 已是标准 "spider": 格式则只更新 md5
+    txt = re.sub(r'"spider"\s*:\s*"[^"]*"', f'"./fty.jar;md5;{md5}"', txt, count=1)
+    # 2) 上游裸字符串格式 { "./fty.jar;md5;XXX", ... } -> 标准 {"spider":"./fty.jar;md5;XXX", ...}
+    txt = re.sub(r'(?m)^(\s*)"\./%s;md5;[^"]*"\s*,?\s*$' % re.escape("fty.jar"),
+                 lambda m: m.group(1) + f'"spider":"./fty.jar;md5;{md5}",', txt, count=1)
+    # 3) 剥掉 m.json 头部注释（老版OK影视会因注释闪退）
+    txt = re.sub(r'(?m)^\s*//[^\n]*\n', '', txt, count=1)
+    open(mpath, "w", encoding="utf-8").write(txt)
+    print(f"[ok] OK (m.json={os.path.getsize(mpath)}B, fty.jar={os.path.getsize(jarpath)}B, md5={md5})")
+
+
+
+
 def main():
     ok = 0
     funcs = [
@@ -407,7 +462,7 @@ def main():
         ("cl", sync_cl), ("ouyang", sync_ouyang), ("lubin", sync_lubin),
         ("dl", sync_dl), ("tvurl", sync_tvurl), ("xs", sync_xs),
         ("zhenxin", sync_zhenxin), ("pg", sync_pg), ("aowu", sync_aowu), ("wmz", sync_wmz),
-        ("np_manager", sync_np_manager),
+        ("np_manager", sync_np_manager), ("ok", sync_ok),
     ]
     for name, fn in funcs:
         try:
