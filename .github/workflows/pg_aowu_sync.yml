@@ -13,38 +13,42 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: 拉取 PG 接口内容（pg/pg.json + pg/pg.jar）
+      - name: 拉取 PG 接口内容（官方总仓 cnb.cool，pg/pg.json + pg/pg.jar）
         run: |
           mkdir -p pg aowu
-          curl -L --max-time 120 -o pg/pg.json "https://www.252035.xyz/p/jsm.json"
-          curl -L --max-time 300 -o pg/pg.jar "https://www.252035.xyz/p/pg.jar"
+          curl -L --max-time 120 -o pg/pg.json "https://cnb.cool/fish2035/pg/-/git/raw/main/jsm.json"
+          curl -L --max-time 300 -o pg/pg.jar "https://cnb.cool/fish2035/pg/-/git/raw/main/pg.jar"
 
       - name: 拉取嗷呜接口内容（aowu/aowu.json）
         run: |
           curl -L --max-time 120 -o aowu/aowu.json "https://9763.kstore.vip/aowu.json"
 
-      - name: 同步上游 lib 配置文件（pg/lib）
+      - name: 同步上游 lib/js 配置文件（pg/lib + pg/js，从官方总仓）
         run: |
-          mkdir -p pg/lib
+          mkdir -p pg/lib pg/js
           python3 - <<'EOF'
-          import os, re, urllib.request
-          need = [
-            "123share.txt","189share.txt","115share.txt","alishare.ebook.txt","alishare.txt",
-            "alist.min.js","biptv.txt","douban.json","feimaolive.json","live2vod.js",
-            "moli.json","pikpakclass.json","pushshare.txt","quarkshare.txt","tgsearch.json",
-            "thundershare.txt","ucshare.txt","wogg.json","yo21.txt",
-          ]
+          import re, urllib.request
+          BASE = "https://cnb.cool/fish2035/pg/-/git/raw/main"
+          # 从刚下载的 pg/pg.json 解析所有 lib/js 引用
+          s = open("pg/pg.json", encoding="utf-8").read()
+          libs = sorted(set(re.findall(r'\./lib/([A-Za-z0-9_\-\.]+)', s)))
+          jss  = sorted(set(re.findall(r'\./js/([A-Za-z0-9_\-\.]+)', s)))
+          def fetch(url, timeout=40):
+              req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+              with urllib.request.urlopen(req, timeout=timeout) as r:
+                  return r.read()
           ok = fail = 0
-          for f in need:
+          for f in libs:
               try:
-                  req = urllib.request.Request("https://www.252035.xyz/p/lib/" + f, headers={"User-Agent": "Mozilla/5.0"})
-                  with urllib.request.urlopen(req, timeout=40) as r:
-                      b = r.read()
-                  open("pg/lib/" + f, "wb").write(b)
-                  ok += 1
-              except Exception:
-                  fail += 1
-          print(f"lib 同步: ok={ok} fail={fail}")
+                  b = fetch(BASE + "/lib/" + f)
+                  open("pg/lib/" + f, "wb").write(b); ok += 1
+              except Exception: fail += 1
+          for f in jss:
+              try:
+                  b = fetch(BASE + "/js/" + f)
+                  open("pg/js/" + f, "wb").write(b); ok += 1
+              except Exception: fail += 1
+          print(f"lib/js 同步: ok={ok} fail={fail}")
           EOF
 
       - name: 剥注释、下载 jar、动态 md5、spider 改相对路径
@@ -70,11 +74,17 @@ jobs:
               b = open(jar_name, "rb").read()
               md5 = hashlib.md5(b).hexdigest()
               jn = jar_name.split("/")[-1]
-              s = re.sub(r'"spider"\s*:\s*"[^"]*"', f'"spider":"./{jn};md5;{md5}"', s, count=1)
+              new_spider = f'./{jn};md5;{md5}'
+              # 官方 jsm.json 可能是裸字符串格式: { ".\/pg.jar;md5;XXX", "sites":[...] }
+              # 转成标准 TVBox 格式: { "spider":".\/pg.jar;md5;XXX", "sites":[...] }
+              s = re.sub(r'(?m)^(\s*)"(\./%s;md5;[^"]*)"\s*,?\s*$' % re.escape(jn), r'\1"spider":"\2",', s, count=1)
+              # 已是标准格式则只替换 md5
+              s = re.sub(r'"spider"\s*:\s*"[^"]*"', f'"spider":"{new_spider}"', s, count=1)
               open(f, "w", encoding="utf-8").write(s)
-              print(f, "spider ->", f"./{jn};md5;{md5}")
+              print(f, "spider ->", new_spider)
 
-          finalize("pg/pg.json", "pg/pg.jar", "https://www.252035.xyz/p/pg.jar")
+          # PG 用官方总仓 jar（前面步骤已下载到 pg/pg.jar），此处只计算实测 md5 写入配置
+          finalize("pg/pg.json", "pg/pg.jar", None)
           s = open("aowu/aowu.json", encoding="utf-8").read()
           m = re.search(r'"spider"\s*:\s*"([^"]*)"', s)
           aowu_jar = m.group(1).split(";")[0] if m else None
