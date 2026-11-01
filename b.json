@@ -1,6 +1,5 @@
 {
-      "spider":  "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
-
+  "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
   "wallpaper": "https://szyyds.cn/api.php",
   "logo": "https://szyyds.cn/1.png",
   "sites": [
@@ -14,11 +13,11 @@
       "changeable": 1,
       "jar": "https://zhouyu86-bh1.pages.dev/gua_spider.jar"
     },
-{
+    {
       "key": "gulu",
       "name": "🐧咕噜丨蓝光秒播",
       "type": 3,
-      "api": "https://gh-proxy.com/https://raw.githubusercontent.com/tushen6/James/main/py/咕噜咕噜.py",
+      "api": "https://zhouyu86-bh1.pages.dev/咕噜咕噜.py",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
@@ -61,8 +60,7 @@
       "api": "csp_Gqc",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/gqc.jar"
+      "changeable": 1
     },
     {
       "key": "Feikuai",
@@ -98,8 +96,7 @@
       "api": "csp_WwwDmxq",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/dmxq.jar"
+      "changeable": 1
     },
     {
       "key": "Qqys",
@@ -130,8 +127,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "ext": "",
-      "jar": "https://zhouyu86-bh1.pages.dev/keke.jar"
+      "ext": ""
     },
     {
       "key": "Fdz",
@@ -502,139 +498,6 @@
       "changeable": 1,
       "filterable": 1,
       "timeout": 10
-    },
-    {
-      "key": "Bili",
-      "name": "🅱哔哔合集┃弹幕",
-      "type": 3,
-      "api": "csp_BiliGuard",
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "searchable": 1,
-      "quickSearch": 0,
-      "changeable": 0,
-      "ext": {
-        "json": "https://nos.netease.com/ysf/0075389dca9afadd4614e9713765ff17.txt"
-      },
-      "jar": "https://zhouyu86-bh1.pages.dev/bili.jar"
-    },
-    {
-      "key": "Aid",
-      "name": "🚑急救┃教学",
-      "type": 3,
-      "api": "csp_FirstAidGuard",
-      "searchable": 0,
-      "quickSearch": 0,
-      "changeable": 0,
-      "style": {
-        "type": "rect",
-        "ratio": 3.8
-      },
-      "jar": "https://zhouyu86-bh1.pages.dev/bili.jar"
-    },
-    {
-      "key": "MTV",
-      "name": "🎶明星┃MV",
-      "type": 3,
-      "api": "csp_BiliGuard",
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "searchable": 0,
-      "quickSearch": 0,
-      "changeable": 0,
-      "ext": {
-        "json": "https://nos.netease.com/ysf/5af5fbe12a88b7c45aa1c21e6551826c.txt"
-      },
-      "jar": "https://zhouyu86-bh1.pages.dev/bili.jar"
-    },
-    {
-      "key": "Biliych",
-      "name": "🅱哔哔演唱会┃弹幕",
-      "type": 3,
-      "api": "csp_BiliGuard",
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "searchable": 0,
-      "quickSearch": 0,
-      "changeable": 0,
-      "ext": {
-        "json": "https://nos.netease.com/ysf/6496356286589c68f52c2f99c0c674c7.txt"
-      },
-      "jar": "https://zhouyu86-bh1.pages.dev/bili.jar"
-    },
-    {
-      "key": "少儿教育",
-      "name": "📚少儿┃教育",
-      "type": 3,
-      "api": "csp_BiliGuard",
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "searchable": 0,
-      "quickSearch": 0,
-      "changeable": 0,
-      "ext": {
-        "json": "https://nos.netease.com/ysf/89370c8ddf36b5e1beb4d71adb921bda.txt"
-      },
-      "jar": "https://zhouyu86-bh1.pages.dev/bili.jar"
-    },
-    {
-      "key": "小学课堂",
-      "name": "📚小学┃课堂",
-      "type": 3,
-      "api": "csp_BiliGuard",
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "searchable": 0,
-      "quickSearch": 0,
-      "changeable": 0,
-      "ext": {
-        "json": "https://nos.netease.com/ysf/d7a21cf34ede56f5c686ecfba5fc7e3f.txt"
-      },
-      "jar": "https://zhouyu86-bh1.pages.dev/bili.jar"
-    },
-    {
-      "key": "初中课堂",
-      "name": "📚初中┃课堂",
-      "type": 3,
-      "api": "csp_BiliGuard",
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "searchable": 0,
-      "quickSearch": 0,
-      "changeable": 0,
-      "ext": {
-        "json": "https://nos.netease.com/ysf/8f55d520f8d70056695740ef151744a7.txt"
-      },
-      "jar": "https://zhouyu86-bh1.pages.dev/bili.jar"
-    },
-    {
-      "key": "高中教育",
-      "name": "📚高中┃课堂",
-      "type": 3,
-      "api": "csp_BiliGuard",
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "searchable": 0,
-      "quickSearch": 0,
-      "changeable": 0,
-      "ext": {
-        "json": "https://nos.netease.com/ysf/c66a4b5356141c49fd45ec51568017b4.txt"
-      },
-      "jar": "https://zhouyu86-bh1.pages.dev/bili.jar"
     }
   ],
   "parses": [
