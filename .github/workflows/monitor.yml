@@ -6,6 +6,10 @@ on:
     - cron: '45 8 * * *'
   workflow_dispatch: # 支持手动触发
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   sync-and-monitor:
     runs-on: ubuntu-latest
@@ -46,7 +50,7 @@ jobs:
         if: steps.monitor.outputs.failed_sources != '[]'
         run: python monitor/ai_fix.py
         env:
-          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
 
       - name: 自动提交修复后的代码
         run: |
