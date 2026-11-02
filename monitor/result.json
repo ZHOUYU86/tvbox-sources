@@ -48,7 +48,7 @@
       "name": "豆瓣资源3",
       "api": "https://caiji.dbzy5.com/api.php/provide/vod/from/dbm3u8/at/josn",
       "type": 1,
-      "error": "HTTPSConnectionPool(host='caiji.dbzy5.com', port=443): Max retries exceeded with url: /api.php/provide/vod/from/dbm3u8/at/josn?ac=list&pg=1 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x7f2681222ba0>: Failed to resolve 'caiji.dbzy5.com' ([Errno -5] No address associated with hostname)\"))"
+      "error": "HTTPSConnectionPool(host='caiji.dbzy5.com', port=443): Max retries exceeded with url: /api.php/provide/vod/from/dbm3u8/at/josn?ac=list&pg=1 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x7f6a83f7b680>: Failed to resolve 'caiji.dbzy5.com' ([Errno -5] No address associated with hostname)\"))"
     }
   ]
 }
