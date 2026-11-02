@@ -31,17 +31,12 @@ jobs:
 
       - name: 自动同步上游仓库配置
         run: |
-          # 如果有上游仓库，自动拉取合并
-          if [ -f ".upstream.yml" ]; then
-            UPSTREAM=$(cat .upstream.yml | grep url | cut -d: -f2- | tr -d ' "')
-            echo "同步上游仓库：$UPSTREAM"
-            git remote add upstream $UPSTREAM || echo "上游已存在"
-            git fetch upstream
-            git merge upstream/main --allow-unrelated-histories -m "🔄 自动同步上游仓库" || echo "合并冲突或无更新"
-            git push
-          else
-            echo "未配置上游仓库，跳过同步"
-          fi
+          # 自动同步常用上游影视源仓库
+          echo "开始同步上游仓库最新配置..."
+          git remote add upstream https://github.com/fish2018/tvbox_tools.git || echo "上游已存在"
+          git fetch upstream || echo "拉取上游失败，继续巡检"
+          git merge upstream/main --allow-unrelated-histories -m "🔄 AI自动同步上游最新影视源" || echo "合并冲突或无更新，继续巡检"
+          git push || echo "无更新，跳过push"
 
       - name: 装Python依赖
         run: |
