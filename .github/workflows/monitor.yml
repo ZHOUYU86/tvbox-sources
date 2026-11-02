@@ -1,0 +1,55 @@
+name: 影视源AI自动同步+监控修复
+
+on:
+  schedule:
+    # 每2小时跑一次：同步上游+巡检
+    - cron: '0 */2 * * *'
+  workflow_dispatch: # 支持手动触发
+
+jobs:
+  sync-and-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取自己的仓库代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 配置Git
+        run: |
+          git config --global user.name "Auto-Sync"
+          git config --global user.email "auto@sync.com"
+
+      - name: 自动同步上游仓库配置
+        run: |
+          # 如果有上游仓库，自动拉取合并
+          if [ -f ".upstream.yml" ]; then
+            UPSTREAM=$(cat .upstream.yml | grep url | cut -d: -f2- | tr -d ' "')
+            echo "同步上游仓库：$UPSTREAM"
+            git remote add upstream $UPSTREAM || echo "上游已存在"
+            git fetch upstream
+            git merge upstream/main --allow-unrelated-histories -m "🔄 自动同步上游仓库" || echo "合并冲突或无更新"
+            git push
+          else
+            echo "未配置上游仓库，跳过同步"
+          fi
+
+      - name: 装Python依赖
+        run: |
+          pip install requests PyYAML
+
+      - name: 跑巡检脚本
+        id: monitor
+        run: python monitor/check_sources.py
+
+      - name: 有挂的源自动让AI修复
+        if: steps.monitor.outputs.failed_sources != '[]'
+        run: python monitor/ai_fix.py
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+
+      - name: 自动提交修复后的代码
+        run: |
+          git add -A
+          git commit -m "🤖 AI自动同步上游+修复挂掉的源" || echo "没有改动"
+          git push
