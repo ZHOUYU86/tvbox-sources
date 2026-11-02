@@ -7,7 +7,6 @@ CCTV-17 农业农村·标清,https://stream1.freetv.fun/dd1426a4c6d136b492118e56
 CCTV-7 国防军事·高清,https://stream1.freetv.fun/33acfb5aeb4b37ea0b4d12aedbf55cf1053931084ac7df884880cedfb6c0042d.m3u8
 CETV-1 中国教育·高清,https://stream1.freetv.fun/f3ae1dadd66863a3d8d2d948a4ab7ee00b38a1bc8bcfac8b6b51cd210d5fcf2e.m3u8
 CCTV-11 戏曲·高清,https://stream1.freetv.fun/9a37f4212eaa2f3bd423f5976c2b43ccb446de7f2c5b1102f20858cac869dd19.m3u8
-CCTV-6 电影·高清,https://stream1.freetv.fun/db21e7ba54817e48c586b342b39ca4dfb349a12c178acbe7644ec4e7c1dcdce7.m3u8
 CCTV-8 电视剧·高清,https://stream1.freetv.fun/1eb381a73c00d5871988424b1c0b04628dea8d29baffa50c32510e76b4d82f2f.m3u8
 CCTV-4 中文国际·标清,https://stream1.freetv.fun/5ea26961bbc8690cbd372a194e8801249644123feab6354e1f2cdd2b8a0026ca.m3u8
 CCTV-4 中文国际·标清,https://stream1.freetv.fun/16e36a73148449b551127354e2d7f090caf9682c09c17540077857b500868f15.m3u8
@@ -27,29 +26,30 @@ CCTV-9 纪录·高清,https://stream1.freetv.fun/4b5d87011597e1f459dab3542069321
 安多卫视·高清,https://stream1.freetv.fun/290a71e47606fa713caa0f79a0812e332e24e5ec6d51610020d3031c34fb2857.m3u8
 安徽卫视·高清,https://stream1.freetv.fun/5b4822a5ec2db203657ad69a37c8ee684490003ec64dfd80eb0c8074110f60e2.m3u8
 山东卫视·高清,https://stream1.freetv.fun/d8e3366b8925df7647771179db5b057cfc7c2113382dfff9027cb74c5b79661d.m3u8
-厦门卫视·标清,https://stream1.freetv.fun/f8d1629f014d910f22eba5798df47afb57a1636020d0ef99783649dc37c7a627.m3u8
-广东卫视高清·高清,https://stream1.freetv.fun/e6a0313731293b051570c1d85bc6cb796d153bed28661d5b12ff9dc0dd2ca878.ctv
+山西卫视·高清,https://stream1.freetv.fun/3120ee081313eeb7a8443e60a2663eeee00f04172681b4f150d2adb3dc07562c.m3u8
+厦门卫视·标清,https://stream1.freetv.fun/a927444efa3d55d3d42d4d80fc9dd565caeae93fe0328d6e078367c2120df3d4.ctv
+广东卫视·高清,https://stream1.freetv.fun/7f58eaa8048364264a26b34ef48d369820464c387c58f8311f3b9891083d951f.m3u8
 广西卫视·标清,https://stream1.freetv.fun/b4609fc21d45a2a925ed758fd1a611f45206a6d65fcc68b1d8061f30928fd94d.m3u8
 延边卫视·高清,https://stream1.freetv.fun/d2ea3a364fa453b29060ebccb5a06a1941755859c0182ab0f071473c08738fc2.ctv
 新疆卫视·高清,https://stream1.freetv.fun/04f0088c1cdfec6ca713ee7e17ff1f99c8b8c5f0778cc1faa3068091afa6e012.m3u8
 东南卫视·高清,https://stream1.freetv.fun/12cc275a53b0651fdf3fb0c2e9a8bdf5a3eb47d2470edf05da5d0e5d86681f23.m3u8
 东方卫视·高清,https://stream1.freetv.fun/83c3a916916d31715425b6e333fa1bc61dd7401ec2e546e2e62e0dacdeac543a.ctv
-江苏卫视·高清,https://stream1.freetv.fun/a36bf102c616caed6d75bdbcafd48786253f7828d67752d49c7f3184923311f3.ctv
+江苏卫视·高清,https://stream1.freetv.fun/f1b9c03bc28584fffeb40229e136d1fd81ca13091647867411de131eb3f8962a.m3u8
 江西卫视·高清,https://stream1.freetv.fun/2ed85dd9aeacf49efc6c00644457e810fb8fa62de4b164739e262d96dc5aa519.ctv
-河北卫视·高清,https://stream1.freetv.fun/e61c0d8b6667111dbf351f301877dc65ad441d53a332ed7e6e1cc096122401aa.m3u8
+河北卫视·高清,https://stream1.freetv.fun/e8ce72af0be8d31919c9bbcf99a5aa8ce037ffbefb5d47a2811e2011204b2b28.m3u8
 河南卫视·高清,https://stream1.freetv.fun/7331faf4032e9de329e2c041cd9fa6f95fad0683ef1937a7bbbb76322856b9eb.m3u8
 浙江卫视·高清,https://stream1.freetv.fun/7f280c90c0c7647b6816a25c4b4ec1732c7d84bd85d08cdd5f60489b14d7e33f.m3u8
 海南卫视·高清,https://stream1.freetv.fun/4976d4d4adc40dea6818cd00c88f573f89241aa55da491202c4383813aa6bde6.m3u8
 海峡卫视·高清,https://stream1.freetv.fun/aac46a5aacdf68f29a5a52c4fa291258a7e225175b6872d6d4dbc7d8969df603.m3u8
-深圳卫视·高清,https://stream1.freetv.fun/89590fba13fe06fa83f4c4bc1c821266ba94fcec439b5ce16341cdf213b0cc43.m3u8
+深圳卫视·高清,https://stream1.freetv.fun/e194e3ce356d2158d336b3f91c210a2b945dc64bca802cd640e20c9075554c29.m3u8
 湖北卫视·高清,https://stream1.freetv.fun/2cadff68f8e06b03d10536121b2764ac658a8cb451d1901107c2039ac49a6757.m3u8
 湖南卫视·高清,https://stream1.freetv.fun/9226420e08f33ac94185dfb00622d865e225c262cffc9f79765db311c08a4023.m3u8
-甘肃卫视·高清,https://stream1.freetv.fun/61f3c51f5803f37a6ea081e3e5d94df955fd2bcc591583685545052de4ffded7.m3u8
+甘肃卫视·高清,https://stream1.freetv.fun/b14558c4b4b9dd59004052dfe14922a1090bfe3f8040fc5d4fef80a993ffd127.m3u8
 西藏卫视·标清,https://stream1.freetv.fun/f472b7f1026488727d44969d797eb060aa375af68479fe9b1359d81927da37f4.m3u8
 贵州卫视·高清,https://stream1.freetv.fun/8e8407a82f2d395cd962851edf2b48ecffcec47128680e818616c5e864b06d77.m3u8
 中国农林卫视·高清,https://stream1.freetv.fun/d042bf1bb3d794ceccdc362426fe16bca824bd1d6643f64e64ae76845b5c60e5.ctv
 辽宁卫视·高清,https://stream1.freetv.fun/c386d9c7cbbd54acd5c62d1e68d3b89f76f9f7a926691e4ad69397091fe9692c.m3u8
-重庆卫视·标清,https://stream1.freetv.fun/6b02ca587457cae05973fc43e56528776dd7f992da37d4f74f3c3829b8d4821d.m3u8
+重庆卫视·高清,https://stream1.freetv.fun/f086c767304aa159b2fabd7242210345a74838560a7016e8b06b107a024682e5.m3u8
 陕西卫视·高清,https://stream1.freetv.fun/871a47698ab331b58861b25f028f40587602ea02b336853cb105edd68f78b022.ctv
 黑龙江卫视·高清,https://stream1.freetv.fun/cfa2ed9d4f96d20f3dd2eb920e17de8ecd8482cfff2328d8cfdcaba050a03a4b.m3u8
 三沙卫视·标清,https://stream1.freetv.fun/2f29bdf337cfd1004d4deb54a8f7ab4476ca8a0d740651bb6e9f8b71fdbdb60e.ctv
@@ -87,6 +87,7 @@ cctv-4_中文国际·高清,https://stream1.freetv.fun/4239df13e01855accfb134a14
 经济科教高清·高清,https://stream1.freetv.fun/1de148cf5218954c6deb78802bc948aa2312f032679a7368cf73b881f8ae3893.ctv
 现代教育·高清,https://stream1.freetv.fun/054a74039124dae0f6d03f80e0851d324e25f7325220987177f45a16864ddce2.m3u8
 邢台生活·高清,https://stream1.freetv.fun/15c753e55509e76adcacaea1e9fd25e488f46288bb427a147d28166da66a75c0.m3u8
+cctv6电影·高清,https://stream1.freetv.fun/7a1dc11a2bf4ce08615018fa19b4fdd3d0a1b6e7c3201c10afb1c4b7e2fbaa48.ctv
 chc动作电影·高清,https://stream1.freetv.fun/e68a7d1891c56f259aeb03c66b395ba2e342a8c28860ff4c99284814f28ec16e.m3u8
 chc影迷电影·高清,https://stream1.freetv.fun/5874e272f5ee0537a896af935df0fe8b792e4eadef2b829879b5070d883af5e6.ctv
 哈尔滨影视·标清,https://stream1.freetv.fun/b681acfb3d9cf5bc9d056d8513a6f1ef9ead223fe349f541e02a39edfabbd88a.m3u8
