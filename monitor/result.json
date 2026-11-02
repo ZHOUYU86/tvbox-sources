@@ -1,0 +1,54 @@
+{
+  "success": [
+    "稀饭影视",
+    "大师兄影视",
+    "量子资源",
+    "红牛资源3",
+    "无尽资源",
+    "暴风资源",
+    "影视 | 建安",
+    "电影天堂",
+    "最大资源",
+    "牛牛点播",
+    "閃電资源",
+    "索尼资源",
+    "新浪点播",
+    "丫丫点播",
+    "樱花资源",
+    "魔都资源",
+    "非凡资源",
+    "金鹰点播",
+    "U酷资源2",
+    "速博资源",
+    "金鹰资源",
+    "天涯资源",
+    "⚡闪电资源2",
+    "无尽资源3",
+    "虎牙资源",
+    "360资源",
+    "光速资源",
+    "步步高资源",
+    "⚡极速资源2",
+    "豆瓣资源2",
+    "影视 | 极速[直连]",
+    "茅台资源"
+  ],
+  "failed": [
+    {
+      "name": "飘零资源",
+      "api": "https://p2100.net/api.php/provide/vod",
+      "type": 1
+    },
+    {
+      "name": "百度云资源",
+      "api": "https://api.apibdzy.com/api.php/provide/vod",
+      "type": 1
+    },
+    {
+      "name": "豆瓣资源3",
+      "api": "https://caiji.dbzy5.com/api.php/provide/vod/from/dbm3u8/at/josn",
+      "type": 1,
+      "error": "HTTPSConnectionPool(host='caiji.dbzy5.com', port=443): Max retries exceeded with url: /api.php/provide/vod/from/dbm3u8/at/josn?ac=list&pg=1 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x7f2681222ba0>: Failed to resolve 'caiji.dbzy5.com' ([Errno -5] No address associated with hostname)\"))"
+    }
+  ]
+}
