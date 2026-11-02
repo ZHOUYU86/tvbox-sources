@@ -12,8 +12,8 @@ UA = {"User-Agent": "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/1
 
 all_sites = []
 
-# 递归遍历仓库里所有json文件
-json_files = glob.glob("**/*.json", recursive=True)
+# 递归遍历仓库里所有json文件，排除monitor目录下的结果文件
+json_files = [f for f in glob.glob("**/*.json", recursive=True) if not f.startswith("monitor/")]
 print(f"找到{len(json_files)}个配置文件：{json_files}")
 
 for jf in json_files:
