@@ -1,0 +1,213 @@
+========================================================================
+  TVBox Jar 爬虫教学总纲 —— 老师教案
+  （教"不懂的 AI / 新手"：拿到一个站 → 认出是什么类型 → 选对爬虫 → 写出接口）
+  适用：任何影视采集站做 TVBox Jar 源  |  版本: v1.0  |  2026-11-01
+========================================================================
+
+【这门课教什么】
+  教学生一条完整链路：
+    ① 认站（看域名/看网页源码 → 判断网站系统类型）
+    ② 选爬虫（每个类型对应哪个现成 jar 底版可改）
+    ③ 写四大模块（分类 / 翻页 / 详情 / 播放）
+    ④ 打包部署（smali → dex → jar → json → 模拟器实测）
+    ⑤ 排障（抓日志定位 → 改 → 重打包 → 换名换md5 → 再测）
+  教学原则：每一步都给出【证据】——看到什么现象、抓什么日志、
+            改哪个文件哪一行、敲哪条命令，学生照着就能走通。
+
+------------------------------------------------------------------------
+【第1课：拿到一个站，先认它是"什么系统"】
+------------------------------------------------------------------------
+  为什么先认站：
+    影视站用的建站程序（CMS）不同，URL 规则和 HTML 结构就不同，
+    爬虫的正则/拼URL必须跟着站走。认错类型 = 全盘白写。
+
+  认站三步（按顺序做）：
+  第1步 看网址特征（最快）：
+    - 含 /show-123/ /paly-123-1-1/ /vodshow/ /pianku-  → 苹果CMS (maccms)
+    - 含 /vodtype/ /voddetail/ /vodplay/              → 海洋CMS (sea)
+    - 含 /detail-xxx.html /play-xxx.html              → 其他伪静态站，需再查源码
+    - 网址长得像 ?m=vod-type-id-1 或 ?ac=videolist     → 非伪静态，查 api 接口
+  第2步 看网页源码特征（最准）：
+    - 搜 "maccms" "mac_" "vod_name" "player_aaaa"      → 苹果CMS
+    - 搜 "seacms" "sea.js" "video-info"                → 海洋CMS
+    - 搜 "var player_" "data-dropdown-value"           → 苹果CMS 新版模板
+  第3步 用 Python/curl 实测（最终确认）：
+    - 带浏览器 UA + Referer 访问首页和详情页，打印关键标签
+    - 抓下来的 HTML 里有什么 class/字段，就照着写正则
+
+  ★ 本节课重点：苹果CMS (maccms v10) 的"标准长相"（对照 hkys2.cc）
+    分类页:    /v/dianying/   /v/dianshiju/   /v/zongyi/   /v/dongman/
+    真翻页:    /pianku-<分类>--------<页码>---/
+               （注意：/v/<分类>--------<n>---/ 是假翻页，别用！）
+    详情页:    /show-<id>/  内含:
+               <h1>标题</h1>
+               data-src="海报"
+               <span itemprop="datePublished">年份</span>
+               <div class="video-info-content">简介</div>
+               <span class="video-info-itemtitle">导演：</span>
+               <div class="video-info-item video-info-actor">导演名</div>
+               <span class="video-info-itemtitle">主演：</span>
+               <div class="video-info-item video-info-actor">演员们</div>
+               data-dropdown-value="线路地址"
+               module-blocklist 集数面板
+    播放页:    /paly-<id>-<线路sid>-<集nid>/  内含:
+               var player_aaaa={"encrypt":1,"link":"百分号编码的播放地址"}
+               → 解码后可能带 & 参数，必须 split("&")[0] 切出纯 m3u8/mp4
+    搜索:      /search------<关键词>/ （苹果CMS标准搜索，站方可关可开）
+
+------------------------------------------------------------------------
+【第2课：选对爬虫底版（每个类型用哪个 jar 爬虫改）】
+------------------------------------------------------------------------
+  铁律：不要从零写爬虫！拿现成的 jar 爬虫当底版，只改 URL 和正则。
+
+  b.json 里已有的爬虫底版清单（都是可改的现成货）：
+    csp_WwwQqys     ← 苹果CMS 标准模板（本项目 WwwHkys 就是从它改的）
+    csp_WwwHkys     ← 好看影视专用版（已测通，可当苹果CMS新模板的范本）
+    csp_Guazi       瓜子影视版
+    csp_WwwDdys     多多影视版
+    csp_Gqc / csp_Feikuai / csp_Cupfox / csp_Www555
+    csp_WwwDmxq / csp_WwwKeke / csp_WwwFdz
+    csp_NewCzGuard / csp_BiliGuard / csp_FirstAidGuard / csp_AweSomeGuard（带壳版）
+  （b.json 备份位置：D:\Users\Administrator\Desktop\完整备份_不要动\jar完整备份_20261031\）
+
+  怎么选：
+    新站是苹果CMS伪静态（/show-/paly-/pianku-）→ 用 WwwQqys 或 WwwHkys 改
+    新站是海洋CMS           → 找海洋CMS底版（或从现成 jar 里反编译挑）
+    新站是自定义模板         → 优先挑和它结构最像的底版，再改正则
+    站有特殊反爬（UA校验/加密）→ 可能需要带壳版（*Guard）增强
+
+  jar 爬虫三件套（缺一不可，改一个站要带齐这三个文件）：
+    WwwXxx.smali                          主爬虫
+    WwwXxx$1.smali                        SSL 信任器（多数站https必须）
+    WwwXxx$$ExternalSyntheticLambda0.smali  lambda 辅助
+  bean 数据类（手写，所有爬虫共用）：
+    Class.smali（分类）/ Vod.smali（影片）/ Result.smali（结果包装）
+  ★ bean 的坑（必背）：手写 Result.smali 时，static 方法的参数个数
+    必须和 .registers 匹配，别用越界寄存器（p1 越界 → ART 校验器
+    拒掉整个类 → fongmi 报 VerifyError → 全站空数据）。
+
+------------------------------------------------------------------------
+【第3课：四大模块怎么写（苹果CMS标准教案）】
+------------------------------------------------------------------------
+  3.1 homeContent（首页/分类）
+    返回 4 个分类（type_id/type_name 写死即可）：
+      电影 dianying / 电视剧 dianshiju / 综艺 zongyi / 动漫 dongman
+    首屏列表：抓 /v/dianying/，用 ITEM_PAT 提条目：
+      <a href="/show-(\d+)/"[^>]*title="([^"]+)"[^>]*>([\s\S]*?)</a>
+    海报：data-src="([^"]+)"
+
+  3.2 categoryContent（分类+翻页）
+    拼接：SITE + /pianku-<type_id>--------<page>---/   ← 真翻页！
+    条目正则同上 ITEM_PAT。
+    总页数：可选，抓"尾页"链接数字（PAGE_TOTAL_PAT）。
+
+  3.3 detailContent（详情）
+    抓 /show-<id>/，依次提：
+      H1_PAT        <h1[^>]*>([^<]+)</h1>                 标题
+      PIC_PAT       data-src="([^"]+)"                    海报
+      YEAR_PAT      itemprop="datePublished">(\d{4})      年份
+      DESC_PAT      video-info-content">([\s\S]*?)</div>   简介
+      INFO_ITEM_PAT video-info-itemtitle">([^<]{1,10})：</span>
+                    <div class="[^"]*">([\s\S]*?)</div>   导演/主演
+                    （匹配到"导演"存 director，"主演"存 actor）
+      TAB_PAT       data-dropdown-value="([^"]+)"         线路们
+      PANEL/EP_PAT  集数面板+每集 → 拼 线路$集数 的播放串
+    填 Vod：setVodYear / setVodDirector / setVodActor /
+            setVodContent / setVodPlayFrom / setVodPlayUrl
+
+  3.4 playerContent（播放）★ 最坑
+    抓 /paly-<id>-<sid>-<nid>/，提取 player_aaaa={...} 对象
+      （对象后面没分号！用 indexOf + 花括号深度计数提取）
+    取 link → decodeUrl 解码（encrypt=1 URLDecoder；encrypt=2 Base64+URLDecoder）
+    【解码后必须 split("&")[0] 切出纯地址！】
+      否则播放器拿到 ...index.m3u8&dyvip&next=... 整串
+      → 报 "Input does not start with the #EXTM3U header" / 3002
+    返回 json：
+      {"parse":0,"jx":0,"url":"纯m3u8","header":{"User-Agent":"浏览器UA",
+       "Referer":"https://站点/"}}
+    播放地址常用域名（举例，仅用于认路）：vip.ffzy-video.com 等
+
+  3.5 searchContent（搜索）
+    苹果CMS标准：SITE + /search------<URL编码关键词>/
+    注意：很多站把搜索挂在 Cloudflare 反爬下（hkys2 就是这样），
+          请求返回 "Attention Required! | Cloudflare" 拦截页 → items=0。
+    这种情况是【站方限制】，不是代码问题，json 保留 searchable:1，
+    但要向用户说明"搜索不可用"。
+
+------------------------------------------------------------------------
+【第4课：打包、部署、实测（一条龙）】
+------------------------------------------------------------------------
+  4.1 打包（build_hkys_jar.py 一键）：
+    smali assemble（smali-2.5.2.jar）→ classes.dex
+    → 打 jar：classes.dex + META-INF/MANIFEST.MF
+             + 从 czzy_guard.jar 复制 assets/（ftyguard_v7/v8.so、ftyshinidie.guard）
+    → 打印 jar 大小 + md5
+  4.2 json 格式（type 必须=3 表示 jar 爬虫）：
+    {"spider":"http://127.0.0.1:8081/站点.jar;md5;<md5>",
+     "sites":[{"key":"xx","name":"站名","type":3,"api":"csp_WwwXxx",
+               "searchable":1,"quickSearch":1,"filterable":0,"ext":""}],
+     "lives":[],"flags":[]}
+    ※ spider 的 md5 必须和 jar 实际 md5 一致，否则 fongmi 拒绝加载
+  4.3 部署到雷电模拟器：
+    本地起服务：python -m http.server 8081 --bind 127.0.0.1（工作目录=接口文件夹）
+    adb reverse：adb -s emulator-5554 reverse tcp:8081 tcp:8081
+    push：adb -s emulator-5554 push xxx.json /sdcard/Download/
+          adb -s emulator-5554 push xxx.jar /sdcard/Download/
+    fongmi 设置页「点播」行填 file://Download/xxx.json（再点一下=强制重读）
+  4.4 ★ 缓存绕过铁律：
+    fongmi 的 jar 缓存 /data/user/0/com.fongmi.android.tv/cache/jar/ 无root删不掉
+    → 每次更新必须【换 jar 文件名 + 换 md5】（v2→v3→v4→v5 就是这样）
+  4.5 实测顺序：分类 → 翻页 → 详情 → 播放 → 搜索
+    日志三件套：
+      adb shell "logcat -d -s TV-QQYS:*"    爬虫请求/条目数
+      adb shell "logcat -d -s TV-player:*"  播放器拿到的 json
+      adb shell "logcat -d | grep -E '3002|ExoPlaybackException'"  播放错误
+    截图：screencap → pull → Read 查看
+
+------------------------------------------------------------------------
+【第5课：排障速查（学生踩坑对照表）】
+------------------------------------------------------------------------
+  现象：首页空/转圈
+    日志：ClassNotFoundException com.github.catvod.bean.Class
+    答案：bean 包缺失 → 手写 Class/Vod/Result 三件套
+
+  现象：VerifyError: Verifier rejected class ...Result.string(...)
+    答案：手写 Result.smali 寄存器越界（static 方法参数个数≠.registers）
+          → 逐字节核对，p1 越界改 p0
+
+  现象：播放报 Input does not start with the #EXTM3U header / 3002
+    答案：播放地址没 split("&")[0]，带着 & 参数请求了
+          → playerContent 里解码后加 split 切分
+
+  现象：详情页年份有、主演/导演空白
+    答案：INFO_ITEM_PAT 正则和网站实际 HTML 结构不符
+          → 抓详情页 HTML 看真实标签（video-info-itemtitle 不是 module-info-item-title）
+          → 改正则
+
+  现象：搜索 items=0
+    答案：站方 Cloudflare 拦截（拿回"Attention Required"页）→ 站方限制，如实说明
+
+  现象：改了 jar 但 fongmi 还是老样子
+    答案：缓存没绕过 → 换 jar 文件名 + 换 md5
+
+------------------------------------------------------------------------
+【第6课：课后作业的标准模板（老师给学生留任务时的格式）】
+------------------------------------------------------------------------
+  任务名：为 <网站> 写 TVBox Jar 源
+  步骤：
+    1) 认站：访问首页/详情/播放页，记录 URL 规则和关键 HTML 标签
+       （写出证据：哪个 URL、抓到的标签长什么样）
+    2) 定类型：苹果CMS/海洋CMS/自定义 → 选定底版爬虫
+    3) 改三件套：复制底版改 URL 拼接 + 正则，两处同步
+       （keke\smali_hkys\ 源码 + 工作区 smali_merged\）
+    4) 打包 → 写 json（md5 一致）→ 部署 → 实测
+    5) 排障：按第5课对照表，日志实锤后再改
+    6) 交付：jar+json 独立存放（不进 b 文件夹/不上 GitHub，除非用户同意）
+    7) 写笔记：教学手册格式（本文件的写法），放 桌面\影视接口\
+
+========================================================================
+  老师寄语：
+  教学生的核心不是给答案，是给"怎么自己找到答案"的路——
+  认站看证据、选底版不重造、改两处同步、缓存换名、日志实锤。
+  照着这份教案走，任何 maccms 伪静态站都能一天内拿下。
+========================================================================

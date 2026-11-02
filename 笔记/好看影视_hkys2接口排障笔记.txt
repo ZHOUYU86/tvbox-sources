@@ -1,0 +1,441 @@
+========================================================================
+  好看影视 hkys2.cc  TVBox Jar 爬虫 —— 完整操作手册 + 踩坑全记录
+  （本文件写给"不懂这个项目的 AI/人"看，照着步骤即可复现）
+  最终版本: v5  |  实测日期: 2026-11-01  |  状态: 分类/翻页/详情/播放 全部通过
+========================================================================
+
+【先读这一段：项目到底做成了什么】
+
+  目标：把影视站 hkys2.cc（好看影视，maccms v10 伪静态站）做成 TVBox
+        可用的 Jar 爬虫源 + 配套 json，在雷电模拟器的 fongmi 播放器里
+        能看分类、翻页、详情、播放。
+  最终成果：
+    - hkys2_v5.jar（爬虫本体，md5=0310c17c…）
+    - hkys2.json（接口配置，spider 指向本地 8081 的 v5 jar）
+    - 实测：分类页出片 ✅ / 翻页 ✅ / 详情页(年份·导演·演员·简介) ✅ /
+            播放出画面 ✅ / 搜索 ✖（站方 Cloudflare 拦截，非代码问题）
+  用户硬性要求（必须遵守）：
+    - jar/json 单独写，不写进 b 文件夹；测通后再议合并
+    - 不上传 GitHub
+    - 不改 OK影视、不改模拟器
+    - 完成后在桌面「影视接口」文件夹留详细排障笔记（就是本文件）
+
+------------------------------------------------------------------------
+【环境清单（所有工具路径，照抄即可用）】
+------------------------------------------------------------------------
+  - 打包工作区:    D:\Users\Administrator\Desktop\做好上传\hkys2接口\
+      (里面: smali_merged\ 反编译/合并后的 745 个 smali 类,
+             b_all_new_hkys.jar, hkys2_v2/v3/v4/v5.jar, hkys2.json,
+             build_hkys_jar.txt 打包日志)
+  - 爬虫+bean 源码: D:\tvbox\spider_dev\dashixiong\keke\smali_hkys\
+      (spider\WwwHkys.smali + WwwHkys$1.smali + WwwHkys$$ExternalSyntheticLambda0.smali
+       bean\Class.smali + Vod.smali + Result.smali)
+  - 打包脚本:       D:\tvbox\spider_dev\dashixiong\keke\build_hkys_jar.py
+  - json 生成脚本:  D:\tvbox\spider_dev\dashixiong\keke\gen_hkys2_json.py
+  - JDK:            D:\Users\Administrator\Desktop\msjdk17\jdk-17.0.21.0.2+1\bin\java.exe
+  - smali/baksmali: D:\tvbox\_tools\smali-2.5.2.jar / baksmali-2.5.2.jar
+  - adb:            D:\Users\Administrator\Desktop\LDPlayer9\adb.exe -s emulator-5554
+  - 反编译输出:     C:\Users\Administrator\Doubao\chats\2026-10-06\new-chat-2\baknew\out\
+      (745 个 smali，核对字节码用；最新 v5 反编译在 bakv5\)
+  - fongmi: 雷电模拟器内 com.fongmi.android.tv (3.7.3)
+  - 本地 HTTP 服务: python -m http.server 8081 --bind 127.0.0.1
+      (工作目录必须是 hkys2接口 文件夹；PID 10780；日志 hkys2接口\http8081.log)
+  - 网站: hkys2.cc（UA 敏感：必须带浏览器 UA + Referer）
+
+------------------------------------------------------------------------
+【总体流程总览（一共 8 大步）】
+------------------------------------------------------------------------
+  第1步 探测网站结构（摸清 URL 规则、反爬）      ← 不探测就写爬虫=瞎写
+  第2步 写 Jar 爬虫（smali 字节码三件套）
+  第3步 手写 bean 数据类（Class/Vod/Result）     ← 最大坑，详见 P1/P2
+  第4步 打包（smali → classes.dex → jar+guard assets）
+  第5步 写 json + 部署到模拟器（8081/adb reverse/push/缓存绕过）
+  第6步 fongmi 实测（分类→翻页→详情→播放→搜索）
+  第7步 抓日志定位问题 → 改 smali → 重打包 → 换名换md5 → 再测
+  第8步 写排障笔记（本文件）
+
+========================================================================
+第1步：探测网站结构（Python 全链路实测，结论已定稿）
+========================================================================
+
+  目的：摸清"分类页/翻页/详情页/播放页/搜索"各自的真实 URL 和 HTML 结构，
+        只有探测清楚了，jar 里的正则和拼接 URL 才不会瞎写。
+
+  1.1 分类页探测
+  ---------------- 
+    访问（必须带浏览器 UA 和 Referer，否则 403）：
+      https://hkys2.cc/v/dianying/   → 电影，列表 164 部
+      https://hkys2.cc/v/dianshiju/  → 电视剧，128 部
+      https://hkys2.cc/v/zongyi/     → 综艺，64 部
+      https://hkys2.cc/v/dongman/    → 动漫，64 部
+    另有细类：dongzuopian(动作片) / xijupian(喜剧片) 等
+    页面里条目结构（jar 里 ITEM_PAT 匹配这个）：
+      <a href="/show-304040/" title="绝命法官">...</a>
+    海报：data-src="https://..."
+
+  1.2 翻页探测（重要！真翻页在「影片库」，不在分类页）
+  ----------------
+    真实翻页 URL（每页 72 部，电影库共 58 页）：
+      https://hkys2.cc/pianku-dianying--------2---/
+      https://hkys2.cc/pianku-dianshiju--------2---/
+      （格式：/pianku-<分类>--------<页码>---/）
+    假翻页（千万别用）：/v/<分类>--------<n>---/
+      —— 它返回的是全站 151 部混排，不是该分类第 n 页
+    踩坑记录：最初 jar 用 /v/ 拼页码导致翻页内容不变，
+             baksmali 反编译确认后把翻页模板改成 /pianku- 前缀。
+
+  1.3 详情页探测
+  ----------------
+    详情 URL：https://hkys2.cc/show-304040/
+    页面里有的关键字段（jar 的正则都从这取）：
+      H1 标题:         <h1>绝命法官</h1>
+      海报:            data-src="..."
+      年份:            <span itemprop="datePublished">2025</span>
+      简介:            <div class="video-info-content">...</div>
+      导演:            <span class="video-info-itemtitle">导演：</span>
+                       <div class="video-info-item video-info-actor">苏万聪...</div>
+      主演:            <span class="video-info-itemtitle">主演：</span>
+                       <div class="video-info-item video-info-actor">张家辉/胡杏儿/...</div>
+      线路:            data-dropdown-value="https://hkys2.cc/paly-304040-1-1/"
+      集数面板:        module-blocklist 里 <a>第01集</a>...
+    ※ 特别注意：导演/主演的 HTML 结构是 video-info-itemtitle（不是旧模板
+      module-info-item-title），这是 P4 演员空白的根因，见第7步。
+
+  1.4 播放页探测（最关键）
+  ----------------
+    播放 URL：https://hkys2.cc/paly-304040-1-1/  （paly-<id>-<线路sid>-<集nid>/）
+    页面里有一段 JS：
+      var player_aaaa={"flag":"play","encrypt":1,"trysee":0,"points":0,
+        "link":"https%3A%2F%2Fcdn.xxx.com%2F20250928%2F413_0deb1c54%2Findex.m3u8
+        %26dyvip%26dianshiju%26next%3Dhttps%3A%2F%2Fhkys2.cc%2Fpaly-304040-1-2%2F"}
+    处理三步（jar 的 decodeUrl + split 就干这个）：
+      a) 找到 "player_aaaa=" 后面的 { } 对象
+         —— 注意对象后面【没有分号】，Python 用 \{[\s\S]*?\}</script>
+         —— jar 用 indexOf + 花括号深度计数提取，不受分号影响
+      b) 取 link 字段 → 百分号解码（URLDecoder.decode UTF-8）
+      c) 解码后结果里带着 & 参数：
+         https://cdn.xxx.com/.../index.m3u8&dyvip&dianshiju&next=...
+         【必须 split("&")[0] 切出纯 m3u8】，否则播放器拿整串请求失败
+    实测：电影 m3u8 82,381B / 日剧 32,393B 均 HTTP 200
+
+  1.5 搜索探测（结论：站方关闭，无法绕过）
+  ----------------
+    试了三种搜索形态 + suggest 接口，全部 403：
+      /search------<关键词>/
+      /search/<关键词>/
+      /search?wd=...
+      api.php?ac=videolist&wd=...   → 返回 "closed"
+    实测 jar 请求 /search------关键词/ 拿到的页面标题是
+      "Attention Required! | Cloudflare" —— 即 Cloudflare 反爬拦截页
+    结论：搜索路径被站方挂在 CF 反爬下，jar 端无法绕过，
+          json 里保留 searchable:1 但实际搜不到，需向用户说明。
+
+  1.6 UA 敏感（整站通病）
+  ----------------
+    okhttp 默认 UA (okhttp/4.12.0) → 403
+    浏览器 UA + Referer=https://hkys2.cc/ → 200
+    jar 里 get() 方法统一带：
+      User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ...
+      Referer: https://hkys2.cc/
+
+========================================================================
+第2步：编写 Jar 爬虫（smali 三件套）
+========================================================================
+
+  做法：拿现成可用的 WwwQqys.smali 当底版改（同属 maccms 模板站），
+        只改 URL 拼接和正则，不动整体逻辑骨架。
+
+  文件（必须三个一起，缺一不可）：
+    com\github\catvod\spider\WwwHkys.smali                     主爬虫
+    com\github\catvod\spider\WwwHkys$1.smali                  SSL 信任器
+    com\github\catvod\spider\WwwHkys$$ExternalSyntheticLambda0.smali  lambda
+
+  关键方法行号（当前定稿版，74,260B 级）：
+    homeContent    约 L740 附近   （返回四个分类）
+    categoryContent            （分类列表+翻页，模板已用 /pianku-）
+    detailContent  L1476        （详情：标题/海报/年份/简介/导演/演员/线路/集数）
+    playerContent  L2415        （播放：找 player_aaaa → 解码 → 切 & → 返回 json）
+    searchContent  L2704/L2717  （搜索：/search------关键词/，会撞 CF 拦截）
+    decodeUrl      L315         （encrypt=1→URLDecoder；encrypt=2→Base64+URLDecoder；其他→原样）
+    cleanText      L165         （去 HTML 标签、压空白）
+    fullPic        L367         （// 开头补 https:）
+
+  静态正则定义（.field 声明 + <clinit> 里 compile）：
+    ITEM_PAT        <a href="/show-(\d+)/"[^>]*title="([^"]+)"[^>]*>([\s\S]*?)</a>
+    PIC_PAT         data-src="([^"]+)"
+    PAGE_TOTAL_PAT  href="/vodshow/\d+--------(\d+)---\.html"...尾页
+    H1_PAT          <h1[^>]*>([^<]+)</h1>
+    DESC_PAT        video-info-content">([\s\S]*?)</div>
+    INFO_ITEM_PAT   video-info-itemtitle">([^<]{1,10})：</span><div class="[^"]*">([\s\S]*?)</div>
+                    ↑ 这是修复后的版本（P4 的修复点）
+    YEAR_PAT        itemprop="datePublished">(\d{4})
+    TAB_PAT         data-dropdown-value="([^"]+)"
+    PANEL_PAT / EP_PAT  集数面板/每集
+
+  4 个分类（homeContent 里写死）：
+    {"type_id":"dianying","type_name":"电影"}
+    {"type_id":"dianshiju","type_name":"电视剧"}
+    {"type_id":"zongyi","type_name":"综艺"}
+    {"type_id":"dongman","type_name":"动漫"}
+
+========================================================================
+第3步：手写 bean 数据类（最大坑 P1/P2，必读）
+========================================================================
+
+  3.1 为什么手写
+  ----------------
+    fongmi 加载 jar 后报：
+      ClassNotFoundException com.github.catvod.bean.Class @ WwwHkys.homeContent:178
+    排查：把本地 41 个 jar 全部扫描（scan_jar_bean.py），
+         没有任何 jar 含 com/github/catvod/bean 标准类
+         （唯一坏的 zip 是 keke.jar）
+    结论：bean 包只能手写补全，没有现成可抄。
+
+  3.2 手写的三个类（都在 bean\ 下）
+  ----------------
+    Class.smali  — 分类对象 {type_id,type_name}
+    Vod.smali    — 影片对象（id/vodId/name/pic/actor/director/year/content/playFrom/playUrl...）
+    Result.smali — 结果包装（get()/error()/vod(list)/page()/string() 静态方法）
+
+  3.3 VerifyError 灾难史（P2，最深的坑）
+  ----------------
+    现象：补了 bean 后 fongmi 仍报
+      VerifyError: Verifier rejected class com.github.catvod.bean.Result:
+      java.lang.String com.github.catvod.bean.Result.string(...) @ WwwHkys.homeContent:192
+    第一次误判：以为是循环寄存器 v3 未初始化，补 const/4 v3,0x0
+              （md5=3afd3573… 仍报错，白改）
+    真正根因（baksmali 反编译逐字节核对找到）：
+      Result.smali 的 static string(Vod) 方法 .registers 4，方法只有 p0 一个参数，
+      但代码里写成了 invoke-virtual p1, Vod->toJson
+      —— p1 是越界寄存器，ART 校验器直接拒掉整个类（连带其他方法全不能用）
+    修复：p1 → p0（用 p0 这个真实参数）
+    验证：写寄存器扫描脚本，核对 Result/Vod/Class 全部方法
+          满足 max p < .registers 才算 OK
+    重打包 md5=1e07b105… → fongmi 分类页终于出数据（截图实锤）
+
+========================================================================
+第4步：打包流程（build_hkys_jar.py 一键完成）
+========================================================================
+
+  命令：python D:\tvbox\spider_dev\dashixiong\keke\build_hkys_jar.py
+  内部做 3 件事：
+    a) smali assemble（java -jar smali-2.5.2.jar assemble smali_merged -o classes.dex）
+    b) 打 jar：classes.dex + META-INF/MANIFEST.MF
+             + 从 czzy_guard.jar 里复制 assets/（ftyguard_v7.so、v8.so、ftyshinidie.guard）
+    c) 打印 jar 大小 + md5（gen_hkys2_json.py 用 md5 填 json）
+  注意：
+    - 必须先改 smali 源码（keke\smali_hkys\）再同步到工作区
+      smali_merged\com\github\catvod\spider\WwwHkys.smali（两个地方保持一致！）
+    - 打包日志在 build_hkys_jar.txt
+    - smali 汇编失败时 stderr 是 GBK 中文，Python 读 UTF-8 会崩，
+      这时手动跑 java -jar smali assemble 把 2>&1 重定向到文件再读
+
+========================================================================
+第5步：写 json + 部署到模拟器
+========================================================================
+
+  5.1 json 格式（当前版，332B）
+  ----------------
+  {
+    "spider": "http://127.0.0.1:8081/hkys2_v5.jar;md5;0310c17c9f7b1ec38eea607cb6a09f86",
+    "sites": [
+      {
+        "key": "hkys2",
+        "name": "好看影视",
+        "type": 3,
+        "api": "csp_WwwHkys",
+        "searchable": 1,
+        "quickSearch": 1,
+        "filterable": 0,
+        "ext": ""
+      }
+    ],
+    "lives": [],
+    "flags": []
+  }
+  关键点：
+    - type 必须是 3（jar 爬虫）
+    - api 必须是 csp_WwwHkys（对应 WwwHkys 类名）
+    - spider 的 md5 必须和实际 jar md5 完全一致，否则 fongmi 拒绝加载
+
+  5.2 启动本地 8081 服务（jar 的下载源）
+  ----------------
+    cd D:\Users\Administrator\Desktop\做好上传\hkys2接口
+    python -m http.server 8081 --bind 127.0.0.1
+    验证：浏览器/curl http://127.0.0.1:8081/hkys2_v5.jar 返回 200
+    ※ 8080 被 tvbox_server.py 占用，别用 8080
+
+  5.3 adb reverse（模拟器访问本机 8081 的关键）
+  ----------------
+    D:\Users\Administrator\Desktop\LDPlayer9\adb.exe -s emulator-5554 reverse tcp:8081 tcp:8081
+    验证：adb reverse --list 应显示 host-30 tcp:8081 tcp:8081
+    ※ 模拟器里 10.0.2.2:8081 不通（NAT 限制），必须用 adb reverse
+
+  5.4 push 到模拟器下载目录
+  ----------------
+    adb -s emulator-5554 push hkys2.json /sdcard/Download/hkys2.json
+    adb -s emulator-5554 push hkys2_v5.jar /sdcard/Download/hkys2_v5.jar
+
+  5.5 fongmi 配置读取
+  ----------------
+    设置页「点播」行填：file://Download/hkys2.json
+    （再点一下该行 = 强制重读配置；读配置时会重新拉 jar）
+
+  5.6 jar 缓存绕过（P6，每次更新必做）
+  ----------------
+    fongmi 把 jar 缓存在：
+      /data/user/0/com.fongmi.android.tv/cache/jar/<url-md5>.jar
+    这个目录无 root 删不掉（Permission denied）
+    → 唯一可靠办法：每次更新【换 jar 文件名 + 换 md5】
+      （v2→v3→v4→v5 就是这样一路过来的，v5=成功版）
+    → json 里 spider 的 URL 和 md5 也要同步换新
+
+========================================================================
+第6步：fongmi 实测（按顺序逐项验证）
+========================================================================
+
+  6.1 首页/分类
+    fongmi 打开 → 「好看影视」分类页出片（电影/电视剧/综艺/动漫 4 个 tab）
+    ✅ 实测通过（截图 fongmi_cat.png）
+
+  6.2 翻页
+    点电视剧 → 翻第2页 → 内容变化
+    ✅ 实测通过（日志：get OK pianku-dianshiju--------2---/ len=56894 items=144）
+
+  6.3 详情页
+    点进任意剧 → 应显示：站源/年份/导演/演员/简介/线路/集数
+    ✅ 实测通过（重生：年份2024、导演/马浴柯、演员/张家辉/阮经天/张榕容/...、
+                简介完整、5条线路、HD国语）
+
+  6.4 播放
+    点第1集 → 应出画面
+    ✅ 实测通过（FF节点 url=https://vip.ffzy-video.com/.../index.m3u8 纯直链，
+                播放器画面从装饰画→渔船海面，无 ExoPlaybackException/3002）
+
+  6.5 搜索
+    ✖ 站方 Cloudflare 拦截（见 1.5），搜不到属正常，需向用户说明
+
+  验证手段（一切以日志为准）：
+    adb -s emulator-5554 shell "logcat -d -s TV-QQYS:*"    爬虫日志
+    adb -s emulator-5554 shell "logcat -d -s TV-player:*"  播放器返回的 json
+    adb -s emulator-5554 shell "logcat -d | grep -E 'ExoPlaybackException|3002'"  播放错误
+    截图：adb shell screencap -p /sdcard/Download/x.png → pull 到电脑 Read 查看
+
+========================================================================
+第7步：排障记录（P1~P6，按时间顺序，含根因与修复）
+========================================================================
+
+  P1. 首页空数据
+      现象：fongmi 首页转圈/空白
+      日志：ClassNotFoundException com.github.catvod.bean.Class @ homeContent:178
+      定位：扫描 41 个 jar 无 bean 包 → 唯一坏 zip 是 keke.jar
+      修复：手写 Class/Vod/Result 三件套
+      结果：da8802f2(裂) → 1183bf1c(空) 仍不行
+
+  P2. VerifyError（最有价值的坑）
+      现象：VerifyError: Verifier rejected class com.github.catvod.bean.Result:
+            java.lang.String Result.string(...) @ homeContent:192
+      误判：以为是 v3 循环寄存器未初始化，补 const/4 v3,0x0 → 仍报错
+      真因：Result.smali static string(Vod) 方法 .registers 4 只有 p0 参数，
+            却 invoke-virtual p1, Vod->toJson → p1 越界 → 整个类被 ART 拒
+      修复：p1→p0；写脚本核对 3 个 bean 全部方法 max p < .registers
+      结果：重打包 md5=1e07b105… → 分类页终于出数据（截图实锤）
+
+  P3. 播放失败（Input does not start with the #EXTM3U header / 3002）
+      现象：所有线路都播不了
+      日志：TV-player: {"parse":0,"jx":0,
+            "url":"https://cdn.yzzy31-play.com/.../index.m3u8&dyvip&dianshiju&next=...",
+            "header":{...}}
+      定位：jar 只做了 URLDecoder.decode，没做 split("&")[0]
+      修复：WwwHkys.smali playerContent 里 decodeUrl 之后插入：
+              const-string v2, "&"
+              invoke-virtual {v1, v2}, String->split(String;)[String;
+              move-result-object v2
+              const/4 v3, 0x0
+              aget-object v1, v2, v3
+      结果：v5 实测 FF/HD 线路 url 全是纯 m3u8，播放器出画面，3002 消失
+
+  P4. 演员/导演空白（年份正常）
+      现象：详情页年份 2025 有，但「主演」「导演」一行空白
+      定位：抓详情页 HTML 实测 → 网站结构是
+              <span class="video-info-itemtitle">主演：</span>
+              <div class="video-info-item video-info-actor">...</div>
+            而 jar 的 INFO_ITEM_PAT 还在匹配旧模板
+              module-info-item-title / module-info-item-content → 匹配 0 次
+      修复：正则改为
+              video-info-itemtitle">([^<]{1,10})：</span><div class="[^"]*">([\s\S]*?)</div>
+      验证：Python 复测导演=苏万聪、主演=张家辉/胡杏儿/曾舜晞/鲍起静/...(16人)
+            fongmi 实测显示 导演：/马浴柯 演员：/张家辉/阮经天/... ✅
+
+  P5. 搜索不能（站方限制，不修）
+      定位：三种搜索形态 + suggest 全 403；api.php→"closed"；
+            实际请求 /search------关键词/ 拿到 Cloudflare 拦截页
+      结论：站方关闭搜索 + CF 反爬，jar 端无解
+      处理：json 保留 searchable:1（不影响其他功能），向用户如实说明
+
+  P6. fongmi jar 缓存删不掉（无 root）
+      定位：/data/user/0/com.fongmi.android.tv/cache/jar/ 删除报 Permission denied
+      处理：换 jar 文件名 + 换 md5 强制重下（v2→v3→v4→v5）
+      ※ 用户重置 APP 后缓存会清空一次，但别依赖这个
+
+========================================================================
+【版本指纹对照表（排障时认 md5）】
+========================================================================
+  b_all_new_hkys.jar = hkys2_v4.jar   1,467,491B  md5=1e07b105… 分类/详情通，播放&演员未修
+  hkys2_v5.jar        ★当前版          1,467,572B  md5=0310c17c… 播放/演员已修，全功能通
+  v2/v3 jar           1,467,495B  md5=3afd3573…  Result p1 bug → VerifyError
+  更早：da8802f2(bean初版裂) / 1183bf1c(无bean空数据) / cc6feac5(线上旧b_all.jar 280KB)
+  gua_spider.jar 203,977B md5=e12dbf98… / czzy_guard.jar 1,113,561B md5=1ac25ccd…（历史遗留）
+
+========================================================================
+【常用命令速查（复制即用）】
+========================================================================
+  # 打包
+  python D:\tvbox\spider_dev\dashixiong\keke\build_hkys_jar.py
+
+  # 反编译核对（v5 输出到 bakv5\）
+  java -jar D:\tvbox\_tools\baksmali-2.5.2.jar d classes.dex -o bakv5
+
+  # 推送 + 验证
+  adb -s emulator-5554 push hkys2_v5.jar /sdcard/Download/
+  adb -s emulator-5554 push hkys2.json /sdcard/Download/
+  adb -s emulator-5554 shell "curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8081/hkys2_v5.jar"
+
+  # 抓日志
+  adb -s emulator-5554 shell "logcat -d -s TV-QQYS:* | tail -30"
+  adb -s emulator-5554 shell "logcat -d -s TV-player:* | tail -30"
+  adb -s emulator-5554 shell "logcat -d | grep -E '3002|ExoPlaybackException'"
+
+  # 截图
+  adb -s emulator-5554 shell "screencap -p /sdcard/Download/x.png"
+  adb -s emulator-5554 pull /sdcard/Download/x.png 本地路径
+
+  # 重启 fongmi（换 jar 后建议）
+  adb -s emulator-5554 shell "am force-stop com.fongmi.android.tv"
+  adb -s emulator-5554 shell "am start -n com.fongmi.android.tv/.ui.activity.HomeActivity"
+
+========================================================================
+【已知限制（如实声明）】
+========================================================================
+  1. 搜索不可用：站方 Cloudflare 反爬 + api.php closed，非代码问题
+  2. 播放加载略慢：fongmi 逐线路尝试 + 源站响应速度，属正常
+  3. 本测试源独立存放，未合并进 b.json、未上传 GitHub（用户要求）
+  4. 本地 8081 是临时下载源，模拟器重启后需重新 adb reverse；
+     若要做长期源，需另找稳定托管（用户后续再议）
+
+========================================================================
+【给下一个 AI 的学习要点（看完立刻能上手）】
+========================================================================
+  1. 先探测后写码：URL 规则/HTML 结构/UA 敏感，全部实测拿到证据再动手
+  2. 改 smali 必须两处同步：keke\smali_hkys\ 源码 + 工作区 smali_merged\
+  3. 每次更新：换 jar 文件名 + 换 md5（fongmi 缓存绕不过去）
+  4. 一切以 logcat 实锤为准：爬虫日志 TV-QQYS、播放 TV-player、错误 3002
+  5. 手写 bean 时警惕寄存器越界：static 方法参数个数要和 .registers 匹配
+  6. 用户约束优先：单独写、测通再合并、不上 GitHub、不动 OK影视/模拟器
+  7. 每轮结束必写排障笔记到 桌面\影视接口\（用户多次强调）
+
+========================================================================
+  完。
+  好看影视 hkys2 接口（v5）—— 分类/翻页/详情/播放 实测通过，
+  搜索受限为站方 Cloudflare 反爬。本文件为完整复现手册。
+========================================================================
