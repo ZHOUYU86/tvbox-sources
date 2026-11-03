@@ -1,17 +1,16 @@
-name: 影视源自动同步+健康检测+清理垃圾+邮件告警
+name: 影视源自动同步+清理垃圾+失败告警
 
 on:
   schedule:
-    # 北京时间晚上20:30跑，错开凌晨2点/4点的自动更新脚本
-    - cron: '30 12 * * *'
+    # 北京时间晚上22:00跑
+    - cron: '0 14 * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
-  actions: write
 
 jobs:
-  sync-monitor-clean:
+  sync-and-clean:
     runs-on: ubuntu-latest
     steps:
       - name: 拉取仓库代码
@@ -24,22 +23,16 @@ jobs:
           git config --global user.name "Auto-Sync"
           git config --global user.email "auto@sync.com"
 
-      - name: 自动同步上游仓库
+      - name: 强制同步上游仓库（完全一致）
         run: |
           echo "开始同步上游仓库..."
           git remote add upstream https://github.com/fish2018/tvbox_tools.git || echo "上游已存在"
-          git fetch upstream || echo "拉取上游失败"
-          git merge upstream/main --allow-unrelated-histories -m "自动同步上游最新影视源" || echo "合并冲突或无更新"
-          git push || echo "无更新跳过"
+          git fetch upstream
+          git reset --hard upstream/main
+          git push --force origin main
+          echo "同步完成，已和上游完全一致"
 
-      - name: 安装Python依赖
-        run: pip install requests PyYAML
-
-      - name: 健康检测所有影视源
-        id: health
-        run: python check_sources.py
-
-      - name: 自动清理垃圾（白名单保护）
+      - name: 清理垃圾文件（只删缓存，不碰源文件）
         run: |
           echo "开始清理缓存和临时文件..."
           if [ -d ".wrangler/cache" ]; then
@@ -52,14 +45,8 @@ jobs:
           find . -name "*.pyc" -delete 2>/dev/null || true
           echo "清理完成"
 
-      - name: 有坏源时发邮件告警
-        if: steps.health.outputs.failed_count != '0'
+      - name: 同步失败时发邮件告警
+        if: failure()
         env:
           QQ_SMTP_AUTH_CODE: ${{ secrets.QQ_SMTP_AUTH_CODE }}
         run: python send_alert.py
-
-      - name: 自动提交结果
-        run: |
-          git add -A
-          git commit -m "自动同步+健康检测+清理垃圾" || echo "没有改动"
-          git push || echo "推送失败"
