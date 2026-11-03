@@ -57,7 +57,6 @@ jobs:
         env:
           QQ_SMTP_AUTH_CODE: ${{ secrets.QQ_SMTP_AUTH_CODE }}
         run: |
-          pip install smtplib
           python3 -c "
           import json, smtplib, os
           from email.mime.text import MIMEText
