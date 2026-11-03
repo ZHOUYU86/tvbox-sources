@@ -1,4 +1,4 @@
-name: 全量影视源自动同步+清理垃圾+失败告警（终极版v4）
+name: 全量影视源自动同步+清理垃圾+失败告警（终极版v5）
 
 on:
   schedule:
@@ -27,7 +27,7 @@ jobs:
       - name: 安装依赖
         run: pip install requests PyYAML
 
-      # ====== 1. 老10源同步 ======
+      # ====== 1. 老10源同步（含肥猫）======
       - name: 同步老10源
         continue-on-error: true
         run: python3 scripts/sync_legacy.py
@@ -51,15 +51,7 @@ jobs:
           curl -L --max-time 300 -o pg/pg.jar "https://cnb.cool/fish2035/pg/-/git/raw/main/pg.jar"
           echo "PG接口同步完成"
 
-      # ====== 4. WMZ肥猫源同步（GitHub镜像，海外可访问）======
-      - name: 同步WMZ肥猫源
-        continue-on-error: true
-        run: |
-          mkdir -p wmz
-          curl -L --max-time 120 -o wmz/wmz.json "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/feimao.json"
-          echo "WMZ肥猫源同步完成"
-
-      # ====== 5. 成人源同步（curl下载+合并到tvbox18.json）======
+      # ====== 4. 成人源同步（curl下载+合并到tvbox18.json）======
       - name: 同步成人源
         continue-on-error: true
         run: |
@@ -80,7 +72,7 @@ jobs:
           EOF
           echo "成人源同步完成"
 
-      # ====== 6. 剥离FongMi扩展字段 ======
+      # ====== 5. 剥离FongMi扩展字段 ======
       - name: 剥离FongMi扩展字段
         continue-on-error: true
         run: |
@@ -92,7 +84,7 @@ jobs:
                   print("跳过:", f)
           EOF
 
-      # ====== 7. 清理垃圾缓存 ======
+      # ====== 6. 清理垃圾缓存 ======
       - name: 清理垃圾文件
         run: |
           echo "开始清理缓存..."
@@ -104,7 +96,7 @@ jobs:
           rm -f /tmp/*.zip /tmp/*.json
           echo "清理完成"
 
-      # ====== 8. 提交并推送 ======
+      # ====== 7. 提交并推送 ======
       - name: 提交并推送
         run: |
           git add -A
@@ -122,7 +114,7 @@ jobs:
             done
           fi
 
-      # ====== 9. 失败时发邮件告警 ======
+      # ====== 8. 失败时发邮件告警 ======
       - name: 同步失败发邮件
         if: failure()
         env:
