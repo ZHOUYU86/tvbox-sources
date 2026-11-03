@@ -27,12 +27,12 @@ jobs:
       - name: 安装依赖
         run: pip install requests PyYAML
 
-      # ====== 1. 老10源同步（fty/wex/nf/feimao/cl/ouyang/lubin/dl/tvurl/xs/OK）======
+      # ====== 1. 老10源同步 ======
       - name: 同步老10源
         continue-on-error: true
         run: python3 scripts/sync_legacy.py
 
-      # ====== 2. 真心源同步（zhenxin/）======
+      # ====== 2. 真心源同步 ======
       - name: 同步真心源
         continue-on-error: true
         run: |
@@ -61,7 +61,7 @@ jobs:
           mkdir -p wmz
           python .github/scripts/wmz_sync.py
 
-      # ====== 5. 成人源同步（curl下载catcr.json + 合并到tvbox18.json）======
+      # ====== 5. 成人源同步（curl下载+合并到tvbox18.json）======
       - name: 同步成人源
         continue-on-error: true
         run: |
@@ -82,7 +82,7 @@ jobs:
           EOF
           echo "成人源同步完成"
 
-      # ====== 6. 剥离FongMi扩展字段（兼容OK影视，防闪退）======
+      # ====== 6. 剥离FongMi扩展字段 ======
       - name: 剥离FongMi扩展字段
         continue-on-error: true
         run: |
@@ -106,7 +106,7 @@ jobs:
           rm -f /tmp/*.zip /tmp/*.json
           echo "清理完成"
 
-      # ====== 8. 有变化则提交（push重试3次）======
+      # ====== 8. 提交并推送 ======
       - name: 提交并推送
         run: |
           git add -A
