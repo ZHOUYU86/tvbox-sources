@@ -27,12 +27,12 @@ jobs:
       - name: 安装依赖
         run: pip install requests PyYAML
 
-      # ====== 1. 老10源同步 ======
+      # ====== 1. 老10源同步（fty/wex/nf/feimao/cl/ouyang/lubin/dl/tvurl/xs/OK）======
       - name: 同步老10源
         continue-on-error: true
         run: python3 scripts/sync_legacy.py
 
-      # ====== 2. 真心源同步 ======
+      # ====== 2. 真心源同步（zhenxin/）======
       - name: 同步真心源
         continue-on-error: true
         run: |
@@ -61,26 +61,28 @@ jobs:
           mkdir -p wmz
           python .github/scripts/wmz_sync.py
 
-      # ====== 5. 成人源同步（下载catcr.json并合并）======
+      # ====== 5. 成人源同步（curl下载catcr.json + 合并到tvbox18.json）======
       - name: 同步成人源
         continue-on-error: true
         run: |
-          curl -L -o /tmp/catcr.json "https://raw.githubusercontent.com/lemonguo121/BoxRes/main/Myuse/catcr.json"
+          curl -L --max-time 120 -o /tmp/catcr.json "https://raw.githubusercontent.com/lemonguo121/BoxRes/main/Myuse/catcr.json"
           python3 - <<'EOF'
           import json
           with open('/tmp/catcr.json', 'r', encoding='utf-8-sig') as f:
               catcr = json.load(f)
           catcr['sites'] = [s for s in catcr['sites'] if '叠子' not in s['name']]
-          print(f"上游站点数（删叠子后）：{len(catcr['sites'])}")
+          print(f"成人源站点数（删叠子后）：{len(catcr['sites'])}")
           with open('assets/static/data/tvbox18.json', 'r', encoding='utf-8-sig') as f:
               tvbox18 = json.load(f)
-          tvbox18['sites'] = catcr['sites']
+          print(f"原有站点数：{len(tvbox18['sites'])}")
+          tvbox18['sites'].extend(catcr['sites'])
           with open('assets/static/data/tvbox18.json', 'w', encoding='utf-8') as f:
               json.dump(tvbox18, f, ensure_ascii=False, indent=2)
-          print(f"已合并到tvbox18.json，共{len(tvbox18['sites'])}个站点")
+          print(f"合并后站点数：{len(tvbox18['sites'])}")
           EOF
+          echo "成人源同步完成"
 
-      # ====== 6. 剥离FongMi扩展字段 ======
+      # ====== 6. 剥离FongMi扩展字段（兼容OK影视，防闪退）======
       - name: 剥离FongMi扩展字段
         continue-on-error: true
         run: |
@@ -101,10 +103,10 @@ jobs:
           fi
           find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
           find . -name "*.pyc" -delete 2>/dev/null || true
-          rm -f /tmp/*.zip /tmp/catcr.json
+          rm -f /tmp/*.zip /tmp/*.json
           echo "清理完成"
 
-      # ====== 8. 提交并推送（重试3次）======
+      # ====== 8. 有变化则提交（push重试3次）======
       - name: 提交并推送
         run: |
           git add -A
