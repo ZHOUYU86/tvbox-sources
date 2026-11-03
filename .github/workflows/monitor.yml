@@ -1,4 +1,4 @@
-name: 全量影视源自动同步+清理垃圾+失败告警（终极版v3）
+name: 全量影视源自动同步+清理垃圾+失败告警（终极版v4）
 
 on:
   schedule:
@@ -51,15 +51,13 @@ jobs:
           curl -L --max-time 300 -o pg/pg.jar "https://cnb.cool/fish2035/pg/-/git/raw/main/pg.jar"
           echo "PG接口同步完成"
 
-      # ====== 4. WMZ源同步 ======
-      - name: 同步WMZ源
+      # ====== 4. WMZ肥猫源同步（GitHub镜像，海外可访问）======
+      - name: 同步WMZ肥猫源
         continue-on-error: true
-        env:
-          WMZ_OUT: wmz/wmz.json
-          WMZ_UPSTREAM: "https://8815.kstore.vip/tvbox/wmz"
         run: |
           mkdir -p wmz
-          python .github/scripts/wmz_sync.py
+          curl -L --max-time 120 -o wmz/wmz.json "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/feimao.json"
+          echo "WMZ肥猫源同步完成"
 
       # ====== 5. 成人源同步（curl下载+合并到tvbox18.json）======
       - name: 同步成人源
