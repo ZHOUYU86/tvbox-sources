@@ -1,4 +1,4 @@
-name: 全量影视源自动同步+清理垃圾+失败告警（终极版）
+name: 全量影视源自动同步+清理垃圾+失败告警（终极版v2）
 
 on:
   schedule:
@@ -27,12 +27,14 @@ jobs:
       - name: 安装依赖
         run: pip install requests PyYAML
 
-      # ====== 老10源同步（fty/wex/nf/feimao/cl/ouyang/lubin/dl/tvurl/xs）======
-      - name: 同步老10源（sync_legacy.py）
+      # ====== 1. 老10源同步（fty/wex/nf/feimao/cl/ouyang/lubin/dl/tvurl/xs/OK）======
+      - name: 同步老10源
+        continue-on-error: true
         run: python3 scripts/sync_legacy.py
 
-      # ====== 真心源同步 ======
-      - name: 同步真心源（zhenxin/）
+      # ====== 2. 真心源同步（zhenxin/）======
+      - name: 同步真心源
+        continue-on-error: true
         run: |
           rm -rf zhenxin
           curl -L --max-time 300 -o /tmp/zhenxin.zip "https://gh-proxy.com/https://github.com/DodgeZhang/tvbox/archive/refs/heads/main.zip"
@@ -40,16 +42,18 @@ jobs:
           mv tvbox-main zhenxin
           echo "真心源同步完成"
 
-      # ====== PG接口同步（cnb.cool）======
-      - name: 同步PG接口（pg/pg.json + pg/pg.jar）
+      # ====== 3. PG接口同步 ======
+      - name: 同步PG接口
+        continue-on-error: true
         run: |
           mkdir -p pg
           curl -L --max-time 120 -o pg/pg.json "https://cnb.cool/fish2035/pg/-/git/raw/main/jsm.json"
           curl -L --max-time 300 -o pg/pg.jar "https://cnb.cool/fish2035/pg/-/git/raw/main/pg.jar"
           echo "PG接口同步完成"
 
-      # ====== WMZ源同步 ======
-      - name: 同步WMZ源（wmz/）
+      # ====== 4. WMZ源同步 ======
+      - name: 同步WMZ源
+        continue-on-error: true
         env:
           WMZ_OUT: wmz/wmz.json
           WMZ_UPSTREAM: "https://8815.kstore.vip/tvbox/wmz"
@@ -57,8 +61,20 @@ jobs:
           mkdir -p wmz
           python .github/scripts/wmz_sync.py
 
-      # ====== 剥离FongMi扩展字段（兼容OK影视）======
-      - name: 剥离FongMi扩展字段（防闪退）
+      # ====== 5. 成人源同步 ======
+      - name: 同步成人源
+        continue-on-error: true
+        run: |
+          if [ -f "scripts/sync_adult.py" ]; then
+            python3 scripts/sync_adult.py
+            echo "成人源同步完成"
+          else
+            echo "无成人源同步脚本，跳过"
+          fi
+
+      # ====== 6. 剥离FongMi扩展字段（兼容OK影视，防闪退）======
+      - name: 剥离FongMi扩展字段
+        continue-on-error: true
         run: |
           python3 - <<'EOF'
           import glob, subprocess, sys
@@ -68,42 +84,38 @@ jobs:
                   print("跳过:", f)
           EOF
 
-      # ====== 清理垃圾缓存 ======
-      - name: 清理垃圾文件（只删缓存，不碰源文件）
+      # ====== 7. 清理垃圾缓存 ======
+      - name: 清理垃圾文件
         run: |
-          echo "开始清理缓存和临时文件..."
+          echo "开始清理缓存..."
           if [ -d ".wrangler/cache" ]; then
             rm -rf .wrangler/cache/*
-            echo "已清理 .wrangler/cache"
-          else
-            echo "无.wrangler/cache目录，跳过"
           fi
           find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
           find . -name "*.pyc" -delete 2>/dev/null || true
           rm -f /tmp/*.zip
           echo "清理完成"
 
-      # ====== 有变化则提交（并发安全，重试3次）======
-      - name: 有变化则提交并推送
+      # ====== 8. 有变化则提交（push重试3次）======
+      - name: 提交并推送
         run: |
           git add -A
           if git diff --cached --quiet; then
-            echo "无变化，跳过提交"
+            echo "无变化，跳过"
           else
             git commit -m "全量自动同步 $(date -u +%Y%m%d%H%M)"
             for i in 1 2 3; do
               git pull --rebase origin main || true
               if git push; then
-                echo "push成功（第$i次尝试）"
+                echo "push成功（第$i次）"
                 break
               fi
-              echo "push失败重试（第$i次）"
               sleep 10
             done
           fi
 
-      # ====== 失败时发邮件告警 ======
-      - name: 同步失败时发邮件告警
+      # ====== 9. 失败时发邮件告警 ======
+      - name: 同步失败发邮件
         if: failure()
         env:
           QQ_SMTP_AUTH_CODE: ${{ secrets.QQ_SMTP_AUTH_CODE }}
