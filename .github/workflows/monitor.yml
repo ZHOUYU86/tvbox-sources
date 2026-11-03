@@ -1,59 +1,52 @@
-name: 影视源AI自动同步+监控修复
+name: 影视源自动同步+健康检测+清理垃圾
 
 on:
   schedule:
-    # 每天早上8:45跑，错开凌晨4点的现有健康检查，留足4小时间隔，完全不冲突
     - cron: '45 8 * * *'
-  workflow_dispatch: # 支持手动触发
+  workflow_dispatch:
 
 permissions:
   contents: write
   actions: write
 
 jobs:
-  sync-and-monitor:
+  sync-monitor-clean:
     runs-on: ubuntu-latest
     steps:
-      - name: 拉取自己的仓库代码
+      - name: 拉取仓库代码
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-
-      - name: 安装最新版Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
 
       - name: 配置Git
         run: |
           git config --global user.name "Auto-Sync"
           git config --global user.email "auto@sync.com"
 
-      - name: 自动同步上游仓库配置
+      - name: 自动同步上游仓库
         run: |
-          # 自动同步常用上游影视源仓库
-          echo "开始同步上游仓库最新配置..."
+          echo "开始同步上游仓库..."
           git remote add upstream https://github.com/fish2018/tvbox_tools.git || echo "上游已存在"
-          git fetch upstream || echo "拉取上游失败，继续巡检"
-          git merge upstream/main --allow-unrelated-histories -m "🔄 AI自动同步上游最新影视源" || echo "合并冲突或无更新，继续巡检"
-          git push || echo "无更新，跳过push"
+          git fetch upstream || echo "拉取上游失败"
+          git merge upstream/main --allow-unrelated-histories -m "自动同步上游最新影视源" || echo "合并冲突或无更新"
+          git push || echo "无更新跳过"
 
-      - name: 装Python依赖
+      - name: 安装Python依赖
+        run: pip install requests PyYAML
+
+      - name: 健康检测所有影视源
+        run: python check_sources.py
+
+      - name: 自动清理垃圾
         run: |
-          pip install requests PyYAML
+          echo "开始清理缓存和临时文件..."
+          rm -rf .wrangler/cache/* 2>/dev/null || echo "无wrangler缓存"
+          find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+          find . -name "*.pyc" -delete 2>/dev/null || true
+          echo "清理完成"
 
-      - name: 跑巡检脚本
-        id: monitor
-        run: python monitor/check_sources.py
-
-      - name: 有挂的源自动让AI修复
-        if: steps.monitor.outputs.failed_sources != '[]'
-        run: python monitor/ai_fix.py
-        env:
-          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
-
-      - name: 自动提交修复后的代码
+      - name: 自动提交结果
         run: |
           git add -A
-          git commit -m "🤖 AI自动同步上游+修复挂掉的源" || echo "没有改动"
-          git push
+          git commit -m "自动同步上游+健康检测+清理垃圾" || echo "没有改动"
+          git push || echo "推送失败"
