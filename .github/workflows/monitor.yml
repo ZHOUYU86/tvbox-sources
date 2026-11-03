@@ -1,4 +1,4 @@
-name: 全量影视源自动同步+清理垃圾+失败告警（终极版v2）
+name: 全量影视源自动同步+清理垃圾+失败告警（终极版v3）
 
 on:
   schedule:
@@ -27,12 +27,12 @@ jobs:
       - name: 安装依赖
         run: pip install requests PyYAML
 
-      # ====== 1. 老10源同步（fty/wex/nf/feimao/cl/ouyang/lubin/dl/tvurl/xs/OK）======
+      # ====== 1. 老10源同步 ======
       - name: 同步老10源
         continue-on-error: true
         run: python3 scripts/sync_legacy.py
 
-      # ====== 2. 真心源同步（zhenxin/）======
+      # ====== 2. 真心源同步 ======
       - name: 同步真心源
         continue-on-error: true
         run: |
@@ -61,18 +61,26 @@ jobs:
           mkdir -p wmz
           python .github/scripts/wmz_sync.py
 
-      # ====== 5. 成人源同步 ======
+      # ====== 5. 成人源同步（下载catcr.json并合并）======
       - name: 同步成人源
         continue-on-error: true
         run: |
-          if [ -f "scripts/sync_adult.py" ]; then
-            python3 scripts/sync_adult.py
-            echo "成人源同步完成"
-          else
-            echo "无成人源同步脚本，跳过"
-          fi
+          curl -L -o /tmp/catcr.json "https://raw.githubusercontent.com/lemonguo121/BoxRes/main/Myuse/catcr.json"
+          python3 - <<'EOF'
+          import json
+          with open('/tmp/catcr.json', 'r', encoding='utf-8-sig') as f:
+              catcr = json.load(f)
+          catcr['sites'] = [s for s in catcr['sites'] if '叠子' not in s['name']]
+          print(f"上游站点数（删叠子后）：{len(catcr['sites'])}")
+          with open('assets/static/data/tvbox18.json', 'r', encoding='utf-8-sig') as f:
+              tvbox18 = json.load(f)
+          tvbox18['sites'] = catcr['sites']
+          with open('assets/static/data/tvbox18.json', 'w', encoding='utf-8') as f:
+              json.dump(tvbox18, f, ensure_ascii=False, indent=2)
+          print(f"已合并到tvbox18.json，共{len(tvbox18['sites'])}个站点")
+          EOF
 
-      # ====== 6. 剥离FongMi扩展字段（兼容OK影视，防闪退）======
+      # ====== 6. 剥离FongMi扩展字段 ======
       - name: 剥离FongMi扩展字段
         continue-on-error: true
         run: |
@@ -93,10 +101,10 @@ jobs:
           fi
           find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
           find . -name "*.pyc" -delete 2>/dev/null || true
-          rm -f /tmp/*.zip
+          rm -f /tmp/*.zip /tmp/catcr.json
           echo "清理完成"
 
-      # ====== 8. 有变化则提交（push重试3次）======
+      # ====== 8. 提交并推送（重试3次）======
       - name: 提交并推送
         run: |
           git add -A
