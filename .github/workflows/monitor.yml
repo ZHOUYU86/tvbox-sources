@@ -1,4 +1,4 @@
-name: 影视源自动同步+健康检测+清理垃圾
+name: 影视源自动同步+健康检测+清理垃圾+邮件告警
 
 on:
   schedule:
@@ -36,6 +36,7 @@ jobs:
         run: pip install requests PyYAML
 
       - name: 健康检测所有影视源
+        id: health
         run: python check_sources.py
 
       - name: 自动清理垃圾（白名单保护）
@@ -50,6 +51,42 @@ jobs:
           find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
           find . -name "*.pyc" -delete 2>/dev/null || true
           echo "清理完成"
+
+      - name: 有坏源时发邮件告警
+        if: steps.health.outputs.failed_count != '0'
+        env:
+          QQ_SMTP_AUTH_CODE: ${{ secrets.QQ_SMTP_AUTH_CODE }}
+        run: |
+          pip install smtplib
+          python3 -c "
+          import json, smtplib, os
+          from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
+          from datetime import datetime
+
+          with open('monitor/result.json', 'r', encoding='utf-8') as f:
+              result = json.load(f)
+          failed = result['failed']
+          success = result['success']
+
+          body = f'检测时间: {datetime.now().strftime("%Y-%m-%d %H:%M")}\n'
+          body += f'正常: {len(success)}个, 异常: {len(failed)}个\n\n'
+          body += '异常源列表:\n'
+          for s in failed:
+              body += f'- {s["name"]} ({s.get("from_file","")}): {s.get("error","")}\n'
+
+          msg = MIMEMultipart()
+          msg['From'] = '863904696@qq.com'
+          msg['To'] = '863904696@qq.com'
+          msg['Subject'] = f'[影视源告警] {len(failed)}个源异常 - {datetime.now().strftime("%m-%d %H:%M")}'
+          msg.attach(MIMEText(body, 'plain', 'utf-8'))
+
+          server = smtplib.SMTP_SSL('smtp.qq.com', 465)
+          server.login('863904696@qq.com', os.environ['QQ_SMTP_AUTH_CODE'])
+          server.sendmail('863904696@qq.com', '863904696@qq.com', msg.as_string())
+          server.quit()
+          print('告警邮件已发送')
+          "
 
       - name: 自动提交结果
         run: |
