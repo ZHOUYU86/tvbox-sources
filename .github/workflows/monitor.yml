@@ -2,7 +2,8 @@ name: 影视源自动同步+健康检测+清理垃圾
 
 on:
   schedule:
-    - cron: '45 8 * * *'
+    # 北京时间晚上20:30跑，错开凌晨2点/4点的自动更新脚本
+    - cron: '30 12 * * *'
   workflow_dispatch:
 
 permissions:
@@ -37,10 +38,15 @@ jobs:
       - name: 健康检测所有影视源
         run: python check_sources.py
 
-      - name: 自动清理垃圾
+      - name: 自动清理垃圾（白名单保护）
         run: |
           echo "开始清理缓存和临时文件..."
-          rm -rf .wrangler/cache/* 2>/dev/null || echo "无wrangler缓存"
+          if [ -d ".wrangler/cache" ]; then
+            rm -rf .wrangler/cache/*
+            echo "已清理 .wrangler/cache"
+          else
+            echo "无.wrangler/cache目录，跳过"
+          fi
           find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
           find . -name "*.pyc" -delete 2>/dev/null || true
           echo "清理完成"
@@ -48,5 +54,5 @@ jobs:
       - name: 自动提交结果
         run: |
           git add -A
-          git commit -m "自动同步上游+健康检测+清理垃圾" || echo "没有改动"
+          git commit -m "自动同步+健康检测+清理垃圾" || echo "没有改动"
           git push || echo "推送失败"
