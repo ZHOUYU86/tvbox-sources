@@ -1,4 +1,4 @@
-name: 影视源自动同步+清理垃圾+失败告警
+name: 全量影视源自动同步+清理垃圾+失败告警（终极版）
 
 on:
   schedule:
@@ -8,9 +8,10 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
-  sync-and-clean:
+  full-sync-and-clean:
     runs-on: ubuntu-latest
     steps:
       - name: 拉取仓库代码
@@ -20,18 +21,54 @@ jobs:
 
       - name: 配置Git
         run: |
-          git config --global user.name "Auto-Sync"
-          git config --global user.email "auto@sync.com"
+          git config --global user.name "zhouyu86-bot"
+          git config --global user.email "863904696@qq.com"
 
-      - name: 强制同步上游仓库（完全一致）
+      - name: 安装依赖
+        run: pip install requests PyYAML
+
+      # ====== 老10源同步（fty/wex/nf/feimao/cl/ouyang/lubin/dl/tvurl/xs）======
+      - name: 同步老10源（sync_legacy.py）
+        run: python3 scripts/sync_legacy.py
+
+      # ====== 真心源同步 ======
+      - name: 同步真心源（zhenxin/）
         run: |
-          echo "开始同步上游仓库..."
-          git remote add upstream https://github.com/fish2018/tvbox_tools.git || echo "上游已存在"
-          git fetch upstream
-          git reset --hard upstream/main
-          git push --force origin main
-          echo "同步完成，已和上游完全一致"
+          rm -rf zhenxin
+          curl -L --max-time 300 -o /tmp/zhenxin.zip "https://gh-proxy.com/https://github.com/DodgeZhang/tvbox/archive/refs/heads/main.zip"
+          unzip -q /tmp/zhenxin.zip
+          mv tvbox-main zhenxin
+          echo "真心源同步完成"
 
+      # ====== PG接口同步（cnb.cool）======
+      - name: 同步PG接口（pg/pg.json + pg/pg.jar）
+        run: |
+          mkdir -p pg
+          curl -L --max-time 120 -o pg/pg.json "https://cnb.cool/fish2035/pg/-/git/raw/main/jsm.json"
+          curl -L --max-time 300 -o pg/pg.jar "https://cnb.cool/fish2035/pg/-/git/raw/main/pg.jar"
+          echo "PG接口同步完成"
+
+      # ====== WMZ源同步 ======
+      - name: 同步WMZ源（wmz/）
+        env:
+          WMZ_OUT: wmz/wmz.json
+          WMZ_UPSTREAM: "https://8815.kstore.vip/tvbox/wmz"
+        run: |
+          mkdir -p wmz
+          python .github/scripts/wmz_sync.py
+
+      # ====== 剥离FongMi扩展字段（兼容OK影视）======
+      - name: 剥离FongMi扩展字段（防闪退）
+        run: |
+          python3 - <<'EOF'
+          import glob, subprocess, sys
+          for f in sorted(glob.glob("*/api.json")):
+              r = subprocess.run([sys.executable, "scripts/strip_fongmi_extra.py", f])
+              if r.returncode != 0:
+                  print("跳过:", f)
+          EOF
+
+      # ====== 清理垃圾缓存 ======
       - name: 清理垃圾文件（只删缓存，不碰源文件）
         run: |
           echo "开始清理缓存和临时文件..."
@@ -43,8 +80,29 @@ jobs:
           fi
           find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
           find . -name "*.pyc" -delete 2>/dev/null || true
+          rm -f /tmp/*.zip
           echo "清理完成"
 
+      # ====== 有变化则提交（并发安全，重试3次）======
+      - name: 有变化则提交并推送
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "无变化，跳过提交"
+          else
+            git commit -m "全量自动同步 $(date -u +%Y%m%d%H%M)"
+            for i in 1 2 3; do
+              git pull --rebase origin main || true
+              if git push; then
+                echo "push成功（第$i次尝试）"
+                break
+              fi
+              echo "push失败重试（第$i次）"
+              sleep 10
+            done
+          fi
+
+      # ====== 失败时发邮件告警 ======
       - name: 同步失败时发邮件告警
         if: failure()
         env:
