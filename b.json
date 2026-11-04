@@ -1,17 +1,18 @@
-{
+﻿{
 "spider": "https://zhouyu86-bh1.pages.dev/b_all.jar;md5;cc6feac5b859998933af91d6ef68e609",
 "wallpaper": "https://szyyds.cn/api.php",
 "logo": "https://szyyds.cn/1.png",
 "sites": [
     {
-      "key": "Guazi",
+      "key": "csp_Gz360",
       "name": "瓜子影视",
       "type": 3,
-      "api": "csp_Guazi",
+      "api": "csp_Gz360",
+      "playerType": 2,
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "jar": "https://zhouyu86-bh1.pages.dev/gua_spider.jar"
+      "jar": "https://zhouyu86-bh1.pages.dev/wmz/lmw.jar"
     },
     {
       "key": "gulu",
