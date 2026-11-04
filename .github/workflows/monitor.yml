@@ -1,4 +1,4 @@
-name: 全量影视源自动同步+清理垃圾+健康巡检+失败告警（终极版v6.1）
+name: 全量影视源自动同步+清理垃圾+失败告警（终极版v6.2）
 
 on:
   schedule:
@@ -113,11 +113,6 @@ jobs:
           find . -name "*.pyc" -delete 2>/dev/null || true
           rm -f /tmp/*.zip /tmp/*.json
           echo "清理完成"
-
-      # ====== 7.5 全量健康巡检（只报告，不修改任何文件）======
-      - name: 全量影视源健康巡检（只报告）
-        continue-on-error: true
-        run: python3 monitor/check_sources.py
 
       # ====== 8. 提交并推送 ======
       - name: 提交并推送
