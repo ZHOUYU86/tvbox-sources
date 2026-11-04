@@ -34,6 +34,151 @@ jobs:
 
       # ====== 2. 真心源同步 ======
       - name: 同步真心源
+name: 全量影视源自动同步+清理垃圾+健康巡检+失败告警（终极版v6.1）
+
+on:
+  schedule:
+    # 北京时间晚上22:00跑
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+
+
+permissions:
+  contents: write
+  actions: write
+
+
+jobs:
+  full-sync-and-clean:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取仓库代码
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+
+      - name: 配置Git
+        run: |
+          git config --global user.name "zhouyu86-bot"
+          git config --global user.email "863904696@qq.com"
+
+
+      - name: 安装依赖
+        run: pip install requests PyYAML
+
+
+      # ====== 1. 老10源同步 ======
+      - name: 同步老10源
+        continue-on-error: true
+        run: python3 scripts/sync_legacy.py
+
+
+      # ====== 2. 真心源同步 ======
+      - name: 同步真心源
+        continue-on-error: true
+        run: |
+          rm -rf zhenxin
+          curl -L --max-time 300 -o /tmp/zhenxin.zip "https://gh-proxy.com/https://github.com/DodgeZhang/tvbox/archive/refs/heads/main.zip"
+          unzip -q /tmp/zhenxin.zip
+          mv tvbox-main zhenxin
+          echo "真心源同步完成"
+
+
+      # ====== 3. PG接口同步 ======
+      - name: 同步PG接口
+        continue-on-error: true
+        run: |
+          mkdir -p pg
+          curl -L --max-time 120 -o pg/pg.json "https://cnb.cool/fish2035/pg/-/git/raw/main/jsm.json"
+          curl -L --max-time 300 -o pg/pg.jar "https://cnb.cool/fish2035/pg/-/git/raw/main/pg.jar"
+          echo "PG接口同步完成"
+
+
+      # ====== 4. WMZ肥猫源同步（GitHub镜像，海外稳定）======
+      - name: 同步WMZ肥猫源
+        continue-on-error: true
+        run: |
+          mkdir -p wmz
+          curl -L --max-time 120 -o wmz/wmz.json "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/feimao.json"
+          echo "WMZ肥猫源同步完成"
+
+
+      # ====== 5. 成人源同步（curl下载+合并到tvbox18.json）======
+      - name: 同步成人源
+        continue-on-error: true
+        run: |
+          curl -L --max-time 120 -o /tmp/catcr.json "https://raw.githubusercontent.com/lemonguo121/BoxRes/main/Myuse/catcr.json"
+          python3 - <<'EOF'
+          import json
+          with open('/tmp/catcr.json', 'r', encoding='utf-8-sig') as f:
+              catcr = json.load(f)
+          catcr['sites'] = [s for s in catcr['sites'] if '叠子' not in s['name']]
+          print(f"成人源站点数（删叠子后）：{len(catcr['sites'])}")
+          with open('assets/static/data/tvbox18.json', 'r', encoding='utf-8-sig') as f:
+              tvbox18 = json.load(f)
+          print(f"原有站点数：{len(tvbox18['sites'])}")
+          tvbox18['sites'].extend(catcr['sites'])
+          with open('assets/static/data/tvbox18.json', 'w', encoding='utf-8') as f:
+              json.dump(tvbox18, f, ensure_ascii=False, indent=2)
+          print(f"合并后站点数：{len(tvbox18['sites'])}")
+          EOF
+          echo "成人源同步完成"
+
+
+      # ====== 6. 剥离FongMi扩展字段 ======
+      - name: 剥离FongMi扩展字段
+        continue-on-error: true
+        run: |
+          python3 - <<'EOF'
+          import glob, subprocess, sys
+          for f in sorted(glob.glob("*/api.json")):
+              r = subprocess.run([sys.executable, "scripts/strip_fongmi_extra.py", f])
+              if r.returncode != 0:
+                  print("跳过:", f)
+          EOF
+
+      # ====== 7. 清理垃圾缓存 ======
+      - name: 清理垃圾文件
+        run: |
+          echo "开始清理缓存..."
+          if [ -d ".wrangler/cache" ]; then
+            rm -rf .wrangler/cache/*
+          fi
+          find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+          find . -name "*.pyc" -delete 2>/dev/null || true
+          rm -f /tmp/*.zip /tmp/*.json
+          echo "清理完成"
+
+      # ====== 7.5 全量健康巡检（只报告，不修改任何文件）======
+      - name: 全量影视源健康巡检（只报告）
+        continue-on-error: true
+        run: python3 monitor/check_sources.py
+
+      # ====== 8. 提交并推送 ======
+      - name: 提交并推送
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "无变化，跳过"
+          else
+            git commit -m "全量自动同步 $(date -u +%Y%m%d%H%M)"
+            for i in 1 2 3; do
+              git pull --rebase origin main || true
+              if git push; then
+                echo "push成功（第$i次）"
+                break
+              fi
+              sleep 10
+            done
+          fi
+
+      # ====== 9. 失败时发邮件告警 ======
+      - name: 同步失败发邮件
+        if: failure()
+        env:
+          QQ_SMTP_AUTH_CODE: ${{ secrets.QQ_SMTP_AUTH_CODE }}
+        run: python send_alert.py
         continue-on-error: true
         run: |
           rm -rf zhenxin
