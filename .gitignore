@@ -1,3 +1,11 @@
-﻿# 大文件
+# 大文件
 music/*.wav
 *.wav
+
+# 垃圾/临时文件（防止AI运行时产生的垃圾被提交进仓库）
+monitor/result.json
+__pycache__/
+*.pyc
+*.tmp
+*.log
+.wrangler/cache/
