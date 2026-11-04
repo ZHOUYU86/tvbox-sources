@@ -220,11 +220,13 @@ def main():
     all_sites = []
     for jf in json_files:
         try:
-            with open(jf, "r", encoding="utf-8") as f:
+            with open(jf, "r", encoding="utf-8-sig") as f:
                 conf = json.load(f)
         except Exception as e:
             print(f"  ⚠️ 读 {jf} 失败: {e}")
             continue
+        if not isinstance(conf, dict):
+            continue  # 顶层是数组的文件不是源配置
         sites = conf.get("sites", [])
         if not isinstance(sites, list):
             continue
