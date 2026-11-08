@@ -26,7 +26,7 @@ SOURCE_URLS = [
     {"name": "📺aowu接口", "url": "https://zhouyu86-bh1.pages.dev/pg/pg.json"},
     {"name": "📺b接口", "url": "https://zhouyu86-bh1.pages.dev/b.json"},
     {"name": "📺ok接口", "url": "https://zhouyu86-bh1.pages.dev/ok/m.json"},
-    {"name": "📺wmz接口", "url": "https://zhouyu86-bh1.pages.dev/wmz/wmz.json"},
+    {"name": "📺wmz接口", "url": "https://8815.kstore.vip/tvbox/wmz"},
     {"name": "📺zhenxin接口", "url": "https://zhouyu86-bh1.pages.dev/zhenxin/tvboxdx.json"},
 ]
 
