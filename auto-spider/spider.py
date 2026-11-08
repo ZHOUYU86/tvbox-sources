@@ -17,7 +17,7 @@ SOURCE_URLS = [
     {"name": "📺fty接口", "url": "https://zhouyu86-bh1.pages.dev/fty/api.json"},
     {"name": "📺wex接口", "url": "https://zhouyu86-bh1.pages.dev/wex/api.json"},
     {"name": "📺nf接口", "url": "https://zhouyu86-bh1.pages.dev/nf/XC.json"},
-    {"name": "📺feimao接口", "url": "https://zhouyu86-bh1.pages.dev/feimao/api.json"},
+    {"name": "📺feimao接口", "url": "https://zhouyu86-bh1.pages.dev/feimao/multi.json"},
     {"name": "📺cl接口", "url": "https://zhouyu86-bh1.pages.dev/cl/aa.json"},
     {"name": "📺ouyang接口", "url": "https://zhouyu86-bh1.pages.dev/ouyang/api.json"},
     {"name": "📺lubin接口", "url": "https://zhouyu86-bh1.pages.dev/lubin/api.json"},
