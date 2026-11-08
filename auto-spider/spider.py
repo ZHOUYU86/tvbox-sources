@@ -11,24 +11,24 @@ from datetime import datetime
 # 配置
 OUTPUT_FILE = "all.json"  # 输出文件
 
-# 你自己仓库里的接口地址
+# 你自己仓库里的接口地址（用GitHub raw地址，从GitHub独立拉取）
 SOURCE_URLS = [
-    {"name": "xs", "url": "https://zhouyu86-bh1.pages.dev/xs/api.json"},
-    {"name": "fty", "url": "https://zhouyu86-bh1.pages.dev/fty/api.json"},
-    {"name": "wex", "url": "https://zhouyu86-bh1.pages.dev/wex/api.json"},
-    {"name": "nf", "url": "https://zhouyu86-bh1.pages.dev/nf/api.json"},
-    {"name": "feimao", "url": "https://zhouyu86-bh1.pages.dev/feimao/api.json"},
-    {"name": "cl", "url": "https://zhouyu86-bh1.pages.dev/cl/api.json"},
-    {"name": "ouyang", "url": "https://zhouyu86-bh1.pages.dev/ouyang/api.json"},
-    {"name": "lubin", "url": "https://zhouyu86-bh1.pages.dev/lubin/api.json"},
-    {"name": "dl", "url": "https://zhouyu86-bh1.pages.dev/dl/api.json"},
-    {"name": "tvurl", "url": "https://zhouyu86-bh1.pages.dev/tvurl/api.json"},
-    {"name": "aowu", "url": "https://zhouyu86-bh1.pages.dev/aowu/api.json"},
-    {"name": "b", "url": "https://zhouyu86-bh1.pages.dev/b/api.json"},
-    {"name": "ok", "url": "https://zhouyu86-bh1.pages.dev/ok/api.json"},
-    {"name": "tvbox18", "url": "https://zhouyu86-bh1.pages.dev/tvbox18/api.json"},
-    {"name": "wmz", "url": "https://zhouyu86-bh1.pages.dev/wmz/api.json"},
-    {"name": "zhenxin", "url": "https://zhouyu86-bh1.pages.dev/zhenxin/api.json"},
+    {"name": "xs", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/xs/api.json"},
+    {"name": "fty", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/fty/api.json"},
+    {"name": "wex", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/wex/api.json"},
+    {"name": "nf", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/nf/api.json"},
+    {"name": "feimao", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/feimao/api.json"},
+    {"name": "cl", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/cl/api.json"},
+    {"name": "ouyang", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/ouyang/api.json"},
+    {"name": "lubin", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/lubin/api.json"},
+    {"name": "dl", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/dl/api.json"},
+    {"name": "tvurl", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/tvurl/api.json"},
+    {"name": "aowu", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/aowu/api.json"},
+    {"name": "b", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/b/api.json"},
+    {"name": "ok", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/ok/api.json"},
+    {"name": "tvbox18", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/tvbox18/api.json"},
+    {"name": "wmz", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/wmz/api.json"},
+    {"name": "zhenxin", "url": "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/zhenxin/api.json"},
 ]
 
 def main():
