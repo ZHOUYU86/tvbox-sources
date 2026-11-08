@@ -14,7 +14,7 @@ from datetime import datetime
 # 配置
 OUTPUT_FILE = "all.json"  # 输出文件
 MAX_ONLINE_SOURCES = 30  # 最多加多少个网上的接口
-SPEED_THRESHOLD = 10  # 速度超过10秒的就不要了
+SPEED_THRESHOLD = 20  # 速度超过20秒的就不要了
 
 # 网上的聚合源地址（爬虫自动爬这些地址里的所有接口）
 ONLINE_SOURCES = [
@@ -42,7 +42,7 @@ def test_source(url):
     """测试接口速度和可用性，返回(速度, 是否可用)"""
     try:
         start = time.time()
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=20)
         end = time.time()
         speed = round(end - start, 2)
         
@@ -88,7 +88,7 @@ def crawl_online_sources():
     for source_url in ONLINE_SOURCES:
         try:
             print(f"正在爬取：{source_url}")
-            response = requests.get(source_url, timeout=10)
+            response = requests.get(source_url, timeout=20)
             data = response.json()
             if "urls" in data:
                 for item in data["urls"]:
