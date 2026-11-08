@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 TVBox/OK影视接口自动爬虫
-功能：自动爬网上的TVBox接口，检测速度和可用性，生成多接口聚合源all.json
+功能：自动爬网上的TVBox接口，检测速度和可用性，去重，生成多接口聚合源all.json
 """
 
 import json
@@ -13,8 +13,8 @@ from datetime import datetime
 
 # 配置
 OUTPUT_FILE = "all.json"  # 输出文件
-MAX_ONLINE_SOURCES = 10  # 最多加多少个网上的接口
-SPEED_THRESHOLD = 5  # 速度超过5秒的就不要了
+MAX_ONLINE_SOURCES = 30  # 最多加多少个网上的接口
+SPEED_THRESHOLD = 10  # 速度超过10秒的就不要了
 
 # 网上的聚合源地址（爬虫自动爬这些地址里的所有接口）
 ONLINE_SOURCES = [
@@ -34,6 +34,9 @@ MY_SOURCES = [
     {"name": "📺b接口", "url": "https://zhouyu86-bh1.pages.dev/b.json"},
     {"name": "📺ok接口", "url": "https://zhouyu86-bh1.pages.dev/ok/m.json"},
 ]
+
+# 你自己的接口地址集合（用于去重）
+MY_URLS = set([s["url"] for s in MY_SOURCES])
 
 def test_source(url):
     """测试接口速度和可用性，返回(速度, 是否可用)"""
@@ -78,8 +81,10 @@ def test_source(url):
         return None, False
 
 def crawl_online_sources():
-    """爬网上的聚合源里的所有接口，并检测速度和可用性"""
+    """爬网上的聚合源里的所有接口，并检测速度和可用性，去重"""
     online_urls = []
+    seen_urls = set()  # 已经加过的地址，用于去重
+    
     for source_url in ONLINE_SOURCES:
         try:
             print(f"正在爬取：{source_url}")
@@ -89,6 +94,15 @@ def crawl_online_sources():
                 for item in data["urls"]:
                     url = item["url"]
                     name = item.get("name", "未知接口")
+                    
+                    # 去重：如果是你自己的接口，或者已经加过了，就跳过
+                    if url in MY_URLS:
+                        print(f"  跳过（你自己的接口）：{name}")
+                        continue
+                    if url in seen_urls:
+                        print(f"  跳过（重复）：{name}")
+                        continue
+                    
                     print(f"  正在检测：{name}")
                     speed, usable = test_source(url)
                     if usable and speed and speed < SPEED_THRESHOLD:
@@ -96,6 +110,7 @@ def crawl_online_sources():
                             "name": f"📺{name}",
                             "url": url
                         })
+                        seen_urls.add(url)
                         print(f"    ✓ 速度：{speed}秒，可用！添加！")
                     else:
                         print(f"    ✗ 不可用或速度太慢，跳过！")
