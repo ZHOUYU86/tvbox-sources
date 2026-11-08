@@ -1,137 +1,68 @@
 {
-  "spider": "",
-  "sites": [
+  "urls": [
     {
-      "key": "xs",
-      "name": "xs",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/xs/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/xs/api.json",
+      "name": "xs"
     },
     {
-      "key": "fty",
-      "name": "fty",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/fty/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/fty/api.json",
+      "name": "fty"
     },
     {
-      "key": "wex",
-      "name": "wex",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/wex/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/wex/api.json",
+      "name": "wex"
     },
     {
-      "key": "nf",
-      "name": "nf",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/nf/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/nf/api.json",
+      "name": "nf"
     },
     {
-      "key": "feimao",
-      "name": "feimao",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/feimao/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/feimao/api.json",
+      "name": "feimao"
     },
     {
-      "key": "cl",
-      "name": "cl",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/cl/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/cl/api.json",
+      "name": "cl"
     },
     {
-      "key": "ouyang",
-      "name": "ouyang",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/ouyang/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/ouyang/api.json",
+      "name": "ouyang"
     },
     {
-      "key": "lubin",
-      "name": "lubin",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/lubin/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/lubin/api.json",
+      "name": "lubin"
     },
     {
-      "key": "dl",
-      "name": "dl",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/dl/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/dl/api.json",
+      "name": "dl"
     },
     {
-      "key": "tvurl",
-      "name": "tvurl",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/tvurl/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/tvurl/api.json",
+      "name": "tvurl"
     },
     {
-      "key": "aowu",
-      "name": "aowu",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/aowu/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/aowu/api.json",
+      "name": "aowu"
     },
     {
-      "key": "b",
-      "name": "b",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/b/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/b/api.json",
+      "name": "b"
     },
     {
-      "key": "ok",
-      "name": "ok",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/ok/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/ok/api.json",
+      "name": "ok"
     },
     {
-      "key": "tvbox18",
-      "name": "tvbox18",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/tvbox18/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/tvbox18/api.json",
+      "name": "tvbox18"
     },
     {
-      "key": "wmz",
-      "name": "wmz",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/wmz/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/wmz/api.json",
+      "name": "wmz"
     },
     {
-      "key": "zhenxin",
-      "name": "zhenxin",
-      "type": 3,
-      "api": "https://zhouyu86-bh1.pages.dev/zhenxin/api.json",
-      "searchable": 1,
-      "quickSearch": 1
+      "url": "https://zhouyu86-bh1.pages.dev/zhenxin/api.json",
+      "name": "zhenxin"
     }
-  ],
-  "parses": [],
-  "flags": [],
-  "download": "",
-  "UA": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  ]
 }
