@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 TVBox/OK影视接口自动爬虫
-功能：从GitHub仓库爬取所有接口，检测可用性，合并成all.json
+功能：从GitHub仓库爬取所有接口，合并成all.json
 """
 
 import requests
@@ -11,7 +11,7 @@ import time
 from datetime import datetime
 
 # 配置
-TIMEOUT = 5  # 超时时间（秒）
+TIMEOUT = 10  # 超时时间（秒）
 MAX_RETRIES = 2  # 最大重试次数
 OUTPUT_FILE = "all.json"  # 输出文件
 
@@ -42,31 +42,13 @@ def fetch_url(url, timeout=TIMEOUT):
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             }
-            start_time = time.time()
             response = requests.get(url, headers=headers, timeout=timeout)
-            elapsed_time = time.time() - start_time
             if response.status_code == 200:
-                return response.text, elapsed_time
+                return response.text
         except Exception as e:
             print(f"  下载失败（第{i+1}次）：{e}")
             time.sleep(1)
-    return None, 0
-
-def check_site_availability(site):
-    """检测站点是否可用"""
-    try:
-        # 获取站点的API地址
-        api = site.get('api', '')
-        if not api:
-            return False
-        
-        # 检测API地址是否可用
-        result, elapsed_time = fetch_url(api, timeout=3)
-        if result:
-            return True
-        return False
-    except:
-        return False
+    return None
 
 def parse_tvbox_json(json_text):
     """解析TVBox JSON配置"""
@@ -120,7 +102,7 @@ def main():
         print(f"\n[{i+1}/{total_sources}] 正在爬取：{source_name}...")
         
         # 下载接口
-        json_text, elapsed_time = fetch_url(source_url)
+        json_text = fetch_url(source_url)
         if not json_text:
             print("  ✗ 下载失败")
             continue
@@ -137,7 +119,7 @@ def main():
             print("  ✗ 没有找到站点")
             continue
         
-        print(f"  ✓ 找到 {len(sites)} 个站点（耗时 {elapsed_time:.2f}s）")
+        print(f"  ✓ 找到 {len(sites)} 个站点")
         
         # 合并到总列表
         all_sites = merge_sites(all_sites, sites)
@@ -148,25 +130,10 @@ def main():
     print(f"有效来源：{valid_sources}/{total_sources}")
     print(f"总站点数：{len(all_sites)}")
     
-    # 检测每个站点的可用性
-    print("\n正在检测站点可用性...")
-    valid_sites = []
-    for i, site in enumerate(all_sites):
-        site_name = site.get('name', site.get('key', '未知'))
-        print(f"[{i+1}/{len(all_sites)}] 检测：{site_name}...", end=" ")
-        
-        if check_site_availability(site):
-            print("✓ 可用")
-            valid_sites.append(site)
-        else:
-            print("✗ 不可用")
-    
-    print(f"\n可用站点：{len(valid_sites)}/{len(all_sites)}")
-    
     # 生成all.json
     output_data = {
         "spider": "",
-        "sites": valid_sites,
+        "sites": all_sites,
         "parses": [],
         "flags": [],
         "download": "",
@@ -176,7 +143,7 @@ def main():
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(output_data, f, ensure_ascii=False, indent=2)
     
-    print(f"\n已生成：{OUTPUT_FILE}")
+    print(f"已生成：{OUTPUT_FILE}")
     print(f"结束时间：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 60)
 
