@@ -2,15 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 TVBox/OK影视接口自动爬虫
-功能：自动爬取网上最新的TVBox接口，检测可用性，合并成all.json
+功能：从GitHub仓库爬取所有接口，合并成all.json
 """
 
 import requests
 import json
-import re
 import time
-import os
-from urllib.parse import urlparse
 from datetime import datetime
 
 # 配置
@@ -18,32 +15,25 @@ TIMEOUT = 10  # 超时时间（秒）
 MAX_RETRIES = 2  # 最大重试次数
 OUTPUT_FILE = "all.json"  # 输出文件
 
-# 已知的TVBox接口来源（从网上收集的）
+# 你自己仓库里的接口地址
 SOURCE_URLS = [
-    # GitHub上的热门TVBox接口仓库
-    "https://raw.githubusercontent.com/TvBox/TvBox/master/json/TVBox.json",
-    "https://raw.githubusercontent.com/gaotianliuyun/gao/master/json/1.json",
-    "https://raw.githubusercontent.com/YuanNengSY/TVBox/main/json/OK.json",
-    "https://raw.githubusercontent.com/tvbox360/TVBox/main/json/TVBox.json",
-    "https://raw.githubusercontent.com/kinggofboss/TVBox/main/json/TVBox.json",
-    "https://raw.githubusercontent.com/down888/tvbox/main/json/tvbox.json",
-    "https://raw.githubusercontent.com/qingfengmingyue/TVBox/main/json/TVBox.json",
-    "https://raw.githubusercontent.com/weleoys/TVBox/main/json/TVBox.json",
-    "https://raw.githubusercontent.com/izzguy/TVBox/main/json/TVBox.json",
-    "https://raw.githubusercontent.com/limbopro/mac.sh/main/TVBox/TVBox.json",
-    # 其他来源
-    "https://js.1080zyku.com/iphone/js/0407.json",
-    "https://js.1080zyku.com/iphone/js/0408.json",
-    "https://js.1080zyku.com/iphone/js/0409.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/xs/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/fty/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/wex/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/nf/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/feimao/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/cl/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/ouyang/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/lubin/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/dl/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/tvurl/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/aowu/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/b/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/ok/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/tvbox18/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/wmz/api.json",
+    "https://raw.githubusercontent.com/ZHOUYU86/tvbox-sources/main/zhenxin/api.json",
 ]
-
-def is_valid_url(url):
-    """检查URL是否有效"""
-    try:
-        result = urlparse(url)
-        return all([result.scheme, result.netloc])
-    except:
-        return False
 
 def fetch_url(url, timeout=TIMEOUT):
     """下载URL内容，带重试"""
@@ -59,23 +49,6 @@ def fetch_url(url, timeout=TIMEOUT):
             print(f"  下载失败（第{i+1}次）：{e}")
             time.sleep(1)
     return None
-
-def check_api_availability(api_url):
-    """检测API接口是否可用"""
-    try:
-        # 尝试获取首页
-        result = fetch_url(api_url, timeout=5)
-        if result:
-            # 检查是否是JSON格式
-            try:
-                data = json.loads(result)
-                return True
-            except:
-                # 不是JSON，但能打开
-                return True
-        return False
-    except:
-        return False
 
 def parse_tvbox_json(json_text):
     """解析TVBox JSON配置"""
@@ -122,7 +95,7 @@ def main():
     total_sources = len(SOURCE_URLS)
     
     for i, source_url in enumerate(SOURCE_URLS):
-        print(f"\n[{i+1}/{total_sources}] 正在爬取：{source_url[:60]}...")
+        print(f"\n[{i+1}/{total_sources}] 正在爬取：{source_url.split('/')[-2]}...")
         
         # 下载接口
         json_text = fetch_url(source_url)
