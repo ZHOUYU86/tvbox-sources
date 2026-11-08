@@ -13,6 +13,14 @@
       "name": "📺wex接口"
     },
     {
+      "url": "https://zhouyu86-bh1.pages.dev/nf/XC.json",
+      "name": "📺nf接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/feimao/api.json",
+      "name": "📺feimao接口"
+    },
+    {
       "url": "https://zhouyu86-bh1.pages.dev/cl/aa.json",
       "name": "📺cl接口"
     },
@@ -33,12 +41,24 @@
       "name": "📺tvurl接口"
     },
     {
+      "url": "https://zhouyu86-bh1.pages.dev/pg/pg.json",
+      "name": "📺aowu接口"
+    },
+    {
       "url": "https://zhouyu86-bh1.pages.dev/b.json",
       "name": "📺b接口"
     },
     {
       "url": "https://zhouyu86-bh1.pages.dev/ok/m.json",
       "name": "📺ok接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/wmz/wmz.json",
+      "name": "📺wmz接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/zhenxin/tvboxdx.json",
+      "name": "📺zhenxin接口"
     }
   ]
 }
