@@ -549,6 +549,7 @@
         const ONLINE2 = "https://tvbox-bh1.pages.dev";
         const ONLINE3 = "https://zhouyu86-bh1.pages.dev";
         const LOCAL = "http://10.144.194.238:8080";
+        const ONLINE_JAPAN = "https://nginx-xj3fec43-workspace-t5zd75.cloady.io";
 
         function createCard(src) {
             const card = document.createElement('div');
@@ -565,7 +566,8 @@
                 { key: 'online1', label: '在线1', url: `${ONLINE1}/${src.en}/api.json`, cls: 'online1' },
                 { key: 'online2', label: '在线2', url: `${ONLINE2}/${src.en}/api.json`, cls: 'online2' },
                 { key: 'zhouyu', label: '新站(zhouyu86)', url: `${ONLINE3}/${src.en}/api.json`, cls: 'online2' },
-                { key: 'local', label: '本地', url: `${LOCAL}/${src.en}/api.json`, cls: 'local' }
+                { key: 'local', label: '本地', url: `${LOCAL}/${src.en}/api.json`, cls: 'local' },
+                { key: 'japan', label: '日本节点', url: `${ONLINE_JAPAN}/${src.en}.json`, cls: 'online3' }
             ];
             
             urlTypes.forEach(ut => {
