@@ -2187,6 +2187,43 @@
       </div>`;
     }
 
+    // 自适应解析本地包 JSON：
+    // 1) 优先按标准 JSON 直接解析，不做任何字符改动（避免破坏含中文引号/逗号的字符串值，
+    //    如 ry/奇奇下载.json 中的 "“南风”线路补丁"）；
+    // 2) 失败时按"字符串感知"方式容错：逐字符扫描并跟踪是否处于 JSON 字符串内部，
+    //    仅把结构位上的中文引号/冒号/逗号替换为 ASCII 等价物，字符串内容原样保留；
+    // 3) 仍失败则抛出原始错误（由调用方展示 error-msg）。
+    function parseLocalPackageJSON(text) {
+      text = String(text).replace(/^\uFEFF/, '').trim();
+      try { return JSON.parse(text); } catch (e) { /* 继续容错清洗 */ }
+
+      let out = '';
+      let inStr = false;   // 当前是否在字符串内
+      let quote = '';      // 当前字符串的定界符
+      const isDq = c => c === '"' || c === '\u201c' || c === '\u201d';   // 双引号类
+      const isSq = c => c === "'" || c === '\u2018' || c === '\u2019';   // 单引号类
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (inStr) {
+          if (ch === '\\') {                       // 转义序列整体保留
+            out += ch + (text[i + 1] || ''); i++; continue;
+          }
+          // 命中定界符（中英文引号互相匹配均视为闭合）-> 字符串结束
+          const closed = (quote === '"' && isDq(ch)) ||
+                         (quote === "'" && isSq(ch));
+          if (closed) { inStr = false; quote = ''; out += '"'; continue; }
+          out += ch; continue;                     // 字符串内容原样保留
+        }
+        if (isDq(ch) || isSq(ch)) {                // 结构位 -> 字符串开始，统一输出 ASCII 引号
+          inStr = true; quote = isDq(ch) ? '"' : "'"; out += '"'; continue;
+        }
+        if (ch === '\uff1a') { out += ':'; continue; }   // ：
+        if (ch === '\uff0c') { out += ','; continue; }   // ，
+        out += ch;
+      }
+      return JSON.parse(out);
+    }
+
     async function renderDynamicPanel(rawTabs, containerId, defaultType = 'api') {
       const container = document.getElementById(containerId);
       if (!container) return;
@@ -2241,8 +2278,7 @@
             const res = await fetch(t.file + '?t=' + Date.now() + '&r=' + Math.random(), { cache: 'no-store' });
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const raw = await res.text();
-            const cleaned = raw.replace(/[\u201c\u201d]/g, '"').replace(/[\u2018\u2019]/g, "'").replace(/：/g, ':').replace(/，/g, ',');
-            const data = JSON.parse(cleaned);
+            const data = parseLocalPackageJSON(raw);
             let groups = [];
             const arr = data.list || data;
             if (Array.isArray(arr)) {
