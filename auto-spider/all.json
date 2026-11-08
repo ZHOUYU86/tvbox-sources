@@ -21,10 +21,6 @@
       "name": "📺feimao接口"
     },
     {
-      "url": "https://zhouyu86-bh1.pages.dev/cl/api.json",
-      "name": "📺cl接口"
-    },
-    {
       "url": "https://zhouyu86-bh1.pages.dev/ouyang/api.json",
       "name": "📺ouyang接口"
     },
@@ -43,14 +39,6 @@
     {
       "url": "https://zhouyu86-bh1.pages.dev/aowu/api.json",
       "name": "📺aowu接口"
-    },
-    {
-      "url": "https://zhouyu86-bh1.pages.dev/b/api.json",
-      "name": "📺b接口"
-    },
-    {
-      "url": "https://zhouyu86-bh1.pages.dev/ok/api.json",
-      "name": "📺ok接口"
     },
     {
       "url": "https://zhouyu86-bh1.pages.dev/tvbox18/api.json",
