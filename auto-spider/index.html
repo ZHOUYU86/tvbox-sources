@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TVBox接口导航</title>
+<style>
+body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+h1 { text-align: center; color: #333; }
+.source-list { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.source-item { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+.source-item:last-child { border-bottom: none; }
+.source-name { font-size: 18px; font-weight: bold; color: #333; }
+.source-info { color: #666; font-size: 14px; }
+.source-url { color: #007bff; font-size: 12px; word-break: break-all; }
+.copy-btn { background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+.copy-btn:hover { background: #0056b3; }
+</style>
+</head>
+<body>
+<h1>TVBox/OK影视接口导航</h1>
+<p style="text-align: center; color: #666;">点击"复制"按钮，然后粘贴到OK影视里即可使用</p>
+<div class="source-list">
+<div class="source-item">
+  <div>
+    <div class="source-name">xs</div>
+    <div class="source-info">111个站点</div>
+    <div class="source-url">https://zhouyu86-bh1.pages.dev/xs/api.json</div>
+  </div>
+  <button class="copy-btn" onclick="copyUrl('https://zhouyu86-bh1.pages.dev/xs/api.json')">复制</button>
+</div>
+<div class="source-item">
+  <div>
+    <div class="source-name">fty</div>
+    <div class="source-info">52个站点</div>
+    <div class="source-url">https://zhouyu86-bh1.pages.dev/fty/api.json</div>
+  </div>
+  <button class="copy-btn" onclick="copyUrl('https://zhouyu86-bh1.pages.dev/fty/api.json')">复制</button>
+</div>
+<div class="source-item">
+  <div>
+    <div class="source-name">wex</div>
+    <div class="source-info">100个站点</div>
+    <div class="source-url">https://zhouyu86-bh1.pages.dev/wex/api.json</div>
+  </div>
+  <button class="copy-btn" onclick="copyUrl('https://zhouyu86-bh1.pages.dev/wex/api.json')">复制</button>
+</div>
+<div class="source-item">
+  <div>
+    <div class="source-name">nf</div>
+    <div class="source-info">0个站点</div>
+    <div class="source-url">https://zhouyu86-bh1.pages.dev/nf/api.json</div>
+  </div>
+  <button class="copy-btn" onclick="copyUrl('https://zhouyu86-bh1.pages.dev/nf/api.json')">复制</button>
+</div>
+<div class="source-item">
+  <div>
+    <div class="source-name">feimao</div>
+    <div class="source-info">0个站点</div>
+    <div class="source-url">https://zhouyu86-bh1.pages.dev/feimao/api.json</div>
+  </div>
+  <button class="copy-btn" onclick="copyUrl('https://zhouyu86-bh1.pages.dev/feimao/api.json')">复制</button>
+</div>
+<div class="source-item">
+  <div>
+    <div class="source-name">ouyang</div>
+    <div class="source-info">131个站点</div>
+    <div class="source-url">https://zhouyu86-bh1.pages.dev/ouyang/api.json</div>
+  </div>
+  <button class="copy-btn" onclick="copyUrl('https://zhouyu86-bh1.pages.dev/ouyang/api.json')">复制</button>
+</div>
+<div class="source-item">
+  <div>
+    <div class="source-name">lubin</div>
+    <div class="source-info">5个站点</div>
+    <div class="source-url">https://zhouyu86-bh1.pages.dev/lubin/api.json</div>
+  </div>
+  <button class="copy-btn" onclick="copyUrl('https://zhouyu86-bh1.pages.dev/lubin/api.json')">复制</button>
+</div>
+<div class="source-item">
+  <div>
+    <div class="source-name">dl</div>
+    <div class="source-info">93个站点</div>
+    <div class="source-url">https://zhouyu86-bh1.pages.dev/dl/api.json</div>
+  </div>
+  <button class="copy-btn" onclick="copyUrl('https://zhouyu86-bh1.pages.dev/dl/api.json')">复制</button>
+</div>
+<div class="source-item">
+  <div>
+    <div class="source-name">tvurl</div>
+    <div class="source-info">86个站点</div>
+    <div class="source-url">https://zhouyu86-bh1.pages.dev/tvurl/api.json</div>
+  </div>
+  <button class="copy-btn" onclick="copyUrl('https://zhouyu86-bh1.pages.dev/tvurl/api.json')">复制</button>
+</div>
+</div>
+<script>
+function copyUrl(url) { navigator.clipboard.writeText(url).then(function() { alert("已复制：" + url); }, function() { prompt("请手动复制：", url); }); }
+</script>
+</body>
+</html>
