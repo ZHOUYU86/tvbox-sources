@@ -19,11 +19,8 @@ SPEED_THRESHOLD = 20  # 速度超过20秒的就不要了
 # 网上的聚合源地址（爬虫自动爬这些地址里的所有接口）
 ONLINE_SOURCES = [
     "https://gh-proxy.com/https://raw.githubusercontent.com/tushen6/Tomorrow/master/lmw.json",
-    "https://gh-proxy.com/https://raw.githubusercontent.com/gaotian1985/TvBox/master/js/svip.json",
-    "https://gh-proxy.com/https://raw.githubusercontent.com/q215613962/TVBox/main/json/mytv.json",
-    "https://gh-proxy.com/https://raw.githubusercontent.com/ForgotFun/TVBox/main/json/fun.json",
-    "https://gh-proxy.com/https://raw.githubusercontent.com/jadefox10200/TVBox/main/json/fox.json",
-    "https://gh-proxy.com/https://raw.githubusercontent.com/ColorClouds/TVBox/main/json/clouds.json",
+    "https://agit.ai/hu/hcr/raw/branch/master/MMM.txt",
+    "https://wds.ecsxs.com/223843.txt",
 ]
 
 # 你自己仓库里的接口地址（用CF Pages地址）
