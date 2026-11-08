@@ -122,8 +122,7 @@ def main():
     total_sources = len(SOURCE_URLS)
     
     for i, source_url in enumerate(SOURCE_URLS):
-        print(f"
-[{i+1}/{total_sources}] 正在爬取：{source_url[:60]}...")
+        print(f"\n[{i+1}/{total_sources}] 正在爬取：{source_url[:60]}...")
         
         # 下载接口
         json_text = fetch_url(source_url)
@@ -149,8 +148,7 @@ def main():
         all_sites = merge_sites(all_sites, sites)
         valid_sources += 1
     
-    print("
-" + "=" * 60)
+    print("\n" + "=" * 60)
     print(f"爬取完成！")
     print(f"有效来源：{valid_sources}/{total_sources}")
     print(f"总站点数：{len(all_sites)}")
