@@ -8,6 +8,7 @@ TVBox/OK影视接口自动爬虫
 import json
 import requests
 import time
+import base64
 from datetime import datetime
 
 # 配置
@@ -44,6 +45,19 @@ def test_source(url):
         
         if response.status_code != 200:
             return speed, False
+        
+        content = response.text
+        
+        # 看看是不是Base64编码的
+        if content.startswith("YmFzZTY0**"):
+            try:
+                b64_data = content.replace("YmFzZTY0**", "")
+                decoded = base64.b64decode(b64_data).decode("utf-8")
+                data = json.loads(decoded)
+                if "sites" in data and len(data["sites"]) > 0:
+                    return speed, True
+            except:
+                pass
         
         # 看看是不是JSON格式
         try:
