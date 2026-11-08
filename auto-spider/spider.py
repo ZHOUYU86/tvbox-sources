@@ -2,15 +2,18 @@
 # -*- coding: utf-8 -*-
 """
 TVBox/OK影视接口自动爬虫
-功能：自动爬网上的TVBox接口，生成多接口聚合源all.json
+功能：自动爬网上的TVBox接口，检测速度和可用性，生成多接口聚合源all.json
 """
 
 import json
 import requests
+import time
 from datetime import datetime
 
 # 配置
 OUTPUT_FILE = "all.json"  # 输出文件
+MAX_ONLINE_SOURCES = 10  # 最多加多少个网上的接口
+SPEED_THRESHOLD = 5  # 速度超过5秒的就不要了
 
 # 网上的聚合源地址（爬虫自动爬这些地址里的所有接口）
 ONLINE_SOURCES = [
@@ -31,8 +34,37 @@ MY_SOURCES = [
     {"name": "📺ok接口", "url": "https://zhouyu86-bh1.pages.dev/ok/m.json"},
 ]
 
+def test_source(url):
+    """测试接口速度和可用性，返回(速度, 是否可用)"""
+    try:
+        start = time.time()
+        response = requests.get(url, timeout=10)
+        end = time.time()
+        speed = round(end - start, 2)
+        
+        if response.status_code != 200:
+            return speed, False
+        
+        # 看看是不是JSON格式
+        try:
+            data = response.json()
+        except:
+            return speed, False
+        
+        # 看看有没有sites字段，sites是不是为空
+        if "sites" in data and len(data["sites"]) > 0:
+            return speed, True
+        
+        # 如果是聚合源格式，也可以
+        if "urls" in data and len(data["urls"]) > 0:
+            return speed, True
+        
+        return speed, False
+    except:
+        return None, False
+
 def crawl_online_sources():
-    """爬网上的聚合源里的所有接口"""
+    """爬网上的聚合源里的所有接口，并检测速度和可用性"""
     online_urls = []
     for source_url in ONLINE_SOURCES:
         try:
@@ -41,14 +73,21 @@ def crawl_online_sources():
             data = response.json()
             if "urls" in data:
                 for item in data["urls"]:
-                    online_urls.append({
-                        "name": item.get("name", "未知接口"),
-                        "url": item["url"]
-                    })
-                    print(f"  ✓ 找到接口：{item.get('name', '未知接口')}")
+                    url = item["url"]
+                    name = item.get("name", "未知接口")
+                    print(f"  正在检测：{name}")
+                    speed, usable = test_source(url)
+                    if usable and speed and speed < SPEED_THRESHOLD:
+                        online_urls.append({
+                            "name": f"📺{name}",
+                            "url": url
+                        })
+                        print(f"    ✓ 速度：{speed}秒，可用！添加！")
+                    else:
+                        print(f"    ✗ 不可用或速度太慢，跳过！")
         except Exception as e:
             print(f"  ✗ 爬取失败：{e}")
-    return online_urls
+    return online_urls[:MAX_ONLINE_SOURCES]
 
 def main():
     print("=" * 60)
@@ -57,9 +96,9 @@ def main():
     print("=" * 60)
     
     # 爬网上的接口
-    print("\n正在爬网上的接口...")
+    print("\n正在爬网上的接口并检测速度和可用性...")
     online_urls = crawl_online_sources()
-    print(f"\n共爬到 {len(online_urls)} 个网上接口")
+    print(f"\n共爬到 {len(online_urls)} 个可用的网上接口")
     
     # 合并所有接口
     all_urls = []
