@@ -252,72 +252,9 @@
 
         <div id="sources"></div>
 
-        <div class="source-card" id="card-b">
-            <div class="source-header">
-                <div class="source-name">555电影接口 (b)</div>
-                <div class="source-badge" id="badge-b">健康</div>
-            </div>
-            <div class="url-row" id="row-b-new">
-                <span class="url-label online1">新域名（推荐）</span>
-                <input type="text" class="url-input" value="https://zhouyu86-bh1.pages.dev/b.json">
-                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('b', 'new', '555电影接口 (b)', '新域名（推荐）')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-b-online1">
-                <span class="url-label online1">在线1</span>
-                <input type="text" class="url-input" value="https://tvbox-bh1.pages.dev/b.json">
-                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('b', 'online1', '555电影接口 (b)', '在线1')" title="删除此地址">×</button>
-            </div>
-            <div class="stats">
-                <span>📊 站点数：57</span>
-                <span>📁 路径：/b.json</span>
-                <span id="detect-b" style="color:#999;">⏳ 检测中...</span>
-            </div>
-        </div>
+        <!-- b接口已移到动态生成列表，避免重复 -->
 
-        <!-- 真心接口（肥猫聚合源提取，自动同步上游仓库） -->
-        <div class="source-card" id="card-zhenxin">
-            <div class="source-header">
-                <div class="source-name">💚 真心接口 (zhenxin)</div>
-                <div class="source-badge">健康</div>
-            </div>
-            <div class="url-row" id="row-zhenxin-new">
-                <span class="url-label online1">新域名（推荐）</span>
-                <input type="text" class="url-input" value="https://zhouyu86.de5.net/zhenxin/FongMi.json">
-                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('zhenxin', 'new', '真心接口 (zhenxin)', '新域名（推荐）')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-zhenxin-online1">
-                <span class="url-label online1">在线1</span>
-                <input type="text" class="url-input" value="https://zhouyu365666.top/zhenxin/FongMi.json">
-                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('zhenxin', 'online1', '真心接口 (zhenxin)', '在线1')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-zhenxin-online2">
-                <span class="url-label online2">在线2</span>
-                <input type="text" class="url-input" value="https://tvbox-bh1.pages.dev/zhenxin/FongMi.json">
-                <button class="copy-btn online2" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('zhenxin', 'online2', '真心接口 (zhenxin)', '在线2')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-zhenxin-zhouyu">
-                <span class="url-label online2">新站(zhouyu86)</span>
-                <input type="text" class="url-input" value="https://zhouyu86-bh1.pages.dev/zhenxin/FongMi.json">
-                <button class="copy-btn online2" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('zhenxin', 'zhouyu', '真心接口 (zhenxin)', '新站(zhouyu86)')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-zhenxin-local">
-                <span class="url-label local">本地</span>
-                <input type="text" class="url-input" value="http://10.144.194.238:8080/zhenxin/FongMi.json">
-                <button class="copy-btn local" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('zhenxin', 'local', '真心接口 (zhenxin)', '本地')" title="删除此地址">×</button>
-            </div>
-            <div class="stats">
-                <span>📊 站点数：46</span>
-                <span>📁 路径：/zhenxin/FongMi.json</span>
-                <span style="color:#10b981;">🔄 每日自动同步上游仓库</span>
-            </div>
-        </div>
+        <!-- zhenxin接口已移到动态生成列表，避免重复 -->
 
         <!-- PG接口 -->
         <div class="source-card" id="card-pg">
@@ -355,6 +292,12 @@
                 <button class="copy-btn local" onclick="copyUrl(this)">复制</button>
                 <button class="delete-url-btn" onclick="deleteUrl('pg', 'local', 'PG接口 (pg)', '本地')" title="删除此地址">×</button>
             </div>
+            <div class="url-row" id="row-pg-japan">
+                <span class="url-label online1">日本节点</span>
+                <input type="text" class="url-input" value="https://nginx-xj3fec43-workspace-t5zd75.cloady.io/pg.json">
+                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
+                <button class="delete-url-btn" onclick="deleteUrl('pg', 'japan', 'PG接口 (pg)', '日本节点')" title="删除此地址">×</button>
+            </div>
             <div class="stats">
                 <span>📊 站点数：74（+29直播）</span>
                 <span>📁 路径：/pg/pg.json</span>
@@ -362,48 +305,7 @@
             </div>
         </div>
 
-        <!-- 嗷呜接口 -->
-        <div class="source-card" id="card-aowu">
-            <div class="source-header">
-                <div class="source-name">🟣 嗷呜接口 (aowu)</div>
-                <div class="source-badge">健康</div>
-            </div>
-            <div class="url-row" id="row-aowu-new">
-                <span class="url-label online1">新域名（推荐）</span>
-                <input type="text" class="url-input" value="https://zhouyu86.de5.net/aowu/aowu.json">
-                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('aowu', 'new', '嗷呜接口 (aowu)', '新域名（推荐）')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-aowu-online1">
-                <span class="url-label online1">在线1</span>
-                <input type="text" class="url-input" value="https://zhouyu365666.top/aowu/aowu.json">
-                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('aowu', 'online1', '嗷呜接口 (aowu)', '在线1')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-aowu-online2">
-                <span class="url-label online2">在线2</span>
-                <input type="text" class="url-input" value="https://tvbox-bh1.pages.dev/aowu/aowu.json">
-                <button class="copy-btn online2" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('aowu', 'online2', '嗷呜接口 (aowu)', '在线2')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-aowu-zhouyu">
-                <span class="url-label online2">新站(zhouyu86)</span>
-                <input type="text" class="url-input" value="https://zhouyu86-bh1.pages.dev/aowu/aowu.json">
-                <button class="copy-btn online2" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('aowu', 'zhouyu', '嗷呜接口 (aowu)', '新站(zhouyu86)')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-aowu-local">
-                <span class="url-label local">本地</span>
-                <input type="text" class="url-input" value="http://10.144.194.238:8080/aowu/aowu.json">
-                <button class="copy-btn local" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('aowu', 'local', '嗷呜接口 (aowu)', '本地')" title="删除此地址">×</button>
-            </div>
-            <div class="stats">
-                <span>📊 站点数：77（+7直播）</span>
-                <span>📁 路径：/aowu/aowu.json</span>
-                <span style="color:#10b981;">🔄 自动同步上游</span>
-            </div>
-        </div>
+        <!-- aowu接口已移到动态生成列表，避免重复 -->
 
         <!-- 摸鱼接口（115个源） -->
         <div class="source-card" id="card-moyu">
@@ -426,6 +328,11 @@
                 <input type="text" class="url-input" value="http://127.0.0.1:8080/lubin/tvbox/摸鱼.json">
                 <button class="copy-btn local" onclick="copyUrl(this)">复制</button>
             </div>
+            <div class="url-row" id="row-moyu-japan">
+                <span class="url-label online1">日本节点</span>
+                <input type="text" class="url-input" value="https://nginx-xj3fec43-workspace-t5zd75.cloady.io/lubin.json">
+                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
+            </div>
             <div class="stats">
                 <span>📊 站点数：115</span>
                 <span>📁 路径：/lubin/tvbox/摸鱼.json</span>
@@ -433,79 +340,9 @@
             </div>
         </div>
 
-        <!-- WMZ接口（25个独有源） -->
-        <div class="source-card" id="card-wmz">
-            <div class="source-header">
-                <div class="source-name">🟢 WMZ接口 (wmz)</div>
-                <div class="source-badge">健康</div>
-            </div>
-            <div class="url-row" id="row-wmz-new">
-                <span class="url-label online1">新域名（推荐）</span>
-                <input type="text" class="url-input" value="https://zhouyu86.de5.net/wmz/wmz.json">
-                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('wmz', 'new', 'WMZ接口 (wmz)', '新域名（推荐）')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-wmz-online1">
-                <span class="url-label online1">在线1</span>
-                <input type="text" class="url-input" value="https://zhouyu365666.top/wmz/wmz.json">
-                <button class="copy-btn online1" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('wmz', 'online1', 'WMZ接口 (wmz)', '在线1')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-wmz-online2">
-                <span class="url-label online2">在线2</span>
-                <input type="text" class="url-input" value="https://tvbox-bh1.pages.dev/wmz/wmz.json">
-                <button class="copy-btn online2" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('wmz', 'online2', 'WMZ接口 (wmz)', '在线2')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-wmz-zhouyu">
-                <span class="url-label online2">新站(zhouyu86)</span>
-                <input type="text" class="url-input" value="https://zhouyu86-bh1.pages.dev/wmz/wmz.json">
-                <button class="copy-btn online2" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('wmz', 'zhouyu', 'WMZ接口 (wmz)', '新站(zhouyu86)')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-wmz-local">
-                <span class="url-label local">本地</span>
-                <input type="text" class="url-input" value="http://10.144.194.238:8080/wmz/wmz.json">
-                <button class="copy-btn local" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('wmz', 'local', 'WMZ接口 (wmz)', '本地')" title="删除此地址">×</button>
-            </div>
-            <div class="stats">
-                <span>📊 站点数：25（+4直播，独有源）</span>
-                <span>📁 路径：/wmz/wmz.json</span>
-                <span style="color:#10b981;">🔄 每日自动同步上游</span>
-            </div>
-        </div>
+        <!-- wmz接口已移到动态生成列表，避免重复 -->
 
-        <!-- OK影视接口 -->
-        <div class="source-card" id="card-ok">
-            <div class="source-header">
-                <div class="source-name">🔴 OK影视接口 (ok)</div>
-                <div class="source-badge">健康</div>
-            </div>
-            <div class="url-row" id="row-ok-online2">
-                <span class="url-label online2">在线2</span>
-                <input type="text" class="url-input" value="https://tvbox-bh1.pages.dev/ok/m.json">
-                <button class="copy-btn online2" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('ok', 'online2', 'OK影视接口 (ok)', '在线2')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-ok-zhouyu">
-                <span class="url-label online2">新站(zhouyu86)</span>
-                <input type="text" class="url-input" value="https://zhouyu86-bh1.pages.dev/ok/m.json">
-                <button class="copy-btn online2" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('ok', 'zhouyu', 'OK影视接口 (ok)', '新站(zhouyu86)')" title="删除此地址">×</button>
-            </div>
-            <div class="url-row" id="row-ok-local">
-                <span class="url-label local">本地</span>
-                <input type="text" class="url-input" value="http://10.144.194.238:8080/ok/m.json">
-                <button class="copy-btn local" onclick="copyUrl(this)">复制</button>
-                <button class="delete-url-btn" onclick="deleteUrl('ok', 'local', 'OK影视接口 (ok)', '本地')" title="删除此地址">×</button>
-            </div>
-            <div class="stats">
-                <span>📊 站点数：139（+直播，OK大佬自用源）</span>
-                <span>📁 路径：/ok/m.json</span>
-                <span style="color:#10b981;">🔄 自动同步上游</span>
-            </div>
-        </div>
+        <!-- ok接口已移到动态生成列表，避免重复 -->
 
         <div style="text-align:center;margin:20px 0;">
             <a href="index.html" style="display:inline-block;padding:14px 30px;background:#1677ff;color:white;text-decoration:none;border-radius:10px;font-size:16px;font-weight:bold;box-shadow:0 4px 15px rgba(22,119,255,0.4);">
