@@ -1,0 +1,3831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的导航</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+            background: #ffffff;
+            color: #111111;
+            min-height: 100vh;
+            padding: 40px 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            font-weight: 400;
+        }
+        #fireworks-canvas {
+            display: none;
+        }
+        .stars {
+            display: none;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #1677ff, #40a9ff, #69c0ff, #e6f4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #222;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            max-width: 550px;
+            margin: 0 auto;
+            display: flex;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 14px 22px;
+            border: none;
+            background: transparent;
+            outline: none;
+            color: #000;
+            font-size: 15px;
+        }
+        .search-box input::placeholder { color: #555; }
+        .search-box button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #1677ff, #40a9ff);
+            color: #fff;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .search-box button:hover {
+            background: linear-gradient(135deg, #e84a80, #1677ff);
+        }
+        /* 搜索建议下拉 */
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 60px;
+            background: #fff;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-top: none;
+        }
+        .search-suggestions.show {
+            display: block;
+        }
+        .suggestion-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #333;
+            border-bottom: 1px solid #ffffff;
+            transition: background 0.15s;
+        }
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+        .suggestion-item:hover {
+            background: #ffffff;
+        }
+        .suggestion-item .suggestion-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .suggestion-item .suggestion-type {
+            margin-left: auto;
+            font-size: 11px;
+            color: #555;
+            padding: 2px 8px;
+            background: #ffffff;
+            border-radius: 10px;
+        }
+        .suggestion-item .suggestion-type.site {
+            color: #1677ff;
+            background: #ffebee;
+        }
+        .search-engines {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .engine-btn {
+            padding: 6px 16px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            color: #222;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .engine-btn:hover, .engine-btn.active {
+            background: linear-gradient(135deg, #1677ff, #40a9ff);
+            color: #fff;
+            border-color: transparent;
+        }
+        .accordion {
+            margin-top: 25px;
+        }
+        .accordion-item {
+            background: #ffffff;
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            box-shadow: none;
+            transition: all 0.3s;
+        }
+        .accordion-item:hover {
+            border-color: #e0e0e0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .accordion-item.active {
+            border-color: #1677ff;
+            box-shadow: 0 2px 8px rgba(22,119,255,0.08);
+        }
+        .accordion-header {
+            padding: 18px 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+        .accordion-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: #000;
+        }
+        .accordion-icon {
+            font-size: 26px;
+            -webkit-text-fill-color: initial;
+        }
+        .accordion-count {
+            font-size: 11px;
+            color: #333;
+            background: #ffffff;
+            padding: 2px 8px;
+            border-radius: 8px;
+            margin-left: 8px;
+        }
+        .accordion-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .add-site-btn {
+            padding: 6px 14px;
+            background: #1677ff;
+            border: 1px solid #096dd9;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(22,119,255,0.3);
+        }
+        .add-site-btn:hover {
+            background: #096dd9;
+        }
+        .accordion-arrow {
+            font-size: 18px;
+            color: #333;
+            transition: transform 0.3s;
+        }
+        .accordion-item.active .accordion-arrow {
+            transform: rotate(180deg);
+            color: #40a9ff;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .accordion-item.active .accordion-content {
+            max-height: 800px;
+            overflow-y: auto;
+        }
+        .site-grid {
+            padding: 0 22px 22px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+            gap: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 18px;
+        }
+        .site-item {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: #000;
+            position: relative;
+        }
+        .site-item:hover {
+            background: #fff;
+            border-color: #1677ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,107,157,0.15);
+        }
+        .site-item.dragging {
+            opacity: 0.4;
+            transform: scale(0.95);
+            border: 2px dashed #1677ff;
+        }
+        .site-item.drag-over {
+            border-color: #1677ff;
+            background: rgba(211, 47, 47, 0.08);
+            transform: scale(1.05);
+        }
+        .site-item .site-favicon {
+            width: 32px;
+            height: 32px;
+            display: block;
+            margin: 0 auto 5px;
+            object-fit: contain;
+            border-radius: 0;
+        }
+        .site-item .site-icon-box {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .site-item .site-icon-box .site-favicon {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            object-fit: contain;
+        }
+        .site-item .site-icon-box .icon {
+            font-size: 24px;
+            line-height: 1;
+            display: none;
+            margin: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            align-items: center;
+            justify-content: center;
+        }
+        .site-item .name {
+            font-size: 13px;
+            font-weight: 400;
+            color: #000000;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        /* 网站操作按钮容器（上移/下移/删除） */
+        .site-item .site-actions {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            display: none;
+            gap: 2px;
+            z-index: 5;
+        }
+        .site-item:hover .site-actions {
+            display: flex;
+        }
+        .site-item .delete-btn {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            line-height: 1;
+            flex-shrink: 0;
+            background: rgba(100, 100, 100, 0.6);
+        }
+        .site-item .delete-btn:hover {
+            background: rgba(22,119,255,0.9);
+            transform: scale(1.1);
+        }
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #555;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+        /* 弹窗 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+            line-height: 1;
+            transition: all 0.2s;
+            z-index: 10;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .modal-close:hover {
+            color: #1677ff;
+            transform: rotate(90deg);
+            background: rgba(22,119,255,0.1);
+        }
+        /* 右键菜单 */
+        .context-menu {
+            position: fixed;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 6px 0;
+            min-width: 140px;
+            z-index: 10000;
+            display: none;
+            border: 1px solid #eee;
+        }
+        .context-menu.show {
+            display: block;
+        }
+        .context-menu-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #333;
+            transition: background 0.15s;
+        }
+        .context-menu-item:hover {
+            background: #ffffff;
+        }
+        .context-menu-item.context-menu-danger:hover {
+            background: #ffebee;
+            color: #1677ff;
+        }
+        .context-menu-icon {
+            font-size: 16px;
+        }
+        .modal h3 {
+            color: #40a9ff;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            color: #555;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: #000;
+            font-size: 14px;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: #1677ff;
+            background: #fff;
+        }
+        .icon-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+        .icon-picker::-webkit-scrollbar {
+            width: 5px;
+        }
+        .icon-picker::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        .icon-picker::-webkit-scrollbar-thumb {
+            background: rgba(0, 245, 212, 0.3);
+            border-radius: 3px;
+        }
+        .icon-option {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .icon-option:hover, .icon-option.selected {
+            background: rgba(255, 107, 157, 0.2);
+            border-color: #1677ff;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-cancel {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #1677ff, #40a9ff);
+            color: #fff;
+        }
+        .accordion-content::-webkit-scrollbar {
+            width: 5px;
+        }
+        .accordion-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .accordion-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 245, 212, 0.25);
+            border-radius: 3px;
+        }
+        /* 顶部时间天气栏 */
+        .top-bar {
+            display: none;
+        }
+        .time-display {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .clock {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #1677ff, #69c0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Courier New', monospace;
+        }
+        .date-info {
+            font-size: 13px;
+            color: #222;
+        }
+        .lunar-date {
+            font-size: 12px;
+            color: #333;
+            margin-top: 2px;
+        }
+        .weather-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .weather-display:hover {
+            background: rgba(0,0,0,0.05);
+        }
+        .weather-icon {
+            font-size: 28px;
+        }
+        .weather-temp {
+            font-size: 20px;
+            font-weight: bold;
+            color: #40a9ff;
+        }
+        /* Logo装饰 */
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 8px;
+        }
+        .logo-decoration {
+            height: 2px;
+            width: 80px;
+            background: linear-gradient(90deg, transparent, #1677ff, #69c0ff);
+            border-radius: 2px;
+        }
+        .logo-decoration.right {
+            background: linear-gradient(90deg, #69c0ff, #1677ff, transparent);
+        }
+        .logo-star {
+            font-size: 20px;
+            animation: twinkle 1.5s infinite;
+        }
+        /* 左下角音乐播放器 - 集多样式 */
+        .music-player {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        /* 收起/展开按钮 */
+        .music-toggle {
+            width: 24px;
+            height: 60px;
+            background: rgba(20, 20, 30, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+            position: absolute;
+            left: 0;
+            bottom: 20px;
+            z-index: 2;
+        }
+        .music-toggle:hover {
+            background: #ffffff;
+            color: #1677ff;
+        }
+        /* 播放器主面板 */
+        .music-panel {
+            position: absolute;
+            left: 28px;
+            bottom: 0;
+            width: 360px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px 12px 0 0;
+            padding: 12px 15px 8px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+            transform: translateX(-110%);
+            transition: transform 0.35s ease;
+            z-index: 1;
+        }
+        .music-panel.show {
+            transform: translateX(0);
+        }
+        /* 播放器上半部分：唱片 + 信息 + 控制 */
+        .music-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        /* 圆形唱片 */
+        .music-cover {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #1a1a2e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 3px #0a0a1a, 0 0 0 4px rgba(255,255,255,0.2), 0 4px 15px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+        .music-cover::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1677ff, #40a9ff, #69c0ff, #e6f4ff);
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+        /* 播放/暂停按钮（独立悬浮在唱片中间，不受旋转影响） */
+        .play-btn-overlay {
+            position: absolute;
+            left: 13px; /* 唱片中心28px - 按钮一半15px = 13px */
+            top: 13px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            z-index: 10;
+            box-shadow: 0 2px 15px rgba(255, 107, 107, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            pointer-events: auto;
+            transition: transform 0.2s;
+        }
+        .play-btn-overlay:hover {
+            transform: scale(1.1);
+        }
+        .play-btn-overlay:active {
+            transform: scale(0.95);
+        }
+        .music-cover.rotating {
+            animation: rotate 6s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        /* 歌曲信息 */
+        .music-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .music-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .music-artist {
+            font-size: 11px;
+            color: #333;
+            margin-bottom: 6px;
+        }
+        .music-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 10px;
+        }
+        .music-mode {
+            color: #333;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: #ffffff;
+        }
+        .music-mode:hover {
+            color: #40a9ff;
+        }
+        .music-lyric-toggle {
+            color: #333;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: #ffffff;
+        }
+        .music-lyric-toggle:hover, .music-lyric-toggle.active {
+            color: #40a9ff;
+        }
+        .music-add-btn {
+            color: #ffffff;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 5px;
+            background: #1677ff;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 1px 4px rgba(22,119,255,0.3);
+        }
+        .music-add-btn:hover {
+            background: #096dd9;
+            color: #ffffff;
+        }
+        /* 控制按钮 */
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .music-btn {
+            background: #1677ff;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            padding: 4px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .music-btn#musicModeBtn {
+            background: #ff9500;
+        }
+        .music-btn:hover {
+            background: #40a9ff;
+        }
+        .music-btn.playlist {
+            font-size: 14px;
+        }
+        /* 歌词显示开关 */
+        .lyric-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch.small {
+            width: 36px;
+            height: 20px;
+        }
+        .switch.small .slider:before {
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+        }
+        .switch.small input:checked + .slider:before {
+            transform: translateX(16px);
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #34c759;
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        /* 底部：进度条 + 时间 + 音量 */
+        .music-bottom {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .music-progress {
+            flex: 1;
+            height: 6px;
+            background: #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+        .music-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1677ff, #ff6b6b);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+        .music-time {
+            font-size: 9px;
+            color: #333;
+            white-space: nowrap;
+            min-width: 70px;
+            text-align: center;
+        }
+        .music-volume {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #ccc;
+        }
+        .music-volume input {
+            width: 70px;
+            height: 6px;
+            -webkit-appearance: none;
+            background: #ccc;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+        .music-volume input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #1677ff;
+            cursor: pointer;
+            box-shadow: 0 0 4px rgba(211, 47, 47, 0.5);
+        }
+        /* 播放列表 */
+        .music-playlist {
+            position: absolute;
+            left: 28px;
+            bottom: 100%;
+            width: 360px;
+            max-height: 300px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            overflow-y: auto;
+            transform: translateY(15px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            z-index: 99999;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+        }
+        .music-playlist.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .playlist-header {
+            padding: 10px 15px;
+            font-size: 12px;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .playlist-item {
+            padding: 8px 15px;
+            font-size: 12px;
+            color: #555;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .playlist-item:hover {
+            background: #ffffff;
+            color: #000;
+        }
+        .playlist-item.active {
+            color: #40a9ff;
+            background: rgba(255, 107, 157, 0.1);
+        }
+        .playlist-item .index {
+            width: 20px;
+            text-align: center;
+            color: #bbb;
+            font-size: 10px;
+        }
+        .playlist-item .song-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .playlist-item .song-artist {
+            color: #555;
+            font-size: 10px;
+        }
+        .playlist-item .del-btn {
+            color: #ccc;
+            cursor: pointer;
+            padding: 2px 5px;
+            font-size: 10px;
+        }
+        .playlist-item .del-btn:hover {
+            color: #ff6b6b;
+        }
+        /* 搜索框 */
+        .music-search-box {
+            padding: 10px 15px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .music-search-box input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 12px;
+            outline: none;
+        }
+        .music-search-box input:focus {
+            border-color: #1677ff;
+        }
+        .music-search-box button {
+            padding: 6px 12px;
+            background: #1677ff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .music-search-box button:hover {
+            background: #096dd9;
+        }
+        /* 主面板顶部搜索栏 */
+        .music-search-bar {
+            padding: 10px 15px 10px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #1677ff;
+            background: linear-gradient(180deg, rgba(22,119,255,0.05), transparent);
+            margin: -12px -15px 10px;
+            padding: 12px 15px 10px;
+        }
+        .music-search-bar input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 2px solid #1677ff;
+            border-radius: 22px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(22,119,255,0.15);
+        }
+        .music-search-bar input::placeholder {
+            color: #999;
+            font-weight: normal;
+        }
+        .music-search-bar input:focus {
+            border-color: #096dd9;
+            box-shadow: 0 0 0 4px rgba(22,119,255,0.15);
+        }
+        .music-search-bar button {
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #1677ff, #096dd9);
+            color: #fff;
+            border: none;
+            border-radius: 22px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(22,119,255,0.3);
+            white-space: nowrap;
+        }
+        .music-search-bar button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(22,119,255,0.4);
+        }
+        .music-search-bar button:active {
+            transform: translateY(0);
+        }
+        /* 平台切换 Tab */
+        .music-platform-tabs {
+            display: flex;
+            gap: 6px;
+            padding: 0 15px 8px;
+            margin: -6px 0 8px;
+        }
+        .music-platform-tabs .platform-tab {
+            flex: 1;
+            text-align: center;
+            padding: 5px 0;
+            font-size: 12px;
+            border-radius: 14px;
+            cursor: pointer;
+            color: #888;
+            background: #f2f4f7;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .music-platform-tabs .platform-tab:hover {
+            background: #e6f0ff;
+            color: #1677ff;
+        }
+        .music-platform-tabs .platform-tab.active {
+            background: linear-gradient(135deg, #1677ff, #096dd9);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(22,119,255,0.3);
+        }
+        /* KTV 蓝色光标 */
+        .lyric-caret {
+            display: none;
+        }
+        @keyframes lyricBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        /* 搜索结果面板（主面板内） */
+        .search-results-panel {
+            max-height: 280px;
+            overflow-y: auto;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fff;
+            margin: 0 -15px 10px;
+        }
+        .search-results-header {
+            padding: 8px 15px;
+            font-size: 12px;
+            color: #1677ff;
+            background: rgba(22,119,255,0.08);
+            border-bottom: 1px solid #e6f0ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        .search-result-item {
+            padding: 10px 15px;
+            font-size: 13px;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .search-result-item:hover {
+            background: rgba(22,119,255,0.08);
+            color: #1677ff;
+        }
+        .search-result-item .song-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 500;
+        }
+        .search-result-item .song-artist {
+            color: #888;
+            font-size: 11px;
+            max-width: 80px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .search-result-item .play-icon {
+            color: #1677ff;
+            font-size: 10px;
+        }
+        .search-loading {
+            padding: 20px 15px;
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        /* 歌词显示 - 重新写 */
+        .music-lyrics {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            background: transparent;
+            color: #ff4444;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            white-space: nowrap;
+            text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+            display: none;
+        }
+        .music-lyrics.show {
+            display: block;
+        }
+
+        /* 添加歌曲弹窗 - 居中显示 */
+        .add-music-modal {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        }
+        .add-music-modal.show {
+            display: block;
+            animation: modalFadeIn 0.25s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        .add-music-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .add-music-close {
+            cursor: pointer;
+            font-size: 20px;
+            color: #555;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        .add-music-close:hover {
+            background: #ffffff;
+            color: #1677ff;
+        }
+        .add-music-field {
+            margin-bottom: 10px;
+        }
+        .add-music-field label {
+            display: block;
+            font-size: 11px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .add-music-field input {
+            width: 100%;
+            padding: 7px 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            color: #000;
+            font-size: 12px;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+        .add-music-field input:focus {
+            outline: none;
+            border-color: #1677ff;
+            background: #fff;
+        }
+        .add-music-btns {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .add-music-cancel, .add-music-confirm {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .add-music-cancel {
+            background: #fff;
+            color: #1677ff;
+            border: 2px solid #1677ff;
+        }
+        .add-music-cancel:hover {
+            background: #fff5f5;
+        }
+        .add-music-confirm {
+            background: linear-gradient(135deg, #1677ff, #40a9ff);
+            color: #fff;
+            font-weight: bold;
+        }
+        .add-music-confirm:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        @media (max-width: 600px) {
+            .site-grid { 
+                grid-template-columns: repeat(3, 1fr); 
+                gap: 14px;
+                padding: 18px 16px 20px;
+            }
+            .site-item {
+                background: #ffffff;
+                border: 1px solid #ececec;
+                border-radius: 16px;
+                padding: 18px 6px 14px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+                transition: all 0.2s ease;
+            }
+            .site-item:active {
+                transform: scale(0.96);
+                background: #f5f8ff;
+                border-color: #1677ff;
+            }
+            .site-item .site-icon-box {
+                width: 48px;
+                height: 48px;
+                margin: 0 auto 8px;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .site-item .site-icon-box .site-favicon {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                object-fit: contain;
+            }
+            .site-item .site-icon-box .icon {
+                font-size: 36px;
+                line-height: 1;
+                display: none;
+                margin: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                align-items: center;
+                justify-content: center;
+            }
+            .site-item .name {
+                font-size: 13px;
+                font-weight: 600;
+                color: #1a1a1a;
+                letter-spacing: 0.2px;
+            }
+            .logo { 
+                font-size: 28px; 
+                white-space: nowrap;
+            }
+            .top-bar { 
+                display: none;
+            }
+            .logo-decoration { width: 40px; }
+            .header {
+                margin-top: 0;
+                margin-bottom: 20px;
+            }
+            .music-player {
+                bottom: 0;
+                left: 0;
+            }
+            .music-panel {
+                bottom: 200px;
+                left: 28px;
+                width: calc(100vw - 60px);
+            }
+            .music-toggle {
+                bottom: 0;
+            }
+            .site-item .site-name {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 11px;
+            }
+            .music-lyrics {
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 99999;
+            }
+            .switch {
+                background-color: #fff;
+            }
+            input:checked + .slider {
+                background-color: #ccc;
+            }
+            .music-cover {
+                width: 48px;
+                height: 48px;
+            }
+            .play-btn-overlay {
+                width: 24px;
+            }
+            .music-search-bar button {
+                padding: 8px 12px;
+                font-size: 13px;
+                white-space: nowrap;
+                writing-mode: horizontal-tb;
+            }
+                height: 24px;
+                left: 12px;
+                top: 12px;
+                font-size: 10px;
+            }
+            .music-info {
+                font-size: 10px;
+                max-width: 80px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            .music-btn {
+                width: 24px;
+                height: 24px;
+                font-size: 12px;
+            }
+            .switch.small {
+                width: 32px;
+                height: 18px;
+            }
+            .switch.small .slider:before {
+                height: 12px;
+                width: 12px;
+                left: 2px;
+                bottom: 2px;
+            }
+            .switch.small input:checked + .slider:before {
+                transform: translateX(14px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定返回主页按钮 -->
+    <div onclick="window.location.href=window.location.pathname" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:linear-gradient(90deg,#1677ff,#096dd9);color:white;text-align:center;padding:10px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 2px 10px rgba(22,119,255,0.4);letter-spacing:2px;">
+        🏠 点击返回导航主页
+    </div>
+    <div style="height:45px;"></div>
+    <div class="stars" id="stars"></div>
+    <canvas id="fireworks-canvas"></canvas>
+
+    <div class="container">
+        <!-- 顶部时间天气栏 -->
+        <div class="top-bar">
+            <div class="time-display">
+                <div>
+                    <div class="clock" id="clock">00:00:00</div>
+                    <div class="date-info" id="dateInfo">加载中...</div>
+                    <div class="lunar-date" id="lunarDate">农历加载中...</div>
+                </div>
+            </div>
+            <div class="weather-display" onclick="changeWeatherCity()" title="点击修改城市">
+                <span class="weather-icon" id="weatherIcon">☀️</span>
+                <div>
+                    <span class="weather-temp" id="weatherTemp">--°C</span>
+                    <span id="weatherDesc">天气加载中...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header">
+            <div class="logo-wrapper">
+                <span class="logo-decoration"></span>
+                <span class="logo-star">✨</span>
+                <div class="logo">我的导航</div>
+                <span class="logo-star">✨</span>
+                <span class="logo-decoration right"></span>
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索网站..." onkeypress="if(event.key==='Enter')doSearch()" oninput="showSearchSuggestions()" onfocus="showSearchSuggestions()">
+                <button onclick="doSearch()">搜索</button>
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+            <div class="search-engines">
+                <div class="engine-btn active" data-engine="baidu" onclick="setEngine(this)">🔍 百度</div>
+                <div class="engine-btn" data-engine="bing" onclick="setEngine(this)">🌐 必应</div>
+                <div class="engine-btn" data-engine="sogou" onclick="setEngine(this)">🐶 搜狗</div>
+                <div class="engine-btn" data-engine="nav" onclick="setEngine(this)">📚 导航</div>
+            </div>
+        </div>
+
+        <div class="accordion" id="accordion"></div>
+    </div>
+
+    <div class="footer">
+        © 2026 我的导航 · 数据保存在本地浏览器
+    </div>
+
+    <!-- 右键菜单 -->
+    <div class="context-menu" id="siteContextMenu">
+        <div class="context-menu-item" onclick="contextMenuEdit()">
+            <span class="context-menu-icon">✏️</span>
+            <span>编辑网站</span>
+        </div>
+        <div class="context-menu-item context-menu-danger" onclick="contextMenuDelete()">
+            <span class="context-menu-icon">🗑️</span>
+            <span>删除网站</span>
+        </div>
+    </div>
+    
+    <!-- 分类右键菜单 -->
+    <div class="context-menu" id="categoryContextMenu">
+        <div class="context-menu-item" onclick="categoryMenuRename()">
+            <span class="context-menu-icon">✏️</span>
+            <span>重命名分类</span>
+        </div>
+        <div class="context-menu-item" onclick="categoryMenuTogglePwd()">
+            <span class="context-menu-icon">🔒</span>
+            <span id="catMenuPwdText">设置密码</span>
+        </div>
+    </div>
+    
+    <!-- 密码验证弹窗 -->
+    <div class="modal-overlay" id="passwordModal" style="display:none;" onclick="if(event.target===this)closePasswordModal()">
+        <div class="modal" style="max-width:350px;">
+            <span class="modal-close" onclick="closePasswordModal()">×</span>
+            <h3 id="passwordModalTitle">🔒 请输入密码</h3>
+            <p id="passwordModalDesc" style="color:#666;font-size:13px;margin-bottom:15px;">该分类已加密</p>
+            <div class="form-group">
+                <input type="password" id="passwordInput" placeholder="请输入密码" onkeypress="if(event.key==='Enter')verifyPassword()" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;">
+            </div>
+            <div id="passwordError" style="color:#e53935;font-size:12px;margin-bottom:10px;display:none;">密码错误，请重试</div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closePasswordModal()">取消</button>
+                <button class="btn-confirm" onclick="verifyPassword()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置/修改密码弹窗 -->
+    <div class="modal-overlay" id="setPasswordModal" style="display:none;" onclick="if(event.target===this)closeSetPasswordModal()">
+        <div class="modal" style="max-width:350px;">
+            <span class="modal-close" onclick="closeSetPasswordModal()">×</span>
+            <h3 id="setPasswordModalTitle">🔒 设置密码</h3>
+            <p id="setPasswordModalDesc" style="color:#666;font-size:13px;margin-bottom:15px;">输入新密码（留空则取消密码）</p>
+            <div class="form-group">
+                <input type="text" id="setPasswordInput" placeholder="请输入新密码" onkeypress="if(event.key==='Enter')confirmSetPassword()" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeSetPasswordModal()">取消</button>
+                <button class="btn-confirm" onclick="confirmSetPassword()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加/编辑网站弹窗 -->
+    <div class="modal-overlay" id="siteModal" onclick="if(event.target===this)closeModal()">
+        <div class="modal">
+            <span class="modal-close" onclick="closeModal()">×</span>
+            <h3 id="modalTitle">添加网站</h3>
+            <div class="form-group">
+                <label>网站名称</label>
+                <input type="text" id="siteNameInput" placeholder="例如：百度">
+            </div>
+            <div class="form-group">
+                <label>网站网址</label>
+                <input type="text" id="siteUrlInput" placeholder="例如：https://www.baidu.com">
+            </div>
+            <div class="form-group">
+                <label>网站类型</label>
+                <div style="display:flex;gap:10px;">
+                    <label style="flex:1;display:flex;align-items:center;gap:5px;cursor:pointer;padding:8px;border:1px solid #ddd;border-radius:6px;">
+                        <input type="radio" name="siteType" value="link" checked> 普通链接（点击打开）
+                    </label>
+                    <label style="flex:1;display:flex;align-items:center;gap:5px;cursor:pointer;padding:8px;border:1px solid #ddd;border-radius:6px;">
+                        <input type="radio" name="siteType" value="copy"> 复制型（点击复制）
+                    </label>
+                </div>
+            </div>
+            <div style="font-size:11px;color:#999;margin-bottom:15px;padding:8px;background:#ffffff;border-radius:6px;">
+                💡 图标会自动获取网站的logo，输入网址即可<br>
+                📋 复制型网站点击后会把网址复制到剪贴板，适合本地接口、管理后台等
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeModal()">取消</button>
+                <button class="btn-confirm" onclick="saveSite()">确定</button>
+            </div>
+        </div>
+    </div>
+
+        <!-- 歌词显示（默认不显示） -->
+        <div class="music-lyrics" id="musicLyrics">
+            <div class="lyric-line">♪ 歌词显示 ♪</div>
+        </div>
+
+    <!-- 左下角音乐播放器 - 集多样式 -->
+    <div class="music-player">
+        <div class="music-toggle" id="musicToggle" onclick="toggleMusicPanel()">
+            <span id="toggleArrow">🎵</span>
+        </div>
+        <!-- 播放列表 -->
+        <div class="music-playlist" id="musicPlaylist">
+            <div class="playlist-header">
+                <span>播放列表 (<span id="playlistCount">0</span>)</span>
+                <button onclick="togglePlaylist()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;padding:4px 12px;border-radius:4px;">&times; 关闭</button>
+            </div>
+            <div id="playlistItems"></div>
+        </div>
+        <!-- 播放器主面板 -->
+        <div class="music-panel" id="musicPanel">
+            <!-- 搜索框（顶部，明显位置） -->
+            <div class="music-search-bar">
+                <input type="text" id="musicSearchInput" placeholder="🔍 搜歌曲名或歌手名，按回车搜索..." onkeypress="if(event.key==='Enter')searchMusic()" />
+                <button onclick="searchMusic()">搜索</button>
+            </div>
+            <!-- 平台切换 -->
+            <div class="music-platform-tabs">
+                <span class="platform-tab active" data-server="netease" onclick="switchPlatform('netease', this)">网易云</span>
+                <span class="platform-tab" data-server="qishui" onclick="switchPlatform('qishui', this)">汽水</span>
+                <span class="platform-tab" data-server="tencent" onclick="switchPlatform('tencent', this)">QQ音乐</span>
+                <span class="platform-tab" data-server="kugou" onclick="switchPlatform('kugou', this)">酷狗</span>
+                <span class="platform-tab" data-server="kuwo" onclick="switchPlatform('kuwo', this)">酷我</span>
+            </div>
+            <!-- 搜索结果 -->
+            <div id="searchResults" class="search-results-panel" style="display:none;">
+                <div class="search-results-header">
+                    <span>搜索结果</span>
+                    <span style="cursor:pointer;color:rgba(255,255,255,0.6);" onclick="clearSearch()">✕</span>
+                </div>
+                <div id="searchResultsItems"></div>
+            </div>
+            <div class="music-top">
+                <!-- 圆形唱片 -->
+                <div class="music-cover" id="musicCover">
+                    <span id="coverEmoji">🎵</span>
+                </div>
+                <!-- 播放/暂停按钮（独立在唱片外面，不受旋转影响） -->
+                <div class="play-btn-overlay" id="coverPlayIcon" onclick="togglePlay()">▶</div>
+                <!-- 歌曲信息 -->
+                <div class="music-info">
+                    <div class="music-title" id="musicTitle">歌曲名称</div>
+                    <div class="music-artist" id="musicArtist">艺术家</div>
+                </div>
+                <!-- 控制按钮 -->
+                <div class="music-controls">
+                    <button class="music-btn" id="musicModeBtn" onclick="toggleMode()" title="循环模式">🔂</button>
+                    <button class="music-btn" onclick="prevMusic()" title="上一首">⏮</button>
+                    <button class="music-btn" onclick="nextMusic()" title="下一首">⏭</button>
+                    <button class="music-btn playlist" onclick="togglePlaylist()" title="播放列表">☰</button>
+                    <label class="switch small">
+                        <input type="checkbox" id="lyricSwitch" onchange="toggleLyrics()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <!-- 底部：进度条 + 时间 + 音量 -->
+            <div class="music-bottom">
+                <div class="music-progress" onclick="seekMusic(event)">
+                    <div class="music-progress-bar" id="musicProgressBar"></div>
+                </div>
+                <div class="music-time">
+                    <span id="musicCurrentTime">00:00</span> / <span id="musicTotalTime">00:00</span>
+                </div>
+                <div class="music-volume">
+                    <span id="volumeIcon">🔊</span>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="70" oninput="setVolume(this.value)" onchange="setVolume(this.value)">
+                </div>
+            </div>
+        </div>
+    </div>
+    <audio id="musicAudio" preload="metadata"></audio>
+
+    <!-- 添加歌曲弹窗 -->
+    <div class="add-music-modal" id="addMusicModal" style="display: none;">
+        <div class="add-music-box">
+            <div class="add-music-title">
+                <span>🎵 添加歌曲</span>
+                <span class="add-music-close" onclick="closeAddMusic()">✕</span>
+            </div>
+            <div class="add-music-field">
+                <label>歌曲名称</label>
+                <input type="text" id="newMusicTitle" placeholder="请输入歌曲名称">
+            </div>
+            <div class="add-music-field">
+                <label>歌手名称</label>
+                <input type="text" id="newMusicArtist" placeholder="请输入歌手名称（可选）">
+            </div>
+            <div class="add-music-field">
+                <label>MP3链接</label>
+                <input type="text" id="newMusicUrl" placeholder="请输入歌曲MP3链接（http/https开头）">
+            </div>
+            <div class="add-music-btns">
+                <button class="add-music-cancel" onclick="closeAddMusic()">取消</button>
+                <button class="add-music-confirm" onclick="confirmAddMusic()">确定添加</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 默认数据 - 8个分类
+        const defaultData = [
+            {
+                name: '实用网站',
+                icon: '🔧',
+                sites: [
+                    { name: '百度', icon: '🔍', url: 'https://www.baidu.com' },
+                    { name: '百度网盘', icon: '☁️', url: 'https://pan.baidu.com' },
+                    { name: '12306', icon: '🚄', url: 'https://www.12306.cn' },
+                    { name: '高德地图', icon: '🗺️', url: 'https://www.amap.com' },
+                    { name: '百度翻译', icon: '🌐', url: 'https://fanyi.baidu.com' },
+                    { name: '有道词典', icon: '📖', url: 'https://dict.youdao.com' },
+                    { name: 'WPS', icon: '📝', url: 'https://www.wps.cn' },
+                    { name: '腾讯文档', icon: '📝', url: 'https://docs.qq.com' },
+                    { name: '天眼查', icon: '🏢', url: 'https://www.tianyancha.com' },
+                    { name: '迅雷', icon: '🌩️', url: 'https://www.xunlei.com' },
+                    { name: '阿里云盘', icon: '☁️', url: 'https://www.aliyundrive.com' },
+                    { name: '学习强国', icon: '📚', url: 'https://www.xuexi.cn' }
+                ]
+            },
+            {
+                name: '影视娱乐',
+                icon: '🎬',
+                sites: [
+                    { name: '爱奇艺', icon: '🎬', url: 'https://www.iqiyi.com' },
+                    { name: '腾讯视频', icon: '🎬', url: 'https://v.qq.com' },
+                    { name: '优酷', icon: '🎬', url: 'https://www.youku.com' },
+                    { name: 'B站', icon: '📺', url: 'https://www.bilibili.com' },
+                    { name: '芒果TV', icon: '🎬', url: 'https://www.mgtv.com' },
+                    { name: '搜狐视频', icon: '🎬', url: 'https://tv.sohu.com' },
+                    { name: '西瓜视频', icon: '🎬', url: 'https://www.ixigua.com' },
+                    { name: '咪咕视频', icon: '🎬', url: 'https://www.miguvideo.com' },
+                    { name: '央视影音', icon: '📺', url: 'https://tv.cctv.com' },
+                    { name: '虎牙直播', icon: '🎮', url: 'https://www.huya.com' },
+                    { name: '斗鱼直播', icon: '🎮', url: 'https://www.douyu.com' },
+                    { name: '抖音', icon: '🎵', url: 'https://www.douyin.com' },
+                    { name: '快手', icon: '🎵', url: 'https://www.kuaishou.com' }
+                ]
+            },
+            {
+                name: '音乐电台',
+                icon: '🎵',
+                sites: [
+                    { name: '网易云音乐', icon: '🎵', url: 'https://music.163.com' },
+                    { name: 'QQ音乐', icon: '🎵', url: 'https://y.qq.com' },
+                    { name: '酷狗音乐', icon: '🎵', url: 'https://www.kugou.com' },
+                    { name: '酷我音乐', icon: '🎵', url: 'https://www.kuwo.cn' },
+                    { name: '咪咕音乐', icon: '🎵', url: 'https://music.migu.cn' },
+                    { name: '喜马拉雅', icon: '📻', url: 'https://www.ximalaya.com' },
+                    { name: '蜻蜓FM', icon: '📻', url: 'https://www.qingting.fm' },
+                    { name: '荔枝FM', icon: '📻', url: 'https://www.lizhi.fm' }
+                ]
+            },
+            {
+                name: '购物生活',
+                icon: '🛒',
+                sites: [
+                    { name: '淘宝', icon: '🛒', url: 'https://www.taobao.com' },
+                    { name: '京东', icon: '🛒', url: 'https://www.jd.com' },
+                    { name: '拼多多', icon: '🛒', url: 'https://www.pinduoduo.com' },
+                    { name: '天猫', icon: '🛒', url: 'https://www.tmall.com' },
+                    { name: '苏宁易购', icon: '🛒', url: 'https://www.suning.com' },
+                    { name: '唯品会', icon: '🛒', url: 'https://www.vip.com' },
+                    { name: '美团', icon: '🍔', url: 'https://www.meituan.com' },
+                    { name: '饿了么', icon: '🍔', url: 'https://www.ele.me' },
+                    { name: '大众点评', icon: '🍔', url: 'https://www.dianping.com' },
+                    { name: '携程', icon: '✈️', url: 'https://www.ctrip.com' },
+                    { name: '去哪儿', icon: '✈️', url: 'https://www.qunar.com' },
+                    { name: '滴滴出行', icon: '🚗', url: 'https://www.didiglobal.com' }
+                ]
+            },
+            {
+                name: '社交通讯',
+                icon: '📱',
+                sites: [
+                    { name: '微信', icon: '💬', url: 'https://weixin.qq.com' },
+                    { name: 'QQ', icon: '💬', url: 'https://im.qq.com' },
+                    { name: '微博', icon: '📱', url: 'https://weibo.com' },
+                    { name: '知乎', icon: '🤔', url: 'https://www.zhihu.com' },
+                    { name: '小红书', icon: '📖', url: 'https://www.xiaohongshu.com' },
+                    { name: '豆瓣', icon: '🎬', url: 'https://www.douban.com' },
+                    { name: '钉钉', icon: '📝', url: 'https://www.dingtalk.com' },
+                    { name: 'QQ邮箱', icon: '📧', url: 'https://mail.qq.com' },
+                    { name: '163邮箱', icon: '📧', url: 'https://mail.163.com' },
+                    { name: '脉脉', icon: '💼', url: 'https://maimai.cn' },
+                    { name: '简书', icon: '✏️', url: 'https://www.jianshu.com' },
+                    { name: 'CSDN', icon: '💻', url: 'https://www.csdn.net' }
+                ]
+            },
+            {
+                name: '论坛社区',
+                icon: '💬',
+                sites: [
+                    { name: '百度贴吧', icon: '💬', url: 'https://tieba.baidu.com' },
+                    { name: '虎扑', icon: '🏀', url: 'https://www.hupu.com' },
+                    { name: 'NGA', icon: '🎮', url: 'https://bbs.nga.cn' },
+                    { name: 'V2EX', icon: '💻', url: 'https://www.v2ex.com' },
+                    { name: '掘金', icon: '🔨', url: 'https://juejin.cn' },
+                    { name: '开源中国', icon: '🐧', url: 'https://www.oschina.net' },
+                    { name: 'GitHub', icon: '🐙', url: 'https://github.com' },
+                    { name: 'Gitee', icon: '🐙', url: 'https://gitee.com' },
+                    { name: '少数派', icon: '📱', url: 'https://sspai.com' },
+                    { name: '机核网', icon: '🎮', url: 'https://www.gcores.com' },
+                    { name: '游民星空', icon: '🎮', url: 'https://www.gamersky.com' },
+                    { name: '3DM游戏网', icon: '🎮', url: 'https://www.3dmgame.com' }
+                ]
+            },
+            {
+                name: '新闻资讯',
+                icon: '📰',
+                sites: [
+                    { name: '新浪新闻', icon: '📰', url: 'https://news.sina.com.cn' },
+                    { name: '腾讯新闻', icon: '📰', url: 'https://news.qq.com' },
+                    { name: '网易新闻', icon: '📰', url: 'https://news.163.com' },
+                    { name: '搜狐新闻', icon: '📰', url: 'https://news.sohu.com' },
+                    { name: '凤凰网', icon: '📰', url: 'https://www.ifeng.com' },
+                    { name: '今日头条', icon: '📰', url: 'https://www.toutiao.com' },
+                    { name: '澎湃新闻', icon: '📰', url: 'https://www.thepaper.cn' },
+                    { name: '36氪', icon: '💼', url: 'https://36kr.com' },
+                    { name: '虎嗅网', icon: '🐯', url: 'https://www.huxiu.com' },
+                    { name: '知乎日报', icon: '🤔', url: 'https://daily.zhihu.com' },
+                    { name: '观察者网', icon: '📰', url: 'https://www.guancha.cn' },
+                    { name: '环球网', icon: '📰', url: 'https://www.huanqiu.com' }
+                ]
+            },
+            {
+                name: '系统工具',
+                icon: '🔧',
+                password: '123456',
+                sites: [
+                    { name: '📺 TVBox源地址大全（一键复制）', icon: '📺', url: 'https://zhouyu365666.top/TVBox%E6%BA%90%E5%9C%B0%E5%9D%80%E5%A4%A7%E5%85%A8.html', type: 'link' },
+                    { name: '📝 TVBox接口编辑器（可修改）', icon: '📝', url: 'https://zhouyu365666.top/TVBox%E6%8E%A5%E5%8F%A3%E7%BC%96%E8%BE%91%E5%99%A8.html', type: 'link' },
+                    { name: '📡 TVBox接口站（Cloudflare）', icon: '📡', url: 'https://zhouyu365666.top', type: 'link' },
+                    { name: '🐼 肥猫聚合接口（multi）', icon: '🐼', url: 'https://tvbox-bh1.pages.dev/feimao/multi.json', type: 'link' },
+                    { name: '🔞 合并配置18（域名）', icon: '🔞', url: 'https://zhouyu365666.top/assets/static/data/tvbox18.json', type: 'link' }
+                ]
+            }
+        ];
+
+        let navData = [];
+        let currentEngine = 'baidu';
+        let editingCategory = -1;
+        let editingSite = -1;
+        let selectedIcon = '🌐';
+
+        // 常用图标（100个不重复）
+        const commonIcons = [
+            // 网络科技 (30)
+            '🌐','🔍','🛒','📱','💬','🎬','🎵','📚','📰','✈️',
+            '💻','🎮','📷','📺','📻','⌨️','🖱️','🖨️','💾','💿',
+            '📀','🎤','🎧','📧','🗺️','⚙️','🔧','🔨','🛠️','📡',
+            // 食物饮料 (30)
+            '🍔','🍕','🍟','🌭','🍿','🧀','🥚','🍞','🥐','🥯',
+            '🍜','🍝','🍣','🍱','🥟','🍤','🍙','🍚','🍛','🍲',
+            '🥗','🍦','🍰','🎂','🍩','🍪','🍫','🍬','☕','🍵',
+            // 水果 (20)
+            '🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🫐','🍈',
+            '🍒','🍑','🥭','🍍','🥥','🥝','🍅','🥑','🌽','🥕',
+            // 动物 (30)
+            '🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯',
+            '🦁','🐮','🐷','🐸','🐵','🐔','🐧','🐦','🐤','🦆',
+            '🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🦋','🐌',
+            // 海洋动物 (20)
+            '🐙','🦑','🦐','🦞','🦀','🐡','🐠','🐟','🐬','🐳',
+            '🐋','🦈','🐊','🐢','🦎','🐍','🦖','🦕','🐙','🦑',
+            // 植物自然 (20)
+            '🌸','🌺','🌻','🌹','🌷','🌼','🌱','🌿','☘️','🍀',
+            '🌵','🌴','🌲','🌳','🍁','🍂','🍃','🌾','🌿','☘️',
+            // 天气自然 (20)
+            '☀️','🌤️','⛅','🌥️','☁️','🌦️','🌧️','⛈️','🌩️','🌨️',
+            '❄️','☃️','⛄','🌬️','💨','🌪️','🌫️','🌊','💧','💦',
+            // 交通出行 (20)
+            '🚗','🚕','🚙','🚌','🚎','🏎️','🚓','🚑','🚒','🚐',
+            '🚚','🚛','🚜','🛵','🏍️','🚲','🛴','🚨','🚦','🚧',
+            // 旅行地标 (20)
+            '✈️','🛫','🛬','🛩️','🚀','🛸','🚁','⛵','🛶','🚤',
+            '🛳️','⛴️','🚢','⚓','🗽','🗼','🏰','🏯','🏟️','🎡',
+            // 建筑家居 (20)
+            '🏠','🏡','🏘️','🏚️','🏢','🏬','🏣','🏤','🏥','🏦',
+            '🏨','🏩','💒','🏪','🏫','🏭','🏯','🏰','🗼','🗽',
+            // 人物活动 (20)
+            '👶','👧','🧒','👦','👩','🧑','👨','👵','🧓','👴',
+            '👮','🕵️','💂','🥷','👷','🤴','👸','👳','👲','🧕',
+            // 运动健身 (20)
+            '⚽','🏀','🏈','⚾','🥎','🎾','🏐','🏉','🥏','🎱',
+            '🏓','🏸','🥊','🥋','⛸️','🎿','⛷️','🏂','🏋️','🧘',
+            // 乐器艺术 (20)
+            '🎸','🎹','🥁','🎺','🎻','🎷','🪕','🎼','🎤','🎧',
+            '🎨','🖼️','🖌️','🖍️','📝','✏️','🖊️','🖋️','✒️','📐',
+            // 符号标志 (30)
+            '❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔',
+            '❣️','💕','💞','💓','💗','💖','💘','💝','💟','♥️',
+            '⭐','🌟','✨','💫','🔥','💥','💯','✅','❌','⭕'
+        ];
+
+        // 加载数据（优先从线上同步，其次本地缓存，最后默认）
+        function loadData() {
+            // 先用本地/默认数据快速渲染，避免页面空白
+            loadLocalData();
+            // 再从线上同步数据（异步）
+            fetch('/api/nav?key=navData')
+                .then(r => r.json())
+                .then(data => {
+                    if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {
+                        navData = data.data;
+                        try { localStorage.setItem('myNavData_v2', JSON.stringify(navData)); } catch(e) {}
+                        renderAccordion();
+                    }
+                })
+                .catch(() => {});
+        }
+
+        function loadLocalData() {
+            try {
+                const saved = localStorage.getItem('myNavData_v2');
+                if (saved) {
+                    navData = JSON.parse(saved);
+                } else {
+                    navData = JSON.parse(JSON.stringify(defaultData));
+                }
+            } catch(e) {
+                navData = JSON.parse(JSON.stringify(defaultData));
+            }
+            
+            // 自动迁移：把最后一个分类"更多分类"改成"系统工具"并加密
+            let needSave = false;
+            navData.forEach((cat, idx) => {
+                // 如果是旧分类名，改名并加密
+                if (cat.name === '更多分类' || cat.name === '其他') {
+                    cat.name = '系统工具';
+                    cat.icon = '🔧';
+                    cat.password = '123456';
+                    needSave = true;
+                }
+                // 系统工具分类密码锁：第一次打开时默认123456，用户修改后就保留用户的密码
+                if (cat.name === '系统工具') {
+                    if (!cat.password) {
+                        cat.password = '123456';
+                        needSave = true;
+                    }
+                    // 同时把入口链接改成新域名
+                    if (cat.sites && cat.sites.length > 0) {
+                        cat.sites[0].url = 'https://zhouyu86.de5.net/TVBox%E6%BA%90%E5%9C%B0%E5%9D%80%E5%A4%A7%E5%85%A8.html';
+                        cat.sites[1].url = 'https://zhouyu86.de5.net/TVBox%E6%8E%A5%E5%8F%A3%E7%BC%96%E8%BE%91%E5%99%A8.html';
+                    }
+                }
+                // 自动升级：如果系统工具分类里是旧的33个复制型网站，替换成新的入口
+                if (cat.name === '系统工具' && cat.sites && cat.sites.length > 1) {
+                    const firstSite = cat.sites[0];
+                    if (firstSite.type === 'copy' || (firstSite.name && (firstSite.name.includes('本地') || firstSite.name.includes('在线')))) {
+                        cat.sites = [
+                            { name: '📺 TVBox源地址大全（一键复制）', icon: '📺', url: 'https://zhouyu365666.top/TVBox%E6%BA%90%E5%9C%B0%E5%9D%80%E5%A4%A7%E5%85%A8.html', type: 'link' },
+                            { name: '📝 TVBox接口编辑器（可修改）', icon: '📝', url: 'https://zhouyu365666.top/TVBox%E6%8E%A5%E5%8F%A3%E7%BC%96%E8%BE%91%E5%99%A8.html', type: 'link' }
+                        ];
+                        needSave = true;
+                    }
+                }
+                // 自动修复：如果系统工具分类里的链接是相对路径，改成完整URL
+                if (cat.name === '系统工具' && cat.sites) {
+                    cat.sites.forEach(site => {
+                        if (site.url && !site.url.startsWith('http')) {
+                            if (site.name && site.name.includes('源地址大全')) {
+                                site.url = 'https://zhouyu365666.top/TVBox%E6%BA%90%E5%9C%B0%E5%9D%80%E5%A4%A7%E5%85%A8.html';
+                                needSave = true;
+                            } else if (site.name && site.name.includes('接口编辑器')) {
+                                site.url = 'https://zhouyu365666.top/TVBox%E6%8E%A5%E5%8F%A3%E7%BC%96%E8%BE%91%E5%99%A8.html';
+                                needSave = true;
+                            }
+                        }
+                    });
+                    // 自动添加缺少的网站
+                    const hasEditor = cat.sites.some(s => s.name && s.name.includes('接口编辑器'));
+                    const hasStation = cat.sites.some(s => s.name && s.name.includes('接口站'));
+                    const has18 = cat.sites.some(s => s.name && (s.name.includes('合并配置18') || s.name.includes('配置18')));
+                    if (!hasEditor) {
+                        cat.sites.push({ name: '📝 TVBox接口编辑器（可修改）', icon: '📝', url: 'https://zhouyu365666.top/TVBox%E6%8E%A5%E5%8F%A3%E7%BC%96%E8%BE%91%E5%99%A8.html', type: 'link' });
+                        needSave = true;
+                    }
+                    if (!hasStation) {
+                        cat.sites.push({ name: '📡 TVBox接口站（Cloudflare）', icon: '📡', url: 'https://zhouyu365666.top', type: 'link' });
+                        needSave = true;
+                    }
+                    if (!has18) {
+                        cat.sites.push({ name: '🔞 合并配置18（域名）', icon: '🔞', url: 'https://zhouyu365666.top/assets/static/data/tvbox18.json', type: 'link' });
+                        needSave = true;
+                    }
+                }
+            });
+            if (needSave) saveData();
+            // 自动迁移灰色图标为彩色图标
+            const grayToColor = {
+                '⚡': '🌩️', '📄': '📝', '❓': '🤔', '📋': '📝',
+                '⛏️': '🔨', '✍️': '✏️', '➕': '✨', '🔧': '🛠️',
+                '⚙️': '⚙️', '📌': '📌', '🔖': '🔖', '🏷️': '🏷️',
+                '📎': '📎', '🖇️': '🖇️', '📐': '📐', '📏': '📏',
+                '✂️': '✂️', '🗑️': '🗑️', '🔒': '🔒', '🔓': '🔓',
+                '🔑': '🔑', '🗝️': '🗝️', '🔨': '🔨', '⛏️': '⛏️',
+                '⚒️': '⚒️', '🛠️': '🛠️', '🔧': '🔧', '🔩': '🔩',
+                '⚙️': '⚙️', '🔗': '🔗', '⛓️': '⛓️', '🧱': '🧱',
+                '🧲': '🧲', '🔫': '🔫', '💣': '💣', '🧨': '🧨',
+                '🪓': '🪓', '🪚': '🪚', '🔪': '🔪', '🗡️': '🗡️',
+                '⚔️': '⚔️', '🛡️': '🛡️', '🚪': '🚪', '🛏️': '🛏️',
+                '🛋️': '🛋️', '🪑': '🪑', '🚽': '🚽', '🚿': '🚿',
+                '🛁': '🛁', '🪞': '🪞', '🪟': '🪟', '🖼️': '�️',
+                '🛍️': '🛍️', '🎒': '🎒', '👜': '👜', '👝': '👝',
+                '🕶️': '🕶️', '👓': '👓', '💄': '💄', '💍': '💍',
+                '💎': '💎', '🔮': '🔮', '📿': '📿', '🧿': '🧿',
+                '🎭': '🎭', '🎨': '🎨', '🎬': '🎬', '🎤': '🎤',
+                '🎧': '🎧', '🎼': '🎼', '🎹': '🎹', '🥁': '🥁',
+                '🎷': '🎷', '🎺': '🎺', '🎸': '🎸', '🪕': '🪕',
+                '🎻': '🎻', '🪈': '🪈', '📯': '📯', '🎾': '🎾',
+                '🏐': '🏐', '🏉': '🏉', '🥏': '🥏', '🎱': '🎱',
+                '🪀': '🪀', '🏓': '🏓', '🏸': '🏸', '🥊': '🥊',
+                '🥋': '🥋', '🥅': '🥅', '⛳': '⛳', '🪁': '🪁',
+                '🎯': '🎯', '🎣': '🎣', '🤿': '🤿', '🎽': '🎽',
+                '🎿': '🎿', '⛷️': '⛷️', '🏂': '🏂', '🏋️': '🏋️',
+                '🤼': '🤼', '🤸': '🤸', '⛹️': '⛹️', '🤺': '🤺',
+                '🤾': '🤾', '🏌️': '🏌️', '🏇': '🏇', '🧘': '🧘',
+                '🏄': '🏄', '🏊': '🏊', '🤽': '🤽', '🚣': '🚣',
+                '🧗': '🧗', '🚵': '🚵', '🚴': '🚴', '🏆': '🏆',
+                '🥇': '🥇', '🥈': '🥈', '🥉': '🥉', '🏅': '🏅',
+                '🎖️': '🎖️', '🏵️': '🏵️', '🎗️': '🎗️', '🎫': '🎫',
+                '🎟️': '🎟️', '🎪': '🎪', '🤹': '🤹', '🎡': '🎡',
+                '🎢': '🎢', '🎠': '🎠', '🎯': '🎯', '🎰': '🎰',
+                '🎲': '🎲', '🧩': '🧩', '🧸': '🧸', '🪆': '🪆',
+                '🎈': '🎈', '🎉': '🎉', '🎊': '🎊', '🎁': '🎁',
+                '🎀': '🎀', '🪅': '🪅', '🪄': '🪄', '🎗️': '🎗️',
+                '📿': '📿', '🧿': '🧿', '💈': '💈', '⚰️': '⚰️',
+                '⚱️': '⚱️', '🪦': '🪦', '🧧': '🧧', '✉️': '✉️',
+                '📩': '📩', '📨': '📨', '📧': '📧', '💌': '💌',
+                '📥': '📥', '📤': '📤', '📦': '📦', '🏷️': '🏷️',
+                '📪': '📪', '📫': '📫', '📬': '📬', '📭': '📭',
+                '📮': '📮', '📯': '📯', '📜': '📜', '📃': '📃',
+                '📄': '📄', '📑': '📑', '🧾': '🧾', '📊': '📊',
+                '📈': '📈', '📉': '📉', '🗒️': '🗒️', '🗓️': '🗓️',
+                '📆': '📆', '📅': '📅', '📇': '📇', '🗃️': '🗃️',
+                '🗳️': '🗳️', '🗄️': '🗄️', '📋': '📋', '📁': '📁',
+                '📂': '📂', '🗂️': '🗂️', '📅': '📅', '📆': '📆',
+                '🗒️': '🗒️', '🗓️': '🗓️', '📇': '📇', '🗃️': '🗃️',
+                '🗳️': '🗳️', '🗄️': '🗄️', '📋': '📋', '📁': '📁',
+                '📂': '📂', '🗂️': '🗂️', '🗞️': '🗞️', '📰': '📰',
+                '📓': '📓', '📔': '📔', '📒': '📒', '📕': '📕',
+                '📗': '📗', '📘': '📘', '📙': '📙', '📚': '📚',
+                '📖': '📖', '🔖': '🔖', '🧷': '🧷', '🔍': '🔍',
+                '🔎': '🔎', '🔏': '🔏', '🔐': '🔐', '🖊️': '🖊️',
+                '🖋️': '🖋️', '✒️': '✒️', '🖌️': '🖌️', '🖍️': '🖍️',
+                '📝': '📝', '✏️': '✏️', '🔒': '🔒', '🔓': '🔓',
+                '🔑': '🔑', '🗝️': '🗝️', '🔨': '🔨', '⛏️': '⛏️',
+                '⚒️': '⚒️', '🛠️': '🛠️', '🔧': '🔧', '🔩': '🔩',
+                '⚙️': '⚙️', '🔗': '🔗', '⛓️': '⛓️', '🧱': '🧱',
+                '🧲': '🧲', '🔫': '🔫', '💣': '💣', '🧨': '🧨',
+                '🪓': '🪓', '🪚': '🪚', '🔪': '🔪', '🗡️': '🗡️',
+                '⚔️': '⚔️', '🛡️': '🛡️', '🚪': '🚪', '🛏️': '🛏️',
+                '🛋️': '🛋️', '🪑': '🪑', '🚽': '🚽', '🚿': '🚿',
+                '🛁': '🛁', '🪞': '🪞', '🪟': '🪟', '🖼️': '🖼️',
+                '🛍️': '🛍️', '🎒': '🎒', '👜': '👜', '👝': '👝',
+                '🕶️': '🕶️', '👓': '👓', '💄': '💄', '💍': '💍',
+                '💎': '💎', '🔮': '🔮', '📿': '📿', '🧿': '🧿'
+            };
+            let changed = false;
+            navData.forEach(cat => {
+                if (cat.sites) {
+                    cat.sites.forEach(site => {
+                        if (grayToColor[site.icon]) {
+                            site.icon = grayToColor[site.icon];
+                            changed = true;
+                        }
+                    });
+                }
+            });
+            if (changed) {
+                try { localStorage.setItem('myNavData_v2', JSON.stringify(navData)); } catch(e) {}
+            }
+        }
+
+        // 保存数据（本地 + 线上同步）
+        function saveData() {
+            try {
+                localStorage.setItem('myNavData_v2', JSON.stringify(navData));
+            } catch(e) {}
+            // 同步到线上（全平台共享）
+            try {
+                fetch('/api/nav?key=navData', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(navData)
+                }).catch(() => {});
+            } catch(e) {}
+        }
+
+        // 渲染手风琴
+        function renderAccordion() {
+            const container = document.getElementById('accordion');
+            container.innerHTML = '';
+            navData.forEach((cat, catIndex) => {
+                const item = document.createElement('div');
+                item.className = 'accordion-item' + (catIndex === 0 ? ' active' : '');
+                item.innerHTML = `
+                    <div class="accordion-header" onclick="toggleAccordion(${catIndex})" oncontextmenu="event.preventDefault();showCategoryMenu(event, ${catIndex})">
+                        <div class="accordion-title">
+                            <span class="accordion-icon">${cat.icon}</span>
+                            ${cat.name}${cat.password ? ' 🔒' : ''}
+                        </div>
+                        <div class="accordion-actions">
+                            <button class="add-site-btn" onclick="event.stopPropagation();openAddModal(${catIndex})">+ 添加</button>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="site-grid" id="siteGrid-${catIndex}"></div>
+                    </div>
+                `;
+                container.appendChild(item);
+
+                const grid = item.querySelector(`#siteGrid-${catIndex}`);
+                
+                cat.sites.forEach((site, siteIndex) => {
+                    // 强制修复：系统工具分类里的特定网站，不管旧数据是什么，都用完整URL
+                    if (site.name) {
+                        if (site.name.includes('源地址大全')) {
+                            site.url = 'https://zhouyu365666.top/TVBox%E6%BA%90%E5%9C%B0%E5%9D%80%E5%A4%A7%E5%85%A8.html';
+                        } else if (site.name.includes('接口编辑器')) {
+                            site.url = 'https://zhouyu365666.top/TVBox%E6%8E%A5%E5%8F%A3%E7%BC%96%E8%BE%91%E5%99%A8.html';
+                        } else if (site.name.includes('接口站') && site.name.includes('Cloudflare')) {
+                            site.url = 'https://zhouyu365666.top';
+                        } else if (site.name.includes('合并配置18') || site.name.includes('配置18')) {
+                            site.url = 'https://zhouyu365666.top/assets/static/data/tvbox18.json';
+                        }
+                    }
+                    
+                    const siteEl = document.createElement('div');
+                    siteEl.className = 'site-item';
+                    siteEl.draggable = true;
+                    siteEl.dataset.catIndex = catIndex;
+                    siteEl.dataset.siteIndex = siteIndex;
+                    
+                    // 从网址提取域名和协议
+                    let domain = '';
+                    let protocol = 'https:';
+                    try {
+                        const urlObj = new URL(site.url);
+                        domain = urlObj.hostname;
+                        protocol = urlObj.protocol;
+                    } catch(e) {
+                        domain = site.url.replace(/^https?:\/\//, '').split('/')[0];
+                    }
+                    // 直接用网站自己的favicon，多级备用源（iowen → google → duckduckgo）
+                    const faviconUrl = `${protocol}//${domain}/favicon.ico`;
+                    const faviconFallback1 = `https://api.iowen.cn/favicon/${domain}.png`;
+                    const faviconFallback2 = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+                    const faviconFallback3 = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
+                    
+                    siteEl.innerHTML = `
+                        <div style="text-decoration:none;color:inherit;display:block;cursor:default;">
+                            ${site.type === 'copy' ? `
+                                <div style="text-align:left;padding:12px 15px;display:flex;align-items:center;gap:10px;">
+                                    <div style="flex:1;min-width:0;">
+                                        <div style="font-size:12px;color:#555;margin-bottom:6px;font-weight:bold;">📋 ${site.name}</div>
+                                        <div style="font-size:13px;color:#222;word-break:break-all;font-family:monospace;background:#f8f8f8;padding:10px 12px;border-radius:8px;border:1px solid #ddd;user-select:text;-webkit-user-select:text;line-height:1.5;">${site.url}</div>
+                                    </div>
+                                    <button onclick="copyToClipboard('${site.url.replace(/'/g, "\\'")}')" style="padding:12px 18px;background:#1677ff;color:white;border:none;border-radius:8px;font-size:14px;font-weight:bold;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 8px rgba(22,119,255,0.3);">📋 复制</button>
+                                </div>
+                            ` : `
+                                <a href="${site.url}" target="_blank" draggable="false" style="text-decoration:none;color:inherit;display:block;">
+                                    <div class="site-icon-box">
+                                        <span class="icon" style="display:flex;">${site.icon || '🌐'}</span>
+                                        <img class="site-favicon" src="${faviconUrl}" alt="${site.name}" data-domain="${domain}" style="display:none;" onload="var s=this.nextElementSibling;if(s&&s.textContent.trim()==='🌐'){this.style.display='block';s.style.display='none';}" onerror="this.style.display='none';this.onerror=null;this.src='${faviconFallback1}';this.onerror=function(){this.style.display='none';this.onerror=null;this.src='${faviconFallback2}';this.onerror=function(){this.style.display='none';this.onerror=null;this.src='${faviconFallback3}';this.onerror=function(){this.style.display='none';};};};">
+                                    </div>
+                                    <span class="name">${site.name}</span>
+                                </a>
+                            `}
+                        </div>
+                    `;
+                    
+                    // 复制型网站加特殊class，横向铺满
+                    if (site.type === 'copy') {
+                        siteEl.classList.add('site-copy');
+                        siteEl.style.gridColumn = 'span 2';
+                    }
+                    
+                    // 拖拽开始（用全局变量记录）
+                    siteEl.addEventListener('dragstart', (e) => {
+                        dragFromCat = catIndex;
+                        dragFromSite = siteIndex;
+                        siteEl.classList.add('dragging');
+                        e.dataTransfer.effectAllowed = 'move';
+                    });
+                    siteEl.addEventListener('dragend', () => {
+                        siteEl.classList.remove('dragging');
+                        dragFromCat = -1;
+                        dragFromSite = -1;
+                        document.querySelectorAll('.site-item').forEach(el => el.classList.remove('drag-over'));
+                    });
+                    
+                    // 右键菜单
+                    siteEl.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        showSiteMenu(e.clientX, e.clientY, catIndex, siteIndex);
+                    });
+                    
+                    // 手机长按弹出菜单
+                    let longPressTimer = null;
+                    let longPressTriggered = false;
+                    siteEl.addEventListener('touchstart', (e) => {
+                        longPressTriggered = false;
+                        const touch = e.touches[0];
+                        longPressTimer = setTimeout(() => {
+                            longPressTriggered = true;
+                            showSiteMenu(touch.clientX, touch.clientY, catIndex, siteIndex);
+                            // 震动反馈（如果支持）
+                            if (navigator.vibrate) {
+                                navigator.vibrate(50);
+                            }
+                        }, 500);
+                    });
+                    siteEl.addEventListener('touchmove', () => {
+                        if (longPressTimer) {
+                            clearTimeout(longPressTimer);
+                            longPressTimer = null;
+                        }
+                    });
+                    siteEl.addEventListener('touchend', (e) => {
+                        if (longPressTimer) {
+                            clearTimeout(longPressTimer);
+                            longPressTimer = null;
+                        }
+                        if (longPressTriggered) {
+                            e.preventDefault();
+                        }
+                    });
+                    
+                    // 鼠标悬停自动弹出菜单
+                    let hoverTimer = null;
+                    siteEl.addEventListener('mouseenter', (e) => {
+                        hoverTimer = setTimeout(() => {
+                            const rect = siteEl.getBoundingClientRect();
+                            showSiteMenu(rect.right + 5, rect.top, catIndex, siteIndex);
+                        }, 300);
+                    });
+                    siteEl.addEventListener('mouseleave', () => {
+                        if (hoverTimer) {
+                            clearTimeout(hoverTimer);
+                            hoverTimer = null;
+                        }
+                        // 延迟关闭，让鼠标可以移到菜单上
+                        setTimeout(() => {
+                            const menu = document.getElementById('siteContextMenu');
+                            if (!menu.matches(':hover')) {
+                                hideSiteMenu();
+                            }
+                        }, 200);
+                    });
+                    
+                    grid.appendChild(siteEl);
+                });
+            });
+        }
+
+        // 折叠/展开
+        // 已解锁的分类
+        let unlockedCategories = new Set();
+        let pendingCategoryIndex = -1;
+        
+        function toggleAccordion(index) {
+            const cat = navData[index];
+            // 如果分类有密码且未解锁，先验证密码
+            if (cat.password && !unlockedCategories.has(index)) {
+                pendingCategoryIndex = index;
+                showPasswordModal(cat.name);
+                return;
+            }
+            
+            doToggleAccordion(index);
+        }
+        
+        function doToggleAccordion(index) {
+            const items = document.querySelectorAll('.accordion-item');
+            const wasActive = items[index].classList.contains('active');
+            items.forEach(item => item.classList.remove('active'));
+            if (!wasActive) {
+                items[index].classList.add('active');
+            }
+        }
+        
+        // 密码弹窗相关
+        function showPasswordModal(catName) {
+            document.getElementById('passwordModalTitle').textContent = `🔒 【${catName}】请输入密码`;
+            document.getElementById('passwordModalDesc').textContent = `该分类已加密，请输入密码后访问`;
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordError').style.display = 'none';
+            document.getElementById('passwordModal').style.display = 'flex';
+            setTimeout(() => document.getElementById('passwordInput').focus(), 100);
+        }
+        
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            pendingCategoryIndex = -1;
+        }
+        
+        function verifyPassword() {
+            const input = document.getElementById('passwordInput').value;
+            const idx = pendingCategoryIndex; // 先保存索引
+            const cat = navData[idx];
+            if (input === cat.password) {
+                unlockedCategories.add(idx);
+                closePasswordModal();
+                // 延迟一点，确保弹窗完全关闭后再展开
+                setTimeout(() => {
+                    const items = document.querySelectorAll('.accordion-item');
+                    items.forEach(item => item.classList.remove('active'));
+                    if (items[idx]) {
+                        items[idx].classList.add('active');
+                    }
+                }, 100);
+            } else {
+                document.getElementById('passwordError').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+        
+        // 密码输入框按回车验证
+        document.addEventListener('DOMContentLoaded', () => {
+            const pwdInput = document.getElementById('passwordInput');
+            if (pwdInput) {
+                pwdInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') verifyPassword();
+                });
+            }
+        });
+        
+        // 设置/修改分类密码
+        let setPasswordCatIndex = -1;
+        function setCategoryPassword(index) {
+            setPasswordCatIndex = index;
+            const cat = navData[index];
+            const currentPwd = cat.password || '';
+            document.getElementById('setPasswordModalTitle').textContent = currentPwd ? '🔓 修改密码' : '🔒 设置密码';
+            document.getElementById('setPasswordModalDesc').textContent = currentPwd 
+                ? `【${cat.name}】当前已加密，输入新密码（留空则取消密码）` 
+                : `设置【${cat.name}】分类密码（留空则取消密码）`;
+            document.getElementById('setPasswordInput').value = currentPwd;
+            document.getElementById('setPasswordModal').style.display = 'flex';
+            setTimeout(() => document.getElementById('setPasswordInput').focus(), 100);
+        }
+        
+        function closeSetPasswordModal() {
+            document.getElementById('setPasswordModal').style.display = 'none';
+            setPasswordCatIndex = -1;
+        }
+        
+        function confirmSetPassword() {
+            if (setPasswordCatIndex < 0) return;
+            const cat = navData[setPasswordCatIndex];
+            const pwd = document.getElementById('setPasswordInput').value.trim();
+            cat.password = pwd || null;
+            if (!cat.password) {
+                unlockedCategories.delete(setPasswordCatIndex);
+            }
+            saveData();
+            renderAccordion();
+            closeSetPasswordModal();
+            showToast(pwd ? '密码设置成功！' : '密码已取消！');
+        }
+
+        // 打开添加弹窗
+        function openAddModal(catIndex) {
+            editingCategory = catIndex;
+            editingSite = -1;
+            selectedIcon = '🌐';
+            document.getElementById('modalTitle').textContent = '添加网站';
+            document.getElementById('siteNameInput').value = '';
+            document.getElementById('siteUrlInput').value = '';
+            document.getElementById('siteModal').classList.add('show');
+        }
+
+        // 右键菜单相关
+        let contextMenuCat = -1;
+        let contextMenuSite = -1;
+        
+        function showSiteMenu(x, y, catIndex, siteIndex) {
+            contextMenuCat = catIndex;
+            contextMenuSite = siteIndex;
+            const menu = document.getElementById('siteContextMenu');
+            menu.style.left = x + 'px';
+            menu.style.top = y + 'px';
+            menu.classList.add('show');
+        }
+        
+        function hideSiteMenu() {
+            document.getElementById('siteContextMenu').classList.remove('show');
+        }
+        
+        function contextMenuEdit() {
+            hideSiteMenu();
+            if (contextMenuCat >= 0 && contextMenuSite >= 0) {
+                openEditModal(contextMenuCat, contextMenuSite);
+            }
+        }
+        
+        function contextMenuDelete() {
+            hideSiteMenu();
+            if (contextMenuCat >= 0 && contextMenuSite >= 0) {
+                deleteSite(contextMenuCat, contextMenuSite);
+            }
+        }
+        
+        // 点击页面其他地方关闭右键菜单
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.context-menu')) {
+                hideSiteMenu();
+                hideCategoryMenu();
+            }
+        });
+        document.addEventListener('contextmenu', (e) => {
+            if (!e.target.closest('.site-item') && !e.target.closest('.accordion-header')) {
+                hideSiteMenu();
+                hideCategoryMenu();
+            }
+        });
+
+        // 打开编辑弹窗
+        function openEditModal(catIndex, siteIndex) {
+            editingCategory = catIndex;
+            editingSite = siteIndex;
+            const site = navData[catIndex].sites[siteIndex];
+            selectedIcon = site.icon;
+            document.getElementById('modalTitle').textContent = '编辑网站';
+            document.getElementById('siteNameInput').value = site.name;
+            document.getElementById('siteUrlInput').value = site.url;
+            document.getElementById('siteModal').classList.add('show');
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('siteModal').classList.remove('show');
+        }
+
+        // 渲染图标选择器（已停用，现在自动用网站logo）
+        function renderIconPicker() {
+            // 已停用
+        }
+
+        // 保存网站
+        function saveSite() {
+            const name = document.getElementById('siteNameInput').value.trim();
+            let url = document.getElementById('siteUrlInput').value.trim();
+            if (!name) { alert('请输入网站名称'); return; }
+            if (!url) { alert('请输入网站网址'); return; }
+            if (!url.startsWith('http')) { url = 'https://' + url; }
+            
+            // 获取网站类型
+            const typeRadio = document.querySelector('input[name="siteType"]:checked');
+            const type = typeRadio ? typeRadio.value : 'link';
+
+            if (editingSite >= 0) {
+                navData[editingCategory].sites[editingSite] = { name, icon: selectedIcon, url, type };
+            } else {
+                navData[editingCategory].sites.push({ name, icon: selectedIcon, url, type });
+            }
+            saveData();
+            renderAccordion();
+            closeModal();
+        }
+        
+        // 复制到剪贴板
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('已复制：' + text);
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+        
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('已复制：' + text);
+            } catch(e) {
+                alert('复制失败，请手动复制：' + text);
+            }
+            document.body.removeChild(textarea);
+        }
+        
+        // 显示提示
+        function showToast(msg) {
+            let toast = document.getElementById('copyToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'copyToast';
+                toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#4CAF50;color:white;padding:12px 24px;border-radius:8px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.2);font-size:14px;transition:opacity 0.3s;';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => { toast.style.opacity = '0'; }, 2000);
+        }
+
+        // 删除网站
+        function deleteSite(catIndex, siteIndex) {
+            if (confirm('确定删除这个网站吗？')) {
+                navData[catIndex].sites.splice(siteIndex, 1);
+                saveData();
+                renderAccordion();
+            }
+        }
+
+        // 网站排序：上移/下移
+        function moveSite(catIndex, siteIndex, direction) {
+            const sites = navData[catIndex].sites;
+            const targetIndex = siteIndex + direction;
+            // 边界检查
+            if (targetIndex < 0 || targetIndex >= sites.length) return;
+            // 交换位置
+            const temp = sites[siteIndex];
+            sites[siteIndex] = sites[targetIndex];
+            sites[targetIndex] = temp;
+            saveData();
+            renderAccordion();
+        }
+
+        // 搜索引擎
+        function setEngine(el) {
+            document.querySelectorAll('.engine-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            currentEngine = el.dataset.engine;
+        }
+
+        // 搜索建议
+        function showSearchSuggestions() {
+            const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+            const container = document.getElementById('searchSuggestions');
+            
+            if (!keyword) {
+                container.classList.remove('show');
+                container.innerHTML = '';
+                return;
+            }
+            
+            let suggestions = [];
+            
+            // 1. 从用户的网站列表匹配
+            navData.forEach((cat, catIndex) => {
+                cat.sites.forEach((site, siteIndex) => {
+                    if (site.name.toLowerCase().includes(keyword) || 
+                        site.url.toLowerCase().includes(keyword)) {
+                        let domain = '';
+                        try {
+                            domain = new URL(site.url).hostname;
+                        } catch(e) {
+                            domain = site.url.replace(/^https?:\/\//, '').split('/')[0];
+                        }
+                        suggestions.push({
+                            type: 'site',
+                            name: site.name,
+                            url: site.url,
+                            icon: `${site.url.startsWith('https') ? 'https:' : 'http:'}//${domain}/favicon.ico`,
+                            catIndex: catIndex,
+                            siteIndex: siteIndex
+                        });
+                    }
+                });
+            });
+            
+            // 2. 常见搜索热词
+            const hotWords = ['百度', '淘宝', '京东', '抖音', 'B站', '知乎', '微博', '微信', 'QQ', '网易云音乐', '优酷', '爱奇艺', '腾讯视频', '拼多多', '天猫', '支付宝', '高德地图', '百度地图', '12306', '哔哩哔哩'];
+            hotWords.forEach(word => {
+                if (word.toLowerCase().includes(keyword) && suggestions.length < 10) {
+                    suggestions.push({
+                        type: 'search',
+                        name: word,
+                        icon: '🔍'
+                    });
+                }
+            });
+            
+            // 3. 如果没有匹配，显示"搜索关键词"
+            if (suggestions.length === 0) {
+                suggestions.push({
+                    type: 'search',
+                    name: keyword,
+                    icon: '🔍'
+                });
+            }
+            
+            // 最多显示10条
+            suggestions = suggestions.slice(0, 10);
+            
+            // 渲染
+            container.innerHTML = suggestions.map((s, i) => {
+                if (s.type === 'site') {
+                    return `<div class="suggestion-item" onclick="openSuggestionSite(${s.catIndex}, ${s.siteIndex})">
+                        <img class="suggestion-icon" src="${s.icon}" onerror="this.style.display='none'">
+                        <span>${s.name}</span>
+                        <span class="suggestion-type site">网站</span>
+                    </div>`;
+                } else {
+                    return `<div class="suggestion-item" onclick="searchSuggestion('${s.name.replace(/'/g, "\\'")}')">
+                        <span class="suggestion-icon">${s.icon}</span>
+                        <span>${s.name}</span>
+                        <span class="suggestion-type">搜索</span>
+                    </div>`;
+                }
+            }).join('');
+            
+            container.classList.add('show');
+        }
+        
+        function openSuggestionSite(catIndex, siteIndex) {
+            const site = navData[catIndex].sites[siteIndex];
+            window.open(site.url, '_blank');
+            document.getElementById('searchSuggestions').classList.remove('show');
+        }
+        
+        function searchSuggestion(keyword) {
+            document.getElementById('searchInput').value = keyword;
+            document.getElementById('searchSuggestions').classList.remove('show');
+            doSearch();
+        }
+        
+        // 点击页面其他地方关闭搜索建议
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-box')) {
+                document.getElementById('searchSuggestions').classList.remove('show');
+            }
+        });
+
+        function doSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            if (!keyword) return;
+            let url = '';
+            if (currentEngine === 'baidu') {
+                url = 'https://www.baidu.com/s?wd=' + encodeURIComponent(keyword);
+                window.location.href = url;
+            } else if (currentEngine === 'bing') {
+                url = 'https://www.bing.com/search?q=' + encodeURIComponent(keyword);
+                window.location.href = url;
+            } else if (currentEngine === 'sogou') {
+                url = 'https://www.sogou.com/web?query=' + encodeURIComponent(keyword);
+                window.location.href = url;
+            } else if (currentEngine === 'pan') {
+                // 网盘搜索：用百度搜索网盘资源
+                url = 'https://www.baidu.com/s?wd=' + encodeURIComponent(keyword + ' 网盘下载');
+                window.location.href = url;
+            } else if (currentEngine === 'nav') {
+                // 导航搜索：在当前页面显示匹配的网站
+                searchNavSites(keyword);
+            }
+        }
+        
+        // 导航搜索：显示匹配的网站
+        function searchNavSites(keyword) {
+            const results = [];
+            const kw = keyword.toLowerCase();
+            navData.forEach((cat, catIndex) => {
+                cat.sites.forEach((site, siteIndex) => {
+                    if (site.name.toLowerCase().includes(kw) || site.url.toLowerCase().includes(kw)) {
+                        results.push({...site, catIndex, siteIndex, catName: cat.name});
+                    }
+                });
+            });
+            
+            // 创建搜索结果弹窗
+            let modal = document.getElementById('navSearchModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'navSearchModal';
+                modal.className = 'modal-overlay show';
+                modal.style.display = 'flex';
+                modal.onclick = (e) => {
+                    if (e.target === modal) modal.remove();
+                };
+                document.body.appendChild(modal);
+            }
+            
+            if (results.length === 0) {
+                modal.innerHTML = `
+                    <div class="modal" style="max-width:500px;text-align:center;">
+                        <span class="modal-close" onclick="document.getElementById('navSearchModal').remove()">×</span>
+                        <h3>导航搜索结果</h3>
+                        <p style="color:#999;padding:30px 0;">没有找到包含"${keyword}"的网站</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            modal.innerHTML = `
+                <div class="modal" style="max-width:600px;max-height:70vh;overflow-y:auto;">
+                    <span class="modal-close" onclick="document.getElementById('navSearchModal').remove()">×</span>
+                    <h3>导航搜索结果（找到${results.length}个）</h3>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:15px;">
+                        ${results.map(s => {
+                            let domain = '';
+                            try { domain = new URL(s.url).hostname; } catch(e) { domain = s.url.replace(/^https?:\/\//, '').split('/')[0]; }
+                            const favicon = `${s.url.startsWith('https') ? 'https:' : 'http:'}//${domain}/favicon.ico`;
+                            return `<a href="${s.url}" target="_blank" style="text-decoration:none;color:inherit;">
+                                <div style="padding:12px;border:1px solid #eee;border-radius:8px;text-align:center;transition:all 0.2s;" onmouseover="this.style.borderColor='#1677ff';this.style.background='#fff5f5'" onmouseout="this.style.borderColor='#eee';this.style.background=''">
+                                    <img src="${favicon}" style="width:28px;height:28px;display:block;margin:0 auto 5px;border-radius:4px;" onerror="this.style.display='none'">
+                                    <div style="font-size:13px;color:#333;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.name}</div>
+                                    <div style="font-size:10px;color:#999;margin-top:2px;">${s.catName}</div>
+                                </div>
+                            </a>`;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 生成星星（增加到150个）
+        function createStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 2.5 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // 星空+流星效果
+        let stars = [];
+        let meteors = [];
+
+        // 时钟功能
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+
+            const weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${weekDays[now.getDay()]}`;
+            document.getElementById('dateInfo').textContent = dateStr;
+
+            // 简单农历显示（用近似算法，实际项目可以用农历库）
+            const lunarMonths = ['正月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '冬月', '腊月'];
+            const lunarDays = ['初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十',
+                               '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
+                               '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十'];
+            // 简单显示（实际农历需要复杂算法，这里用日期做个简单展示）
+            document.getElementById('lunarDate').textContent = `农历 ${lunarMonths[(now.getMonth()+7)%12]}${lunarDays[(now.getDate()+12)%30]}`;
+        }
+
+        // 天气功能（用免费天气API）
+        // 获取天气城市（默认河源，可自定义）
+        function getWeatherCity() {
+            return localStorage.getItem('weatherCity') || 'Heyuan';
+        }
+        
+        // 修改天气城市
+        function changeWeatherCity() {
+            const current = getWeatherCity();
+            const city = prompt('请输入城市名称（拼音或英文，例如：Heyuan、Guangzhou、Beijing）：', current);
+            if (city && city.trim()) {
+                localStorage.setItem('weatherCity', city.trim());
+                loadWeather();
+            }
+        }
+        
+        function loadWeather() {
+            // 中文天气描述映射
+            const weatherMap = {
+                'Sunny': '晴', 'Clear': '晴', 'Partly cloudy': '多云',
+                'Cloudy': '阴', 'Overcast': '阴', 'Mist': '薄雾', 'Fog': '雾',
+                'Patchy rain possible': '可能有雨', 'Patchy rain nearby': '局部有雨',
+                'Light rain': '小雨', 'Moderate rain': '中雨', 'Heavy rain': '大雨',
+                'Light rain shower': '小阵雨', 'Moderate or heavy rain shower': '大阵雨',
+                'Thundery outbreaks possible': '可能有雷暴', 'Patchy light rain with thunder': '雷阵雨',
+                'Moderate or heavy rain with thunder': '雷暴大雨', 'Snow': '雪',
+                'Light snow': '小雪', 'Moderate snow': '中雪', 'Heavy snow': '大雪',
+                'Patchy light snow': '局部小雪', 'Blizzard': '暴风雪',
+                'Sleet': '雨夹雪', 'Light sleet': '小雨夹雪',
+                'Freezing fog': '冻雾', 'Freezing drizzle': '冻毛毛雨',
+                'Heavy freezing drizzle': '大冻毛毛雨', 'Light freezing rain': '小冻雨',
+                'Moderate or heavy freezing rain': '大冻雨',
+                'Ice pellets': '冰粒', 'Light showers of ice pellets': '小冰粒阵',
+                'Moderate or heavy showers of ice pellets': '大冰粒阵',
+                'Patchy light snow': '局部小雪', 'Patchy moderate snow': '局部中雪',
+                'Patchy heavy snow': '局部大雪', 'Light snow showers': '小阵雪',
+                'Moderate or heavy snow showers': '大阵雪', 'Blowing snow': '吹雪',
+                'Torrential rain shower': '暴雨', 'Patchy light drizzle': '局部毛毛雨',
+                'Light drizzle': '毛毛雨', 'Patchy light rain': '局部小雨',
+                'Moderate rain at times': '间歇中雨', 'Heavy rain at times': '间歇大雨',
+                'Light freezing rain': '小冻雨'
+            };
+
+            const city = getWeatherCity();
+            fetch(`https://wttr.in/${city}?format=j1&lang=zh`)
+                .then(res => res.json())
+                .then(data => {
+                    const current = data.current_condition[0];
+                    const temp = current.temp_C;
+                    // 获取原始描述（中文或英文）
+                    let rawDesc = '';
+                    if (current.lang_zh && current.lang_zh[0] && current.lang_zh[0].value) {
+                        rawDesc = current.lang_zh[0].value;
+                    }
+                    if (!rawDesc || /^[a-zA-Z\s]+$/.test(rawDesc)) {
+                        // 如果没有中文，或者是纯英文，就用英文描述+映射表翻译
+                        const enDesc = current.weatherDesc[0].value;
+                        rawDesc = weatherMap[enDesc] || weatherMap[enDesc.toLowerCase()] || enDesc;
+                    }
+                    const code = parseInt(current.weatherCode);
+                    // 天气图标映射（根据描述判断，更可靠）
+                    let icon = '☀️';
+                    const d = rawDesc;
+                    if (d.indexOf('晴') >= 0) icon = '☀️';
+                    else if (d.indexOf('多云') >= 0) icon = '⛅';
+                    else if (d.indexOf('阴') >= 0) icon = '☁️';
+                    else if (d.indexOf('雾') >= 0 || d.indexOf('Mist') >= 0 || d.indexOf('Fog') >= 0) icon = '🌫️';
+                    else if (d.indexOf('雷') >= 0) icon = '⛈️';
+                    else if (d.indexOf('雪') >= 0) icon = '❄️';
+                    else if (d.indexOf('雨') >= 0 || d.indexOf('rain') >= 0 || d.indexOf('Rain') >= 0) icon = '🌧️';
+                    else if (d.indexOf('毛毛雨') >= 0 || d.indexOf('drizzle') >= 0) icon = '🌦️';
+                    else icon = '🌤️';
+
+                    document.getElementById('weatherIcon').textContent = icon;
+                    document.getElementById('weatherTemp').textContent = temp + '°C';
+                    document.getElementById('weatherDesc').textContent = '河源 · ' + rawDesc;
+                })
+                .catch(() => {
+                    // API失败时显示默认
+                    document.getElementById('weatherIcon').textContent = '🌤️';
+                    document.getElementById('weatherTemp').textContent = '25°C';
+                    document.getElementById('weatherDesc').textContent = '河源 · 晴';
+                });
+        }
+
+        // 星空+流星动画
+        const canvas = document.getElementById('fireworks-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // 星星类 - 一闪一闪
+        class Star {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.baseAlpha = Math.random() * 0.5 + 0.3;
+                this.alpha = this.baseAlpha;
+                this.twinkleSpeed = Math.random() * 0.02 + 0.005;
+                this.twinklePhase = Math.random() * Math.PI * 2;
+            }
+            update() {
+                this.twinklePhase += this.twinkleSpeed;
+                this.alpha = this.baseAlpha + Math.sin(this.twinklePhase) * 0.35;
+                if (this.alpha < 0.05) this.alpha = 0.05;
+                if (this.alpha > 1) this.alpha = 1;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = '#fff';
+                ctx.shadowBlur = 4;
+                ctx.shadowColor = '#fff';
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // 流星类 - 偶尔划过
+        class Meteor {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width * 0.8;
+                this.y = -50;
+                this.length = Math.random() * 100 + 60;
+                this.speed = Math.random() * 8 + 6;
+                this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.4;
+                this.alpha = 1;
+                this.active = true;
+            }
+            update() {
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                if (this.y > canvas.height * 0.6) {
+                    this.alpha -= 0.025;
+                }
+                if (this.alpha <= 0 || this.x > canvas.width + 100 || this.y > canvas.height + 100) {
+                    this.active = false;
+                }
+            }
+            draw() {
+                if (!this.active) return;
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                const tailX = this.x - Math.cos(this.angle) * this.length;
+                const tailY = this.y - Math.sin(this.angle) * this.length;
+                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                gradient.addColorStop(0, '#fff');
+                gradient.addColorStop(0.3, '#aaddff');
+                gradient.addColorStop(1, 'transparent');
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = '#aaddff';
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.stroke();
+                // 头部光点
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
+                ctx.fillStyle = '#fff';
+                ctx.shadowBlur = 18;
+                ctx.shadowColor = '#fff';
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // 初始化星星
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < 150; i++) {
+                stars.push(new Star());
+            }
+        }
+        initStars();
+
+        // 随机生成流星
+        function spawnMeteor() {
+            if (Math.random() < 0.006) {
+                meteors.push(new Meteor());
+            }
+        }
+
+        function animate() {
+            // 清空画布，让背景颜色透出来
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 更新和绘制所有星星
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            // 生成流星
+            spawnMeteor();
+            // 更新和绘制所有流星
+            meteors = meteors.filter(m => m.active);
+            meteors.forEach(meteor => {
+                meteor.update();
+                meteor.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        // ========== 音乐播放器功能 ==========
+
+        // 默认播放列表
+        const defaultPlaylist = [];
+        
+        // 从localStorage加载播放列表
+        let musicPlaylist = [];
+        try {
+            const saved = localStorage.getItem('musicPlaylist');
+            if (saved) {
+                musicPlaylist = JSON.parse(saved);
+                // 自动清除指向已删除本地歌曲（高胜美等 music/ 路径）的旧缓存条目
+                if (Array.isArray(musicPlaylist)) {
+                    musicPlaylist = musicPlaylist.filter(function(song) {
+                        if (!song || !song.url) return false;
+                        return song.url.indexOf('music/') !== 0;
+                    });
+                }
+            }
+        } catch (e) {}
+        
+        // 如果没有保存的播放列表，用默认的
+        if (!musicPlaylist || musicPlaylist.length === 0) {
+            musicPlaylist = [];
+        }
+        
+        // 保存播放列表到localStorage
+        function savePlaylist() {
+            try {
+                localStorage.setItem('musicPlaylist', JSON.stringify(musicPlaylist));
+            } catch (e) {}
+        }
+        let currentMusicIndex = 0;
+        let isMusicPlaying = false;
+        let lyricIndex = 0;
+        let playMode = 0; // 0=专辑循环, 1=单曲循环, 2=随机播放
+        const playModes = ['🔂', '🔀'];
+        const musicAudio = document.getElementById('musicAudio');
+
+        // 折叠/展开音乐面板
+        function toggleMusicPanel() {
+            const panel = document.getElementById('musicPanel');
+            const arrow = document.getElementById('toggleArrow');
+            const isShow = panel.classList.contains('show');
+            if (isShow) {
+                panel.classList.remove('show');
+                arrow.textContent = '›';
+                // 同时关闭播放列表和歌词
+                document.getElementById('musicPlaylist').classList.remove('show');
+                document.getElementById('musicLyrics').classList.remove('show');
+            } else {
+                panel.classList.add('show');
+                arrow.textContent = '‹';
+            }
+        }
+
+        // 渲染播放列表
+        function renderPlaylist() {
+            const container = document.getElementById('playlistItems');
+            document.getElementById('playlistCount').textContent = musicPlaylist.length;
+            if (!musicPlaylist || musicPlaylist.length === 0) {
+                container.innerHTML = '<div style="padding:20px;text-align:center;color:#888;font-size:13px;">歌单为空<br>请在搜索框搜索歌曲添加到列表</div>';
+                return;
+            }
+            container.innerHTML = musicPlaylist.map((song, i) => `
+                <div class="playlist-item ${i === currentMusicIndex ? 'active' : ''}" onclick="playSong(${i})">
+                    <span class="index">${i + 1}</span>
+                    <span class="song-name">${song.title}</span>
+                    <span class="song-artist">${song.artist}</span>
+                    <span class="del-btn" onclick="event.stopPropagation();delSong(${i})">✕</span>
+                </div>
+            `).join('');
+        }
+
+        // 播放指定歌曲
+        function playSong(index) {
+            loadMusic(index);
+            isMusicPlaying = true;
+            document.getElementById('coverPlayIcon').textContent = '⏸';
+            document.getElementById('musicCover').classList.add('rotating');
+            musicAudio.play().catch(e => {
+                alert('音乐加载失败，请检查网络或更换歌曲');
+            });
+            renderPlaylist();
+            // 点击歌曲后自动关闭播放列表
+            document.getElementById('musicPlaylist').classList.remove('show');
+        }
+
+        // 删除歌曲
+        function delSong(index) {
+            if (musicPlaylist.length <= 1) {
+                alert('至少保留一首歌曲');
+                return;
+            }
+            musicPlaylist.splice(index, 1);
+            savePlaylist();
+            if (currentMusicIndex >= musicPlaylist.length) {
+                currentMusicIndex = 0;
+            }
+            if (index === currentMusicIndex) {
+                loadMusic(currentMusicIndex);
+            }
+            renderPlaylist();
+        }
+
+        // 添加歌曲
+        function addMusic() {
+            document.getElementById('addMusicModal').style.display = 'block';
+            document.getElementById('newMusicTitle').value = '';
+            document.getElementById('newMusicArtist').value = '';
+            document.getElementById('newMusicUrl').value = '';
+            setTimeout(() => document.getElementById('newMusicTitle').focus(), 100);
+        }
+
+        function closeAddMusic() {
+            document.getElementById('addMusicModal').style.display = 'none';
+        }
+
+        // 点击弹窗外部关闭
+        document.getElementById('addMusicModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAddMusic();
+            }
+        });
+
+        // 按ESC键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAddMusic();
+            }
+        });
+
+        function confirmAddMusic() {
+            const title = document.getElementById('newMusicTitle').value.trim();
+            const artist = document.getElementById('newMusicArtist').value.trim() || '未知歌手';
+            const url = document.getElementById('newMusicUrl').value.trim();
+            const lrc = document.getElementById('newMusicLrc') ? document.getElementById('newMusicLrc').value.trim() : '';
+            
+            if (!title) {
+                alert('请输入歌曲名称');
+                return;
+            }
+            if (!url) {
+                alert('请输入有效的歌曲链接');
+                return;
+            }
+            
+            const newSong = {
+                title: title,
+                artist: artist,
+                cover: '🎵',
+                url: url
+            };
+            if (lrc) {
+                newSong.lrc = lrc;
+            }
+            
+            musicPlaylist.push(newSong);
+            savePlaylist();
+            
+            renderPlaylist();
+            closeAddMusic();
+            alert('添加成功！当前共 ' + musicPlaylist.length + ' 首歌曲');
+        }
+
+        // 切换播放列表
+        function togglePlaylist() {
+            const playlist = document.getElementById('musicPlaylist');
+            const lyrics = document.getElementById('musicLyrics');
+            const lyricSwitch = document.getElementById('lyricSwitch');
+            if (playlist.classList.contains('show')) {
+                playlist.classList.remove('show');
+                // 播放列表关闭，如果歌词开关是开的，把歌词显示回来
+                if (lyricSwitch && lyricSwitch.checked) {
+                    lyrics.classList.add('show');
+                }
+            } else {
+                playlist.classList.add('show');
+                renderPlaylist();
+                // 播放列表打开，自动把歌词隐藏掉
+                lyrics.classList.remove('show');
+            }
+        }
+
+        // 切换歌词
+        function toggleLyrics() {
+            const lyrics = document.getElementById('musicLyrics');
+            const btn = document.getElementById('lyricToggle');
+            if (lyrics.classList.contains('show')) {
+                lyrics.classList.remove('show');
+                btn.classList.remove('active');
+            } else {
+                lyrics.classList.add('show');
+                btn.classList.add('active');
+            }
+        }
+
+        // 切换播放模式
+        function toggleMode() {
+            playMode = (playMode + 1) % 2;
+            document.getElementById('musicModeBtn').textContent = playModes[playMode];
+        }
+
+        // 解析LRC歌词
+        function parseLRC(lrcText) {
+            try {
+                const lines = lrcText.split('\n');
+                const result = [];
+                const timeReg = /\[(\d{1,2}):(\d{1,2})(?:\.(\d{1,3}))?\]/g;
+                for (const line of lines) {
+                    const text = line.replace(timeReg, '').trim();
+                    if (!text) continue;
+                    let match;
+                    timeReg.lastIndex = 0;
+                    while ((match = timeReg.exec(line)) !== null) {
+                        const min = parseInt(match[1]);
+                        const sec = parseInt(match[2]);
+                        const ms = match[3] ? parseInt(match[3].padEnd(3, '0')) : 0;
+                        const time = min * 60 + sec + ms / 1000;
+                        result.push({ time, text });
+                    }
+                }
+                result.sort((a, b) => a.time - b.time);
+                return result;
+            } catch (e) {
+                return [];
+            }
+        }
+
+        // ========== 在线音乐全网搜索功能 ==========
+        let onlineSearchResults = [];
+        let currentPlatform = 'netease'; // 默认网易云
+
+        // 平台元数据
+        const platformMeta = {
+            netease: { name: '网易云', color: '#e60026' },
+            tencent: { name: 'QQ音乐', color: '#31c27c' },
+            kugou:   { name: '酷狗',   color: '#2ca2f9' },
+            kuwo:    { name: '酷我',   color: '#ff9500' },
+            qishui:  { name: '汽水',   color: '#ff2442' }
+        };
+
+        // 切换平台
+        function switchPlatform(server, el) {
+            currentPlatform = server;
+            document.querySelectorAll('.music-platform-tabs .platform-tab').forEach(t => t.classList.remove('active'));
+            if (el) el.classList.add('active');
+            // 如果已经有搜索词，自动重新搜一次
+            const kw = document.getElementById('musicSearchInput').value.trim();
+            if (kw) searchMusic();
+        }
+
+        // CORS代理列表（多个备选）
+        const corsProxies = [
+            url => url,  // 先直接请求（最快，走 /api/music-search 同源）
+            url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
+            url => 'https://corsproxy.io/?' + encodeURIComponent(url),
+            url => 'https://cors.eu.org/' + url
+        ];
+
+        // 带CORS代理的fetch
+        async function fetchWithCORS(url, timeout = 10000) {
+            for (let i = 0; i < corsProxies.length; i++) {
+                try {
+                    const proxyUrl = corsProxies[i](url);
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(), timeout);
+                    const response = await fetch(proxyUrl, { signal: controller.signal });
+                    clearTimeout(timer);
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                } catch (e) {
+                    // 继续试下一个代理
+                }
+            }
+            throw new Error('所有代理都失败');
+        }
+
+        // 搜索音乐（按选中平台）
+        async function searchMusic() {
+            const keyword = document.getElementById('musicSearchInput').value.trim();
+            if (!keyword) {
+                alert('请输入搜索关键词');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('searchResults');
+            const itemsDiv = document.getElementById('searchResultsItems');
+            resultsDiv.style.display = 'block';
+            const meta = platformMeta[currentPlatform] || platformMeta.netease;
+            itemsDiv.innerHTML = '<div class="search-loading">🔍 正在' + meta.name + '搜索...</div>';
+
+            try {
+                // Cloudflare Pages Functions API（支持多平台）
+                const searchUrl = '/api/music-search?keyword=' + encodeURIComponent(keyword) + '&server=' + currentPlatform;
+                const data = await (await fetch(searchUrl)).json();
+
+                if (Array.isArray(data) && data.length > 0) {
+                    onlineSearchResults = data.slice(0, 30).map(song => ({
+                        name: song.name || song.title || '未知歌曲',
+                        artist: song.artist || song.author || '未知',
+                        url: song.url,
+                        lrc: song.lrc,
+                        id: song.id,
+                        pic: song.pic,
+                        platform: meta.name,
+                        platformColor: meta.color
+                    }));
+                    // 打印一下歌词地址，方便调试
+                    console.log('歌词地址:', onlineSearchResults[0].lrc);
+                    renderSearchResults();
+                } else {
+                    itemsDiv.innerHTML = '<div class="search-loading">😢 ' + meta.name + '未找到相关歌曲<br><span style="font-size:10px;color:#999;">试试切换其他平台或换个关键词</span></div>';
+                    onlineSearchResults = [];
+                }
+            } catch (e) {
+                itemsDiv.innerHTML = '<div class="search-loading">❌ 搜索失败：' + (e.message || '网络错误') + '<br><span style="font-size:10px;color:#999;">请稍后再试或切换平台</span></div>';
+                onlineSearchResults = [];
+            }
+        }
+        
+        // 渲染搜索结果
+        function renderSearchResults() {
+            const itemsDiv = document.getElementById('searchResultsItems');
+            itemsDiv.innerHTML = onlineSearchResults.map((song, i) => {
+                return `
+                    <div class="search-result-item" onclick="playSearchResult(${i})">
+                        <span class="play-icon">▶</span>
+                        <span class="song-name">${song.name}</span>
+                        <span class="song-artist">${song.artist || '未知'}</span>
+                        <span style="font-size:9px;padding:2px 6px;border-radius:8px;color:#fff;background:${song.platformColor || '#999'};">${song.platform || ''}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // 播放搜索结果（网易云外链直接播放）
+        async function playSearchResult(index) {
+            const song = onlineSearchResults[index];
+            
+            // 封面用emoji，不要用图片，避免乱码
+            const coverUrl = '🎵';
+            
+            // 创建歌曲对象
+            const newSong = {
+                title: song.name,
+                artist: song.artist || '未知歌手',
+                cover: coverUrl,
+                url: song.url,
+                lrc: song.lrc,
+                isOnline: true,
+                platform: song.platform
+            };
+            
+            // 添加到播放列表并播放
+            musicPlaylist.push(newSong);
+            savePlaylist();
+            const newIndex = musicPlaylist.length - 1;
+            playSong(newIndex);
+            
+            // 关闭搜索结果
+            clearSearch();
+        }
+        
+        // 清除搜索结果
+        function clearSearch() {
+            document.getElementById('searchResults').style.display = 'none';
+            document.getElementById('searchResultsItems').innerHTML = '';
+            document.getElementById('musicSearchInput').value = '';
+            onlineSearchResults = [];
+        }
+
+        // 加载LRC歌词文件
+        function loadLRC(song, callback) {
+            // 优先使用内嵌的歌词（file://协议下也能用）
+            if (typeof embeddedLyrics !== 'undefined' && embeddedLyrics[song.title]) {
+                song.parsedLyrics = parseLRC(embeddedLyrics[song.title]);
+                if (callback) callback();
+                return;
+            }
+            // 没有内嵌歌词，尝试fetch（HTTP协议下可用）
+            if (!song.lrc) {
+                song.parsedLyrics = [];
+                if (callback) callback();
+                return;
+            }
+            // 在线歌曲的歌词直接fetch（Cloudflare Pages Functions API返回lrc地址，返回纯文本LRC）
+            if (song.isOnline) {
+                // 如果是相对路径，转换成完整URL
+                let lrcUrl = song.lrc;
+                if (lrcUrl.startsWith('/')) {
+                    lrcUrl = window.location.origin + lrcUrl;
+                }
+                console.log('加载歌词:', lrcUrl);
+                fetch(lrcUrl)
+                    .then(r => r.text())
+                    .then(text => {
+                        console.log('歌词内容:', text.substring(0, 100));
+                        song.parsedLyrics = parseLRC(text);
+                        if (callback) callback();
+                    })
+                    .catch((e) => {
+                        console.log('歌词加载失败:', e);
+                        song.parsedLyrics = [];
+                        if (callback) callback();
+                    });
+                return;
+            }
+            // 本地歌曲的lrc文件路径
+            fetch(song.lrc)
+                .then(r => r.text())
+                .then(text => {
+                    song.parsedLyrics = parseLRC(text);
+                    if (callback) callback();
+                })
+                .catch(() => {
+                    song.parsedLyrics = [];
+                    if (callback) callback();
+                });
+        }
+
+        // 加载歌曲
+        function loadMusic(index, silent) {
+            if (!musicPlaylist || musicPlaylist.length === 0 || !musicPlaylist[index]) {
+                if (!silent) {
+                    alert('歌单为空，请先在搜索框搜索并添加歌曲');
+                }
+                return;
+            }
+            currentMusicIndex = index;
+            const song = musicPlaylist[index];
+            musicAudio.src = song.url;
+            document.getElementById('musicTitle').textContent = song.title;
+            document.getElementById('musicArtist').textContent = song.artist;
+            document.getElementById('coverEmoji').textContent = song.cover;
+            lyricIndex = 0;
+            // 加载LRC歌词
+            loadLRC(song, () => {
+                updateLyrics();
+            });
+            // 重新应用当前音量，确保切换歌曲后音量保持
+            const volSlider = document.getElementById('volumeSlider');
+            if (volSlider) {
+                setVolume(volSlider.value);
+            }
+        }
+
+        // 播放/暂停
+        function togglePlay() {
+            if (isMusicPlaying) {
+                musicAudio.pause();
+                isMusicPlaying = false;
+                document.getElementById('coverPlayIcon').textContent = '▶';
+                document.getElementById('musicCover').classList.remove('rotating');
+            } else {
+                musicAudio.play().catch(e => {
+                    alert('音乐加载失败，请检查网络或更换歌曲');
+                });
+                isMusicPlaying = true;
+                document.getElementById('coverPlayIcon').textContent = '⏸';
+                document.getElementById('musicCover').classList.add('rotating');
+            }
+        }
+
+        // 上一首
+        function prevMusic() {
+            if (playMode === 2) {
+                currentMusicIndex = Math.floor(Math.random() * musicPlaylist.length);
+            } else {
+                currentMusicIndex = (currentMusicIndex - 1 + musicPlaylist.length) % musicPlaylist.length;
+            }
+            loadMusic(currentMusicIndex);
+            isMusicPlaying = true;
+            document.getElementById('coverPlayIcon').textContent = '⏸';
+            document.getElementById('musicCover').classList.add('rotating');
+            musicAudio.play().catch(e => {
+                alert('音乐加载失败，请检查网络或更换歌曲');
+            });
+            renderPlaylist();
+        }
+
+        // 下一首
+        function nextMusic() {
+            if (playMode === 2) {
+                currentMusicIndex = Math.floor(Math.random() * musicPlaylist.length);
+            } else {
+                currentMusicIndex = (currentMusicIndex + 1) % musicPlaylist.length;
+            }
+            loadMusic(currentMusicIndex);
+            isMusicPlaying = true;
+            document.getElementById('coverPlayIcon').textContent = '⏸';
+            document.getElementById('musicCover').classList.add('rotating');
+            musicAudio.play().catch(e => {
+                alert('音乐加载失败，请检查网络或更换歌曲');
+            });
+            renderPlaylist();
+        }
+
+        // 进度条跳转
+        function seekMusic(event) {
+            const progress = event.currentTarget;
+            const rect = progress.getBoundingClientRect();
+            const percent = (event.clientX - rect.left) / rect.width;
+            if (musicAudio.duration) {
+                musicAudio.currentTime = percent * musicAudio.duration;
+            }
+        }
+
+        // 音量
+        function setVolume(value) {
+            const v = parseInt(value);
+            musicAudio.volume = v / 100;
+            // 音量为0时强制静音，确保真正没声音
+            if (v === 0) {
+                musicAudio.muted = true;
+            } else {
+                musicAudio.muted = false;
+            }
+            // 更新音量图标
+            const icon = document.getElementById('volumeIcon');
+            if (icon) {
+                if (v === 0) icon.textContent = '🔇';
+                else if (v < 30) icon.textContent = '🔈';
+                else if (v < 70) icon.textContent = '🔉';
+                else icon.textContent = '🔊';
+            }
+        }
+
+        // 更新歌词（LRC同步）
+        function updateLyrics() {
+            try {
+                const song = musicPlaylist[currentMusicIndex];
+                if (!song) return;
+                const lyricsContainer = document.getElementById('musicLyrics');
+                if (!lyricsContainer) return;
+                if (!song.parsedLyrics || song.parsedLyrics.length === 0) {
+                    if (song.lyrics && song.lyrics.length > 0) {
+                        lyricsContainer.innerHTML = `<div class="lyric-line active">${song.lyrics[lyricIndex % song.lyrics.length]}</div>`;
+                    } else {
+                        lyricsContainer.innerHTML = `<div class="lyric-line" style="color:#999;text-align:center;padding:20px;">♪ 暂无歌词，请欣赏音乐 ♪</div>`;
+                    }
+                    return;
+                }
+                // 找到当前时间对应的歌词
+                // 歌词也慢0.5秒，和进度条同步
+                const currentTime = (musicAudio.currentTime || 0) - 0.5;
+                let currentIndex = -1;
+                for (let i = 0; i < song.parsedLyrics.length; i++) {
+                    if (song.parsedLyrics[i].time <= currentTime) {
+                        currentIndex = i;
+                    } else {
+                        break;
+                    }
+                }
+                if (currentIndex === -1) currentIndex = 0;
+                lyricIndex = currentIndex;
+                
+                // KTV逐字高亮效果
+                const currentLine = song.parsedLyrics[currentIndex];
+                const nextLine = song.parsedLyrics[currentIndex + 1];
+                const lineStartTime = currentLine.time;
+                // 最后一句用歌曲总时长，其他用下一句开始时间
+                let lineEndTime;
+                if (nextLine) {
+                    lineEndTime = nextLine.time;
+                } else if (musicAudio.duration && !isNaN(musicAudio.duration)) {
+                    lineEndTime = musicAudio.duration;
+                } else {
+                    lineEndTime = lineStartTime + 8;
+                }
+                const lineDuration = Math.max(lineEndTime - lineStartTime, 1);
+                const lineText = currentLine.text.trim();
+                const charCount = lineText.length;
+                // 每个字的时间，精确同步（提前0秒）
+                const timePerChar = lineDuration / Math.max(charCount, 1);
+                const elapsedInLine = (currentTime - lineStartTime);
+                let currentCharIndex = Math.floor(elapsedInLine / timePerChar);
+                if (currentCharIndex < 0) currentCharIndex = 0;
+                if (currentCharIndex >= charCount) currentCharIndex = charCount - 1;
+                
+                // 渲染逐字歌词：唱过的红色，没唱的深灰色，末尾带红色光标
+                let charHtml = '';
+                for (let i = 0; i < charCount; i++) {
+                    const ch = lineText[i];
+                    if (i <= currentCharIndex) {
+                        // 已经唱过的字（包括当前） - 粉红色
+                        charHtml += `<span style="color:#ff3b30;font-weight:bold;">${ch}</span>`;
+                    } else {
+                        // 没唱的字 - 蓝色
+                        charHtml += `<span style="color:#4488ff;font-weight:bold;">${ch}</span>`;
+                    }
+                }
+                // 在当前唱到的字后面加红色闪烁光标
+                // charHtml += '<span class="lyric-caret"></span>';
+                lyricsContainer.innerHTML = `<div class="lyric-line active">${charHtml}</div>`;
+            } catch (e) {
+                // 出错也不影响播放
+            }
+        }
+
+        // 格式化时间
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '00:00';
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        // 音乐事件监听
+        musicAudio.addEventListener('timeupdate', () => {
+            if (musicAudio.duration) {
+                // 进度条快0.5秒
+                const displayTime = Math.max(0, musicAudio.currentTime + 0.5);
+                const percent = (displayTime / musicAudio.duration) * 100;
+                document.getElementById('musicProgressBar').style.width = percent + '%';
+                document.getElementById('musicCurrentTime').textContent = formatTime(displayTime);
+                // 实时同步LRC歌词
+                updateLyrics();
+            }
+        });
+
+        musicAudio.addEventListener('loadedmetadata', () => {
+            document.getElementById('musicTotalTime').textContent = formatTime(musicAudio.duration);
+        });
+
+        musicAudio.addEventListener('ended', () => {
+            if (playMode === 1) {
+                // 单曲循环
+                musicAudio.currentTime = 0;
+                musicAudio.play();
+            } else {
+                nextMusic();
+            }
+        });
+
+        // 强制关闭所有弹窗
+        try {
+            document.getElementById('addMusicModal').style.display = 'none';
+        } catch(e) {}
+
+        // 初始化音乐（加错误保护，防止卡住）
+        try {
+            loadMusic(0, true);
+        } catch(e) { console.error('loadMusic error:', e); }
+        try {
+            setVolume(70);
+        } catch(e) { console.error('setVolume error:', e); }
+        try {
+            renderPlaylist();
+        } catch(e) { console.error('renderPlaylist error:', e); }
+
+        // 音量滑块事件监听（确保拖动时音量变化生效）
+        const volumeSlider = document.getElementById('volumeSlider');
+        if (volumeSlider) {
+            volumeSlider.addEventListener('input', function() {
+                setVolume(this.value);
+            });
+            volumeSlider.addEventListener('change', function() {
+                setVolume(this.value);
+            });
+        }
+
+        // 分类右键菜单
+        let menuCatIndex = -1;
+        function showCategoryMenu(e, catIndex) {
+            menuCatIndex = catIndex;
+            const cat = navData[catIndex];
+            const menu = document.getElementById('categoryContextMenu');
+            menu.style.left = e.clientX + 'px';
+            menu.style.top = e.clientY + 'px';
+            menu.classList.add('show');
+            // 更新菜单文字
+            document.getElementById('catMenuPwdText').textContent = cat.password ? '🔓 取消密码' : '🔒 设置密码';
+        }
+        
+        function hideCategoryMenu() {
+            document.getElementById('categoryContextMenu').classList.remove('show');
+        }
+        
+        function categoryMenuTogglePwd() {
+            hideCategoryMenu();
+            if (menuCatIndex >= 0) {
+                setCategoryPassword(menuCatIndex);
+            }
+        }
+        
+        function categoryMenuRename() {
+            hideCategoryMenu();
+            if (menuCatIndex < 0) return;
+            const cat = navData[menuCatIndex];
+            const newName = prompt('修改分类名称：', cat.name);
+            if (newName && newName.trim()) {
+                cat.name = newName.trim();
+                saveData();
+                renderAccordion();
+            }
+        }
+
+        // 全局拖拽排序（事件委托，所有分类通用）
+        let dragFromCat = -1, dragFromSite = -1;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const accordion = document.getElementById('accordion');
+            if (!accordion) return;
+            
+            accordion.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                const target = e.target.closest('.site-item');
+                document.querySelectorAll('.site-item').forEach(el => el.classList.remove('drag-over'));
+                if (target) {
+                    target.classList.add('drag-over');
+                }
+            });
+            
+            accordion.addEventListener('drop', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.site-item').forEach(el => el.classList.remove('drag-over'));
+                if (dragFromCat < 0 || dragFromSite < 0) return;
+                
+                const target = e.target.closest('.site-item');
+                if (!target) return;
+                
+                const toCat = parseInt(target.dataset.catIndex);
+                const toSite = parseInt(target.dataset.siteIndex);
+                
+                if (dragFromCat === toCat && dragFromSite === toSite) {
+                    dragFromCat = -1;
+                    dragFromSite = -1;
+                    return;
+                }
+                
+                // 同一分类内排序
+                if (dragFromCat === toCat) {
+                    const sites = navData[toCat].sites;
+                    const [moved] = sites.splice(dragFromSite, 1);
+                    sites.splice(toSite, 0, moved);
+                    saveData();
+                    renderAccordion();
+                }
+                
+                dragFromCat = -1;
+                dragFromSite = -1;
+            });
+        });
+
+        // 初始化 - 时间天气优先，确保一定执行
+        try {
+            if (document.getElementById('clock')) {
+                updateClock();
+                setInterval(updateClock, 1000);
+            }
+        } catch(e) {
+            console.error('时钟初始化失败:', e);
+        }
+
+        try {
+            if (document.getElementById('weatherIcon')) {
+                loadWeather();
+            }
+        } catch(e) {
+            console.error('天气加载失败:', e);
+            if (document.getElementById('weatherIcon')) {
+                document.getElementById('weatherIcon').textContent = '🌤️';
+                document.getElementById('weatherTemp').textContent = '25°C';
+                document.getElementById('weatherDesc').textContent = '河源 · 晴';
+            }
+        }
+
+        // 其他初始化
+        try {
+            loadData();
+            renderAccordion();
+            createStars();
+            animate();
+            setTimeout(launchMeteor, 2500);
+            
+            // 强制检查：确保系统工具分类里的网站都在
+            setTimeout(() => {
+                let needFix = false;
+                navData.forEach(cat => {
+                    if (cat.name === '系统工具' && cat.sites) {
+                        const hasEditor = cat.sites.some(s => s.name && s.name.includes('接口编辑器'));
+                        const hasStation = cat.sites.some(s => s.name && s.name.includes('接口站'));
+                        const has18 = cat.sites.some(s => s.name && (s.name.includes('合并配置18') || s.name.includes('配置18')));
+                        if (!hasEditor) {
+                            cat.sites.push({ name: '📝 TVBox接口编辑器（可修改）', icon: '📝', url: 'https://zhouyu365666.top/TVBox%E6%8E%A5%E5%8F%A3%E7%BC%96%E8%BE%91%E5%99%A8.html', type: 'link' });
+                            needFix = true;
+                        }
+                        if (!hasStation) {
+                            cat.sites.push({ name: '📡 TVBox接口站（Cloudflare）', icon: '📡', url: 'https://zhouyu365666.top', type: 'link' });
+                            needFix = true;
+                        }
+                        if (!has18) {
+                            cat.sites.push({ name: '🔞 合并配置18（域名）', icon: '🔞', url: 'https://zhouyu365666.top/assets/static/data/tvbox18.json', type: 'link' });
+                            needFix = true;
+                        }
+                    }
+                });
+                if (needFix) {
+                    saveData();
+                    renderAccordion();
+                    console.log('已自动补全系统工具分类的网站');
+                }
+            }, 500);
+        } catch(e) {
+            console.error('其他初始化失败:', e);
+        }
+
+        // 点击弹窗外部关闭
+        document.getElementById('siteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

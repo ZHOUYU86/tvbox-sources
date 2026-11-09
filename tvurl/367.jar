@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#10152d">
+<title>404 · 星海迷航接待站</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/assets/notfound/page.css?v=20261022-3">
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="aurora aurora-one" aria-hidden="true"></div><div class="aurora aurora-two" aria-hidden="true"></div>
+<div class="shell">
+<header class="topbar">
+  <div class="brand"><svg viewBox="0 0 48 36" aria-hidden="true"><path d="M6 18C15 3 32 3 40 18 32 33 15 33 6 18Z"/><path d="M9 18 2 10v16z"/><circle cx="31" cy="15" r="2"/></svg><span>摸鱼<span class="brand-divider">/</span><small>星海接待站</small></span></div>
+  <button id="pause" class="quiet-button" type="button" aria-pressed="false"><span class="status-dot"></span><span id="pause-label">暂停动态</span></button>
+</header>
+<main>
+<section class="scene" aria-labelledby="page-title">
+  <div class="message">
+    <div class="coordinate"><span></span>航线异常 · 页面不存在</div>
+    <div class="error-number" aria-label="错误代码 404">4<span>0</span>4<i aria-hidden="true">✦</i></div>
+    <h1 id="page-title">走丢了？<br><span>那就先摸会儿鱼。</span></h1>
+    <p class="description">你寻找的页面不在这条航线上。<br>别急，领航员正在接收来自另一片星海的信号。</p>
+    <div class="actions"><button id="greet" class="primary-button" type="button"><span>和领航员打个招呼</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7M12 5v14"/></svg></button><button id="shuffle" class="secondary-button" type="button">换一组宇宙数据 <span aria-hidden="true">↻</span></button></div>
+    <p id="action-note" class="action-note" role="status">每一次迷航，都可能遇见一点惊喜。</p>
+  </div>
+  <div class="character-scene">
+    <div class="planet" aria-hidden="true"><div class="planet-stripe"></div></div>
+    <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
+    <span class="spark spark-one" aria-hidden="true">✧</span><span class="spark spark-two" aria-hidden="true">✦</span><span class="spark spark-three" aria-hidden="true">+</span>
+    <div class="speech" id="speech" role="status">稍等一下，我马上就来！<span></span></div>
+    <div class="character-stage" id="stage">
+      <div class="model-fallback" id="fallback" hidden><div class="loading-orbit" aria-hidden="true">✦</div><p id="model-status">正在呼叫领航员…</p></div>
+      <img id="poster" src="/assets/notfound/haru-poster.png" alt="领航员 Haru 的静态画面">
+      <canvas id="character" aria-label="Live2D 领航员 Haru，可通过打招呼按钮互动"></canvas>
+    </div>
+    <div class="landing" aria-hidden="true"></div>
+    <div class="pilot-label"><span></span><b>Haru</b><small>你的星海领航员</small></div>
+  </div>
+</section>
+<section class="telemetry" aria-labelledby="stats-title">
+  <div class="telemetry-heading"><h2 id="stats-title"><span aria-hidden="true">✦</span> 此刻的宇宙，有点夸张</h2><span class="draw-id">随机星图 <b id="draw-id">01</b></span></div>
+  <div class="metrics">
+    <div class="metric"><span class="metric-label">已收集星光 <small>颗</small></span><strong class="counter" id="count-stars">500,000</strong><div class="meter" aria-hidden="true"><i></i></div></div>
+    <div class="metric"><span class="metric-label">迷航跃迁次数 <small>次</small></span><strong class="counter" id="count-jumps">500,000</strong><div class="meter" aria-hidden="true"><i></i></div></div>
+    <div class="metric"><span class="metric-label">摸鱼能量值 <small>点</small></span><strong class="counter" id="count-energy">500,000</strong><div class="meter" aria-hidden="true"><i></i></div></div>
+  </div>
+</section>
+</main>
+<footer><span>页面失联了，好心情继续在线。</span><span>趣味随机展示 · 非实际访问统计</span></footer>
+</div>
+<script type="module" src="/assets/notfound/page.js?v=20261022-3"></script>
+</body>
+</html>
