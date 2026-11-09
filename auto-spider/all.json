@@ -1,48 +1,64 @@
 {
   "urls": [
     {
-      "name": "📺xs接口",
-      "url": "https://zhouyu86-bh1.pages.dev/xs/api.json"
+      "url": "https://zhouyu86-bh1.pages.dev/xs/api.json",
+      "name": "📺xs接口"
     },
     {
-      "name": "📺fty接口",
-      "url": "https://zhouyu86-bh1.pages.dev/fty/api.json"
+      "url": "https://zhouyu86-bh1.pages.dev/fty/api.json",
+      "name": "📺fty接口"
     },
     {
-      "name": "📺wex接口",
-      "url": "https://zhouyu86-bh1.pages.dev/wex/api.json"
+      "url": "https://zhouyu86-bh1.pages.dev/wex/api.json",
+      "name": "📺wex接口"
     },
     {
-      "name": "📺cl接口",
-      "url": "https://zhouyu86-bh1.pages.dev/cl/aa.json"
+      "url": "https://zhouyu86-bh1.pages.dev/cl/aa.json",
+      "name": "📺cl接口"
     },
     {
-      "name": "📺ouyang接口",
-      "url": "https://zhouyu86-bh1.pages.dev/ouyang/api.json"
+      "url": "https://zhouyu86-bh1.pages.dev/ouyang/api.json",
+      "name": "📺ouyang接口"
     },
     {
-      "name": "📺dl接口",
-      "url": "https://zhouyu86-bh1.pages.dev/dl/api.json"
+      "url": "https://zhouyu86-bh1.pages.dev/dl/api.json",
+      "name": "📺dl接口"
     },
     {
-      "name": "📺tvurl接口",
-      "url": "https://zhouyu86-bh1.pages.dev/tvurl/api.json"
+      "url": "https://zhouyu86-bh1.pages.dev/tvurl/api.json",
+      "name": "📺tvurl接口"
     },
     {
-      "name": "📺aowu接口",
-      "url": "https://zhouyu86-bh1.pages.dev/pg/pg.json"
+      "url": "https://zhouyu86-bh1.pages.dev/pg/pg.json",
+      "name": "📺aowu接口"
     },
     {
-      "name": "📺b接口",
-      "url": "https://zhouyu86-bh1.pages.dev/b.json"
+      "url": "https://zhouyu86-bh1.pages.dev/b.json",
+      "name": "📺b接口"
     },
     {
-      "name": "📺ok接口",
-      "url": "https://zhouyu86-bh1.pages.dev/ok/m.json"
+      "url": "https://zhouyu86-bh1.pages.dev/ok/m.json",
+      "name": "📺ok接口"
     },
     {
-      "name": "📺🐂王二小🐮",
-      "url": "https://9280.kstore.vip/aiwex.json"
+      "url": "https://zhouyu86-bh1.pages.dev/nf/XC.json",
+      "name": "📺nf接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/feimao/multi.json",
+      "name": "📺feimao接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/lubin/api.json",
+      "name": "📺lubin接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/wmz/wmz.json",
+      "name": "📺wmz接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/zhenxin/tvboxdx.json",
+      "name": "📺zhenxin接口"
     }
   ]
 }
