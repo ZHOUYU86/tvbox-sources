@@ -1,0 +1,24 @@
+{
+  "urls": [
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/fty/api.json",
+      "name": "📺fty接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/wex/api.json",
+      "name": "📺wex接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/b.json",
+      "name": "📺b接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/wmz/wmz.json",
+      "name": "📺wmz接口"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/pg/pg.json",
+      "name": "📺pg接口"
+    }
+  ]
+}
