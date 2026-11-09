@@ -68,6 +68,17 @@ jobs:
           echo "WMZ肥猫源同步完成"
 
 
+      # ====== 4.5 摸鱼源自动同步（自动下载json+jar包）======
+      - name: 同步摸鱼源
+        continue-on-error: true
+        run: |
+          curl -L --max-time 120 -o moyu.json "https://6800.kstore.vip/fish.json"
+          # 从moyu.json里提取spider地址，自动下载jar包
+          JAR_URL=$(python3 -c "import json; print(json.load(open('moyu.json'))['spider'].split(';')[0])")
+          curl -L --max-time 300 -o moyu_spider.jar "$JAR_URL"
+          echo "摸鱼源同步完成，jar包大小：$(ls -lh moyu_spider.jar | awk '{print $5}')"
+
+
       # ====== 5. 成人源同步（curl下载+合并到tvbox18.json）======
       - name: 同步成人源
         continue-on-error: true
@@ -101,6 +112,35 @@ jobs:
               if r.returncode != 0:
                   print("跳过:", f)
           EOF
+
+      # ====== 6.5 自动下载所有源的jar包（通用）======
+      - name: 自动下载所有源的jar包
+        continue-on-error: true
+        run: |
+          python3 - <<'EOF'
+          import json, glob, os, subprocess
+          for f in glob.glob("**/*.json", recursive=True):
+              try:
+                  with open(f, 'r', encoding='utf-8-sig') as fp:
+                      data = json.load(fp)
+                  if 'spider' not in data:
+                      continue
+                  spider = data['spider']
+                  if not spider.startswith('http'):
+                      continue
+                  jar_url = spider.split(';')[0]
+                  jar_name = os.path.basename(jar_url).split('?')[0]
+                  if not jar_name.endswith('.jar'):
+                      jar_name = os.path.splitext(os.path.basename(f))[0] + '.jar'
+                  jar_path = os.path.join(os.path.dirname(f), jar_name)
+                  # 下载jar包，失败自动重试3次
+                  subprocess.run(['curl', '-L', '--retry', '3', '--retry-delay', '5', '--max-time', '300', '-o', jar_path, jar_url], check=False)
+                  size = os.path.getsize(jar_path) if os.path.exists(jar_path) else 0
+                  print(f"✅ {f} -> {jar_name} ({size/1024/1024:.2f} MB)")
+              except Exception as e:
+                  print(f"❌ {f}: {e}")
+          EOF
+
 
       # ====== 7. 清理垃圾缓存 ======
       - name: 清理垃圾文件
@@ -138,3 +178,4 @@ jobs:
         env:
           QQ_SMTP_AUTH_CODE: ${{ secrets.QQ_SMTP_AUTH_CODE }}
         run: python send_alert.py
+
