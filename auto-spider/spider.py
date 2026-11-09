@@ -16,11 +16,10 @@ OUTPUT_FILE = "all.json"  # 输出文件
 MAX_ONLINE_SOURCES = 30  # 最多加多少个网上的接口
 SPEED_THRESHOLD = 20  # 速度超过20秒的就不要了
 
-# 网上的聚合源地址（爬虫自动爬这些地址里的所有接口）
-ONLINE_SOURCES = [
+# 网上的完整TVBox配置文件地址（爬虫从这些配置文件里提取所有api地址）
+ONLINE_CONFIGS = [
     "https://gh-proxy.com/https://raw.githubusercontent.com/tushen6/Tomorrow/master/lmw.json",
-    "https://agit.ai/hu/hcr/raw/branch/master/MMM.txt",
-    "https://wds.ecsxs.com/223843.txt",
+    "https://pastebin.com/raw/gtbKvnE1",
 ]
 
 # 你自己仓库里的接口地址（用CF Pages地址）
@@ -74,30 +73,57 @@ def test_source(url):
         if "sites" in data and len(data["sites"]) > 0:
             return speed, True
         
-        # 如果是聚合源格式，也可以
-        if "urls" in data and len(data["urls"]) > 0:
-            return speed, True
-        
         return speed, False
     except:
         return None, False
 
 def crawl_online_sources():
-    """爬网上的聚合源里的所有接口，并检测速度和可用性，去重"""
+    """从网上的完整TVBox配置文件里提取所有api地址，并检测速度和可用性，去重"""
     online_urls = []
     seen_urls = set()  # 已经加过的地址，用于去重
     
-    for source_url in ONLINE_SOURCES:
+    for config_url in ONLINE_CONFIGS:
         try:
-            print(f"正在爬取：{source_url}")
-            response = requests.get(source_url, timeout=20)
+            print(f"正在爬取配置文件：{config_url}")
+            response = requests.get(config_url, timeout=20)
             data = response.json()
+            
+            # 如果是urls数组格式，直接提取
             if "urls" in data:
                 for item in data["urls"]:
                     url = item["url"]
                     name = item.get("name", "未知接口")
                     
-                    # 去重：如果是你自己的接口，或者已经加过了，就跳过
+                    # 去重
+                    if url in MY_URLS:
+                        print(f"  跳过（你自己的接口）：{name}")
+                        continue
+                    if url in seen_urls:
+                        print(f"  跳过（重复）：{name}")
+                        continue
+                    
+                    print(f"  正在检测：{name}")
+                    speed, usable = test_source(url)
+                    if usable and speed and speed < SPEED_THRESHOLD:
+                        online_urls.append({
+                            "name": f"📺{name}",
+                            "url": url
+                        })
+                        seen_urls.add(url)
+                        print(f"    ✓ 速度：{speed}秒，可用！添加！")
+                    else:
+                        print(f"    ✗ 不可用或速度太慢，跳过！")
+            
+            # 如果是完整TVBox配置格式，从sites里提取api地址
+            elif "sites" in data:
+                for site in data["sites"]:
+                    url = site.get("api", "")
+                    name = site.get("name", "未知接口")
+                    
+                    if not url:
+                        continue
+                    
+                    # 去重
                     if url in MY_URLS:
                         print(f"  跳过（你自己的接口）：{name}")
                         continue
