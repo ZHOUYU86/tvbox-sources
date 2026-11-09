@@ -59,6 +59,10 @@
     {
       "name": "📺zhenxin接口",
       "url": "https://zhouyu86-bh1.pages.dev/zhenxin/tvboxdx.json"
+    },
+    {
+      "url": "https://zhouyu86-bh1.pages.dev/moyu.json",
+      "name": "🐟摸鱼接口"
     }
   ]
 }
