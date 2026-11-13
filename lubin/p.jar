@@ -1740,7 +1740,7 @@
         <img src="vip/email.svg" alt="电子邮件" class="mail-modal-icon">
         <span>电子邮件联系</span>
       </div>
-      <div class="mail-address" id="mailAddress"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bec7d1cbcc93dbd3dfd7d2fedbc6dfd3ced2db90ddd1d3">[email&#160;protected]</a></div>
+      <div class="mail-address" id="mailAddress"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="473e2832356a222a262e2b07223f262a372b226924282a">[email&#160;protected]</a></div>
       <div class="mail-actions">
         <button class="mail-btn mail-btn-primary" type="button" id="mailOpenBtn">打开邮件客户端</button>
         <button class="mail-btn" type="button" id="mailCopyBtn">复制邮箱地址</button>
