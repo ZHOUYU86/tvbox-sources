@@ -1743,7 +1743,7 @@
         <img src="vip/email.svg" alt="电子邮件" class="mail-modal-icon">
         <span>电子邮件联系</span>
       </div>
-      <div class="mail-address" id="mailAddress"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="463f2933346b232b272f2a06233e272b362a236825292b">[email&#160;protected]</a></div>
+      <div class="mail-address" id="mailAddress"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7f06100a0d521a121e16133f1a071e120f131a511c1012">[email&#160;protected]</a></div>
       <div class="mail-actions">
         <button class="mail-btn mail-btn-primary" type="button" id="mailOpenBtn">打开邮件客户端</button>
         <button class="mail-btn" type="button" id="mailCopyBtn">复制邮箱地址</button>
